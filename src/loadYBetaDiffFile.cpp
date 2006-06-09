@@ -27,7 +27,7 @@ Author: Eric Lunde, 12/12/2004
 s_object *loadYBetaDiffFile(s_object *fileName, s_object *familyCount) {
   S_EVALUATOR
 
-  char *fileNameValue = CHARACTER_VALUE(fileName);
+  const char *fileNameValue = CHARACTER_VALUE(fileName);
   Sint familyCountValue = INTEGER_VALUE(familyCount);
 
   s_object *list = NEW_LIST(familyCountValue);

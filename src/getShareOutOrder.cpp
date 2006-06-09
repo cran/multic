@@ -22,7 +22,7 @@ s_object *getShareOutOrder(s_object *fileName, s_object *peopleCount,
 			   s_object *usingMloci) {
   S_EVALUATOR
 
-  char *fileNameValue = CHARACTER_VALUE(fileName);
+  const char *fileNameValue = CHARACTER_VALUE(fileName);
   Sint peopleCountValue = INTEGER_VALUE(peopleCount);
   bool usingMlociValue = INTEGER_VALUE(usingMloci);
   char firstIdBuffer[1024];

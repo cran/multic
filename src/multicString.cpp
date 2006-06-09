@@ -26,8 +26,8 @@ void multic_SET_STRING_ELT(s_object *stringArray, int index,
 
 // multic_SET_STRING abstracts the concept of getting a string out of
 // an S character vector.  Eric Lunde 2005-09-02
-char *multic_STRING_ELT(s_object *stringArray, int index) {
-  char *element = 
+const char *multic_STRING_ELT(s_object *stringArray, int index) {
+  const char *element = 
 #ifdef USING_R
     CHAR(STRING_ELT(stringArray, index))
 #else
