@@ -1,0 +1,65 @@
+Brief description:
+  multic is a collection of S-PLUS/R functions to calculate the
+  polygenic and major gene models for quantitative trait linkage
+  analysis using variance components approach.  multic class functions
+  are provided to view multic object's data textually and
+  graphically.
+
+  Utility functions have been provided to help convert various
+  identity by decent (IBD) formats into multic format.
+
+Website:
+  The software can be downloaded from the following website.
+
+  http://mayoresearch.mayo.edu/mayo/research/biostat/splusfunctions.cfm
+
+  For the Mayo Clinic Biostatistics web page,
+
+  http://www.mayo.edu/biostatistics
+
+Build environment and potential portability problems:
+  Our build environment includes:
+    - Operating System: Sun Solaris 9.0 (SunOS 5.9)
+    - Processor Type: sparc
+    - R: >= 2.2.0
+    - Splus: >= 6.0.1
+    - GNU g++: 3.2.3
+    - SUNWspro CC: 5.5
+
+  We will make reasonable attmpts to provide a multic package that
+  will run correctly on unexpected hardware/software configurations.
+
+  If you experience compilation issues and you are not using these
+  system versions, please let us know (email addresses are at the
+  bottom).  In such an email, please provide:
+    - operating system version ("uname -a")
+    - Splus/R version (obtained via the "version" command in either
+      program)
+    - C++ compiler version ("g++ --version" for GNU and "cc -V" for
+      SUNWspro) 
+    - entire textual output from the installation attempt
+
+Important files and directories:
+       README - this file  
+      INSTALL - installation instructions
+  DESCRIPTION - package, version, author, license, and other
+                information
+     examples - simulated pedigree, phenotype, and genetic data for
+                instruction purposes
+         docs - technical report
+
+  S-PLUS files:
+          src - all *.q, *.sgml, *.cxx, and *.h files
+
+  R files:
+            R - all *.q R files
+          src - all *.cpp and *.h C++ files
+          man - all *.Rd help files
+
+Installation:
+  See INSTALL
+
+Project email addresses:
+  Mariza de Andrade Ph.D. mandrade@mayo.edu (Primary contact)
+  Beth Atkinson M.S. atkinson@mayo.edu (Secondary contact)
+  Eric Lunde B.S. lunde@mayo.edu (Maintainer contact)
