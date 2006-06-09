@@ -158,7 +158,7 @@ solar2multic <- function(phi2, pedigree.file, pedindex.out,
 
   ## Both solar2mloci and phi2share worry about this.  I don't think
   ## solar2multic has to.
-  if(F) {
+  if(FALSE) {
     ## Unpack phi2 (if necessary)
     phi2 <- gunzip(phi2)
   }

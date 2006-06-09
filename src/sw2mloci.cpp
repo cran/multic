@@ -116,8 +116,6 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
 			  Sint *ibdFileCount,
 			  const char **swMapFileName) {
 
-  cout << "Inside sw2lociFilesInternal" << endl;
-
   char version[SMALL_BUFFER_LENGTH] = "";
   char chromosome[SMALL_BUFFER_LENGTH] = "";
   char line[MED_BUFFER_LENGTH] = "";
@@ -362,6 +360,9 @@ void ibd2locis291(const char *swIbdFileName, CmFileMap &cmFileMap) {
       for(int i = 0; i < 3; i++) {
 	strtok(NULL, TOKEN_DELIMITER);
       }
+
+      // PV Multiply kinship coefficient by 2 here (use atof function)
+      // Or, leave it in sw2mloci.q?
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
       ofstream *mibd = getMibd(cmFileMap, atof(cM));
