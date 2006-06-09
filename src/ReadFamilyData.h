@@ -1,6 +1,7 @@
 #ifndef READ_FAMILY_DATA_H
 #define READ_FAMILY_DATA_H
 
+#include "verS.h"
 #include "InitValue_par.h"
 #include "multic.h"
 #include <fstream>

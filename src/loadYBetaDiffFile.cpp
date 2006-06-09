@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>
@@ -28,7 +28,7 @@ s_object *loadYBetaDiffFile(s_object *fileName, s_object *familyCount) {
   S_EVALUATOR
 
   char *fileNameValue = CHARACTER_VALUE(fileName);
-  long familyCountValue = INTEGER_VALUE(familyCount);
+  Sint familyCountValue = INTEGER_VALUE(familyCount);
 
   s_object *list = NEW_LIST(familyCountValue);
  
@@ -39,8 +39,8 @@ s_object *loadYBetaDiffFile(s_object *fileName, s_object *familyCount) {
   }
 
   char holder[1024];
-  long familySize;
-  long traitCount;
+  Sint familySize;
+  Sint traitCount;
   s_object **yBetaDiffs;
   double *yBetaDiffsPtr;
 

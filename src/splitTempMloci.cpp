@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include "multicString.h"
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>

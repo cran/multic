@@ -1,6 +1,7 @@
 #ifndef CALCULATE_H
 #define CALCULATE_H
 
+#include "verS.h"
 #include <fstream>
 #include "Likelihoodfun.h"
 #include "Least.h"
@@ -194,8 +195,8 @@ class Calculate : public Likelihoodfun {
     fp_log,                    /* summary for the program  */
     summaryLog; // summary.log file
 
-  long printProgress;
-  long calculateResiduals;
+  Sint printProgress;
+  Sint calculateResiduals;
 
   // markerName was added to when multic prints the iteration count to file
   // it can also print the marker that produced that many iterations.
@@ -203,8 +204,8 @@ class Calculate : public Likelihoodfun {
 
  public:
   Calculate(Least *, char *, double, ShareRelation *, int, FortData *, int,
-	    double *est, double *coeff, long print_progress,
-	    long calculateResiduals, long *familySizes,
+	    double *est, double *coeff, Sint print_progress,
+	    Sint calculateResiduals, Sint *familySizes,
 	    char **uniqueFamilies, int famliyCount);
   ~Calculate();
   void main_fun(TraitMarkerCov_par *tmc, InitValue_par *init);

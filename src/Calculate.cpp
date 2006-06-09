@@ -105,7 +105,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cstring>
 #include <new>
 #include <cfloat>
-#include <S.h>
 using namespace std;
 
 extern int ascert_flag, run_flag, runopt_flag, need_ibd_flag,
@@ -122,14 +121,14 @@ extern double epsilon;
 // int dataCount was added by Eric Lunde on 7-31-03 to initialize the
 //   dataSize variable in super-class Likelihoodfun.
 // double *est was added by Eric Lunde on 9-09-03
-// long *familySizes was added by Eric Lunde on 2005-09-07
+// Sint *familySizes was added by Eric Lunde on 2005-09-07
 // char **uniqueFamilies was added by Eric Lunde on 2005-09-07
 // int familyCount was added by Eric Lunde on 2005-09-07
 Calculate::Calculate(Least *lea, char *ibdFN, double epsilon,
 		     ShareRelation *shareArr, int relationCount,
                      FortData *fortArr, int dataCount, double *est,
-		     double *coeff, long print_progress,
-		     long calculate_residuals, long *familySizes,
+		     double *coeff, Sint print_progress,
+		     Sint calculate_residuals, Sint *familySizes,
 		     char **uniqueFamilies, int familyCount) :
   fp_out(out_file, ios::app),
   fp_mu(mu_file, ios::app),
@@ -225,7 +224,7 @@ void Calculate::main_fun(TraitMarkerCov_par *tmc, InitValue_par *init){
   // These next three function calls were commented to alter the screen output
   // of multic during execution.  The statements did not describe where the
   // program was in execution and that seemed to be important for a program
-  // that could take a long time to run. - Eric Lunde 10-20-03
+  // that could take a Sint time to run. - Eric Lunde 10-20-03
   // PrintTitle(&cout);
   // PrintParaInfo();
   // PrintInputFiles();

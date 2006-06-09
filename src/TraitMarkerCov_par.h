@@ -1,6 +1,7 @@
 #ifndef TRAIT_MARKER_COV_PAR_H
 #define TRAIT_MARKER_COV_PAR_H
 
+#include "verS.h"
 #include "ShrinkData.h"
 // As per the trend in C++ programming, this next include directive
 // should read '#include <fstream>'  Unforutnately that directive
@@ -25,10 +26,10 @@ class TraitMarkerCov_par{
   int marker_type[MAXNUMMARKER];
   ifstream *fp_para;
  public:
-  TraitMarkerCov_par(long, long, long, char **, double/*, long **/);
+  TraitMarkerCov_par(Sint, Sint, Sint, char **, double/*, Sint **/);
   ~TraitMarkerCov_par();
-  void GetParameters(/*long **/);
-  void GetFromFormat(long *);
+  void GetParameters(/*Sint **/);
+  void GetFromFormat(Sint *);
   void GetMarkerType(int,int*,int);
   void TraitLociCov();
   int gettraitnum();

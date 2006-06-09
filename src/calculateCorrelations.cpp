@@ -4,18 +4,17 @@
 #include <cmath>
 #include "multicString.h"
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
-#include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
 using namespace std;
 
-int *getVarianceIndices(long traitCountValue);
-int *getCovarianceIndices(long traitCountValue);
+int *getVarianceIndices(Sint traitCountValue);
+int *getCovarianceIndices(Sint traitCountValue);
 s_object *getCorrelations(s_object *values, int *varianceIndices,
-			  int *covarianceIndices, long traitCountValue);
+			  int *covarianceIndices, Sint traitCountValue);
 void setDim(s_object *object, int rows, int columns);
 void setDimNames(s_object *object, s_object *values, int traitCountValue);
 char *strdupS(char *string);
@@ -43,10 +42,10 @@ s_object *calculateCorrelations(s_object *values, s_object *traitCount) {
   S_EVALUATOR
     
   // Get the actual value out of the s_object
-  long traitCountValue = INTEGER_VALUE(traitCount);
+  Sint traitCountValue = INTEGER_VALUE(traitCount);
 
   // Get the length of values
-  long valuesLength = LENGTH(values);
+  Sint valuesLength = LENGTH(values);
 
   // Based on traitCountValue, determine how much of the values each
   // hypothesis takes.
@@ -75,13 +74,13 @@ s_object *calculateCorrelations(s_object *values, s_object *traitCount) {
 
 }
 
-int *getVarianceIndices(long traitCountValue) {
+int *getVarianceIndices(Sint traitCountValue) {
   // Create the array to hold the index values
   int *varianceIndices = new int[traitCountValue];
 
   // Have a variable to hold the same value as traitCountValue, becuase we
   // want to keep the value traitCountValue holds and alter it as well.
-  long indexIncrease = traitCountValue;
+  Sint indexIncrease = traitCountValue;
   
   // Set the first (and many times only) index to 0;
   varianceIndices[0] = 0;
@@ -101,7 +100,7 @@ int *getVarianceIndices(long traitCountValue) {
   return varianceIndices;
 }
 
-int *getCovarianceIndices(long traitCountValue) {
+int *getCovarianceIndices(Sint traitCountValue) {
   // Get the variane indices from our other function, instead of passing it
   // as a parameter.
   int *varianceIndices = getVarianceIndices(traitCountValue);
@@ -130,7 +129,7 @@ int *getCovarianceIndices(long traitCountValue) {
 }
 
 s_object *getCorrelations(s_object *values, int *varianceIndices,
-			  int *covarianceIndices, long traitCountValue) {
+			  int *covarianceIndices, Sint traitCountValue) {
 
   double *valuesPtr = 
 #ifdef USING_R
@@ -139,7 +138,7 @@ s_object *getCorrelations(s_object *values, int *varianceIndices,
     NUMERIC_POINTER(GET_DATA(values))
 #endif
     ;
-  long valuesLength = LENGTH(values);
+  Sint valuesLength = LENGTH(values);
 
   // These index values are used to access the varianceIndices and
   // covarianceIndices arrays.  The produce other indices to be used to
@@ -154,7 +153,7 @@ s_object *getCorrelations(s_object *values, int *varianceIndices,
   int varianceIndicesLength = traitCountValue;
   int hypothesisLength = traitCountValue * (traitCountValue + 1)/ 2;
   int covarianceIndicesLength = hypothesisLength - traitCountValue;
-  long hypothesesCount = valuesLength / hypothesisLength;
+  Sint hypothesesCount = valuesLength / hypothesisLength;
 
   // Create a correlations s_object to hold the correlations.  It will be a
   // matrix of the number of total hypotheses rows (calculated by 
@@ -207,7 +206,7 @@ void setDim(s_object *object, int rows, int columns) {
 #ifdef USING_R
   int *
 #else
-  long *
+  Sint *
 #endif
     objectDimPtr = INTEGER_POINTER(objectDim);
 

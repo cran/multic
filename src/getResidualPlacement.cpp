@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>
@@ -38,21 +38,21 @@ s_object *getResidualPlacement(s_object *familySizes, s_object *hasAllValues,
 #ifdef USING_R
   int
 #else
-  long
+  Sint
 #endif
     *familySizesPtr = INTEGER_POINTER(familySizes);
 #ifdef USING_R
   int
 #else
-  long
+  Sint
 #endif
     *hasAllValuesPtr = LOGICAL_POINTER(hasAllValues);
-  long lociCountValue = INTEGER_VALUE(lociCount);
+  Sint lociCountValue = INTEGER_VALUE(lociCount);
 
-  long familyCount = LENGTH(familySizes);
-  long hasAllValuesOffset = 0;
+  Sint familyCount = LENGTH(familySizes);
+  Sint hasAllValuesOffset = 0;
 
-  long peopleCount = 0;
+  Sint peopleCount = 0;
   for(int i = 0; i < familyCount; i++) {
     peopleCount += familySizesPtr[i];
   }
@@ -61,7 +61,7 @@ s_object *getResidualPlacement(s_object *familySizes, s_object *hasAllValues,
 #ifdef USING_R
   int
 #else
-  long
+  Sint
 #endif
     *residualPlacementPtr = LOGICAL_POINTER(residualPlacement);
   int residualPlacementIndex = 0;

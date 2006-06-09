@@ -1,6 +1,7 @@
 #ifndef ROBUST_VARIANCE_H
 #define ROBUST_VARIANCE_H
 
+#include "verS.h"
 #include <fstream>
 #include "Model.h"
 #include "multic.h"

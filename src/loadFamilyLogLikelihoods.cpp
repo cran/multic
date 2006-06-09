@@ -19,7 +19,7 @@ Side Effects: This function reads from "fam.lik".  This is not a user-defined
               printed.
 Author: Eric Lunde, 10-17-03
 Updates: (Date, Modifyied By, Modification Description)
-         04-08-2004, Eric Lunde, char **lociNames, long *familyIds, and double
+         04-08-2004, Eric Lunde, char **lociNames, Sint *familyIds, and double
          *logLiks were all removed as input parameters.  The desired output of
         this function changed and since I had more knowledge about this type
         of Splus/C++ object modification, I made the switch to build the
@@ -32,7 +32,7 @@ Updates: (Date, Modifyied By, Modification Description)
 #include <cstring>
 #include "multicString.h"
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>
@@ -44,8 +44,8 @@ extern "C" {
 
 s_object *loadFamilyLogLikelihoods(s_object *familyCount,
 				    s_object *hypothesisCount) {
-  long familyCountValue = INTEGER_VALUE(familyCount);
-  long hypothesisCountValue = INTEGER_VALUE(hypothesisCount);
+  Sint familyCountValue = INTEGER_VALUE(familyCount);
+  Sint hypothesisCountValue = INTEGER_VALUE(hypothesisCount);
   char tempString[1024];
   int logLikIndex = 0;
   double zero = 0.0;
@@ -112,7 +112,7 @@ s_object *loadFamilyLogLikelihoods(s_object *familyCount,
 #ifdef USING_R
   int *
 #else
-  long *
+  Sint *
 #endif
     dimPtr = INTEGER_POINTER(dim);
   dimPtr[0] = familyCountValue;

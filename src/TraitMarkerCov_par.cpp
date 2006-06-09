@@ -6,15 +6,14 @@
 #include <cctype>
 #include <cstring>
 #include <cstdlib>
-#include <S.h>
 using namespace std;
 
-TraitMarkerCov_par::TraitMarkerCov_par(long traitCount,
-				       long covariateCount,
-				       long repeatCount,
+TraitMarkerCov_par::TraitMarkerCov_par(Sint traitCount,
+				       Sint covariateCount,
+				       Sint repeatCount,
 				       char **trait_names,
 				       double missing_value
-				       //,long *format
+				       //,Sint *format
 				       )
 {
   itraits = traitCount;
@@ -38,7 +37,7 @@ This function also calls functions:
     TraitMarkerCovParameter,
     GetFromFormat, 
 */
-void TraitMarkerCov_par::GetParameters(/*long *format*/) {
+void TraitMarkerCov_par::GetParameters(/*Sint *format*/) {
   int  flag;             /* flag of trait or marker.            */
 
   /* Get initial G_VAL 'itraits', 'iinitvcnum', 'iloci', 'icovs', 
@@ -135,7 +134,7 @@ This module calls
 function.
 Take care of position & length part. (..,..,..,.....)
 */
-void TraitMarkerCov_par::GetFromFormat(long *format){
+void TraitMarkerCov_par::GetFromFormat(Sint *format){
   // store strings between separator(',') from Format For Family Data File Records
   // in file 'multic.par'.
   //  char s[NUMOFSUM][STRING];

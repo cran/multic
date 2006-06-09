@@ -15,7 +15,7 @@ Other: This program is designed to be run from multic.s before each run of the
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <S.h>
+#include "verS.h"
 using namespace std;
 
 extern "C" {

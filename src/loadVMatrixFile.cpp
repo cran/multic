@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>
@@ -31,7 +31,7 @@ s_object *loadVMatrixFile(s_object *fileName, s_object *familyCount) {
   S_EVALUATOR
 
   char *fileNameValue = CHARACTER_VALUE(fileName);
-  long familyCountValue = INTEGER_VALUE(familyCount);
+  Sint familyCountValue = INTEGER_VALUE(familyCount);
 
   s_object *list = NEW_LIST(familyCountValue);
  
@@ -42,17 +42,17 @@ s_object *loadVMatrixFile(s_object *fileName, s_object *familyCount) {
   }
 
   char holder[1024];
-  long familySize;
-  long traitCount;
-  long matrixRowCount;
-  long matrixElementCount;
+  Sint familySize;
+  Sint traitCount;
+  Sint matrixRowCount;
+  Sint matrixElementCount;
   s_object **vMatrix;
   double *vMatrixPtr;
   s_object **vMatrixDim;
 #ifdef USING_R
   int *
 #else
-  long *
+  Sint *
 #endif
     vMatrixDimPtr;
 

@@ -2,7 +2,7 @@
 #define MAX_FUN_FUN_H
 
 #include <stdio.h>
-#include <S.h>
+#include "verS.h"
 
 #define MAXFUN_NP 45
 #define MAXFUN_NPV MAXFUN_NP

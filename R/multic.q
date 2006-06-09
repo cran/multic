@@ -102,7 +102,7 @@ multic <- function(formula,
   if(share.out != "kinship") {
     share.out <- gunzip(share.out, copy = TRUE)
     
-    file.size <- substring(multic.system(paste("wc -c", share.out)), 1, 8)
+    file.size <- unlist(strsplit(trim(multic.system(paste("wc -c", share.out))), " "))[1]
     if(as.integer(file.size) == 0) {
       clean()
       stop(paste("\n", share.out.orig, " is empty\n", sep = ""))
@@ -116,8 +116,8 @@ multic <- function(formula,
     mloci.out <- gunzip(mloci.out, copy = TRUE)
     
     ## Check mloci.out for non-zero size (if we are using it)
-    file.size <- substring(multic.system(paste("wc -c", mloci.out)),
-                           1, 8)
+    file.size <- unlist(strsplit(trim(multic.system(paste("wc -c", mloci.out))), " "))[1]
+
     if(as.integer(file.size) == 0) {
       clean()
       stop(paste("\n", mloci.out.orig, " is empty\n", sep = ""))

@@ -1,6 +1,27 @@
 CHANGES: Log of significant changes between revisions
 
 #############################################################################
+# multic 0.2.2
+#############################################################################
+BUG FIXES
+  - C++ declarations of long are replaced with 'Sint'.  Sint is defined
+    as long for Splus and int for R.  This allows multic to run properly
+    on systems where long and int are not the same size (such as most
+    64-bit systems.
+
+  - Major bug fix with regard to sorting mibd files and phi2 files.
+    These were not being sorted properly on Linux systems due to differences
+    in the behavior of 'sort' on Solaris and Linux.  It now works properly
+    for both.
+
+  - Fixed bug in calculating the size of a file.
+
+  - The function sw2mloci requires a major bug fix.  Since this fix
+    will require a great deal of time and effort, this function has
+    been disabled in the current release.  It will be reincorporated
+    in a future release.
+
+#############################################################################
 # multic 0.2
 #############################################################################
 NEW FEATURES
