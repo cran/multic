@@ -1,0 +1,42 @@
+CHANGES: Log of significant changes between revisions
+
+#############################################################################
+# multic 0.2
+#############################################################################
+NEW FEATURES
+  - Added in the option to use the LRT instead of the Wald statistic
+    when combining the various traits (addGE).
+
+  - Allowed the user to specify the initial values (multic.control).
+
+  - Added a plot to show all the lods scores of the top n most influential
+    families to the max LOD score (plot.family.lods).
+
+  - Improved the error message if share.out (or possibly, mloci.out)
+    does not have the expected number of lines based on the famid
+    argument.
+
+BUG FIXES
+  - Calculating the residuals and collapsing on the family was crashing
+    with family of size one.
+
+  - Allowed partial matching of arguments to the residuals.multic and
+    fitted.multic methods.
+
+  - Fixed the subset argument to multic.  It was not working when the
+    subset was NOT a part of the data argument.
+
+  - get.top.n.families would crash with multiple "global peak" values.
+
+#############################################################################
+# multic 0.1.1
+#############################################################################
+
+BUG FIXES
+  - Converted CLK_TCK in the C++ code to CLOCKS_PER_SEC.  CLK_TCK is
+    deprecated.
+
+  - mkdir is only defined in Splus, not in R.  multic.mkdir was
+    created to encapsulate this difference.
+
+  - Removed the "multicInput" inconsistancy in examples/calls.q.
