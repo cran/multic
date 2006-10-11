@@ -22,7 +22,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cctype>
 #include <iostream>
 #include <fstream>
-#include <S.h>
 using namespace std;
 
 /*****************************

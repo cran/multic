@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "verS.h"
 #include "Least.h"
 #include "multic.h"
 #include <fstream>

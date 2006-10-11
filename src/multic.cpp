@@ -1,6 +1,6 @@
 /******************************************************************************
 File: multic.cpp
-$Id: multic.cpp,v 1.20 2006/02/13 15:49:45 lunde Exp $
+$Id: multic.cpp,v 1.21 2006/09/29 16:30:10 m015733 Exp $
 Description: This file defines the void function multic.  In the vast majority
              of cases, multic will be called from an Splus routine.  multic is
              a program that performs linkage analysis.  It uses variance
@@ -54,7 +54,7 @@ Update logs are now kept in CVS.
 #include "Composite.h"
 #include <ctime>
 #include <cstring>
-#include <S.h>
+#include "verS.h"
 #include "Lib.h"
 
 using namespace std;
@@ -76,8 +76,8 @@ int algorithm_flag;
 void readShareOut(const char *shareFileName, ShareRelation **sa, int *rc);
 void readFort12(FortData **fa, int traitCount,
 		int covariateCount, int repeatCount, char **famid, char **id,
-		char **dadid, char **momid, long *sex, double **traitMatrix,
-		double **covariateMatrix, long *proband,
+		char **dadid, char **momid, Sint *sex, double **traitMatrix,
+		double **covariateMatrix, Sint *proband,
 		int observationsCount);
 void freeFortData(FortData *fortArray, int observations);
 
@@ -87,31 +87,31 @@ void multic(char **famid,
 	    char **id,
 	    char **dadid,
 	    char **momid,
-	    long *sex,
+	    Sint *sex,
 	    double *trait,
 	    double *covariate,
-	    long *proband,
-	    long *observationsCount,
-	    long *asc_ch,
-	    long *runopt_f,
+	    Sint *proband,
+	    Sint *observationsCount,
+	    Sint *asc_ch,
+	    Sint *runopt_f,
 	    double *epsilonValue,
-	    long *fixtoboundary_c,
-	    long *algorithm_f,
-	    long *traitCount,
-	    long *covariateCount,
-	    long *repeatCount,
+	    Sint *fixtoboundary_c,
+	    Sint *algorithm_f,
+	    Sint *traitCount,
+	    Sint *covariateCount,
+	    Sint *repeatCount,
 	    char **traitNames,
 	    double *missingValue,
 	    double *initialValues,
 	    char **constraints,
-	    long *maxIterations,
+	    Sint *maxIterations,
 	    double *initialBetas,
 	    char **shareFileName,
-	    long *printProgress,
-	    long *calculateResiduals,
-	    long *familySizes,
+	    Sint *printProgress,
+	    Sint *calculateResiduals,
+	    Sint *familySizes,
 	    char **uniqueFamilies,
-	    long *familyCount
+	    Sint *familyCount
 	    )
 {
   // Initialize the global variables in multicParameters.h  
@@ -482,8 +482,8 @@ Author: Eric Lunde, 7-30-03
 ******************************/
 void readFort12(FortData **fa, int traitCount,
 		int covariateCount, int repeatCount, char **famid, char **id,
-		char **dadid, char **momid, long *sex, double **traitMatrix,
-		double **covariateMatrix, long *proband,
+		char **dadid, char **momid, Sint *sex, double **traitMatrix,
+		double **covariateMatrix, Sint *proband,
 		int observationsCount)
 {
   // Create the internal storage space for representing fort.12 in main

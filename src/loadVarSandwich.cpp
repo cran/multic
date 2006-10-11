@@ -11,10 +11,10 @@ Input: double *varCovarMatrix - varCovarMatrix is an array allocated in Splus
                                 the variance covariance matrices from the
                                 alternative hypotheses from the last run of
                                 multic.
-       long *randomEffectsCount - randomEffectsCount is a singular value that
+       Sint *randomEffectsCount - randomEffectsCount is a singular value that
                                   indicates how many polygenic and major gene
                                   values there are.
-       long *altHypCount - altHypCount is a singular value that indicates the
+       Sint *altHypCount - altHypCount is a singular value that indicates the
                            number of alternative hypotheses were calculated
                            during the last run of multic.  Keep in mind that
                            this value does not account for the null hypothesis.
@@ -33,17 +33,17 @@ Updates: (Date, Modified By, Modification Description)
 ******************************************************************************/
 #include <fstream>
 #include <iostream>
-#include <S.h>
+#include "verS.h"
 using namespace std;
 
 extern "C" {
 
 void loadVarSandwich(double *varCovarMatrix,
-		     long *randomEffectsCount,
-		     long *altHypCount,
-		     long *nVC,
-		     long *isPolyFixed,
-		     long *isMg1Fixed) {
+		     Sint *randomEffectsCount,
+		     Sint *altHypCount,
+		     Sint *nVC,
+		     Sint *isPolyFixed,
+		     Sint *isMg1Fixed) {
   // Open "varCovar.log" and test for failure
   ifstream varCovar("varCovar.log");
   if(varCovar.fail()) {

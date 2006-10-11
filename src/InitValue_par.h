@@ -1,6 +1,7 @@
 #ifndef INIT_VALUE_PAR_H
 #define INIT_VALUE_PAR_H
 
+#include "verS.h"
 #include "multic.h"
 #include "TraitMarkerCov_par.h"
 #include <fstream>

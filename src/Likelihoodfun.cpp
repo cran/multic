@@ -42,7 +42,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cstdlib>
 #include <cctype>
 #include <cstdio>
-#include <S.h>
 
 using namespace std;
 

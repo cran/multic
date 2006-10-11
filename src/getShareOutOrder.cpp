@@ -3,7 +3,7 @@
 #include <cstring>
 #include "multicString.h"
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
 #include <R.h>
 #include <Rinternals.h>
@@ -23,14 +23,14 @@ s_object *getShareOutOrder(s_object *fileName, s_object *peopleCount,
   S_EVALUATOR
 
   char *fileNameValue = CHARACTER_VALUE(fileName);
-  long peopleCountValue = INTEGER_VALUE(peopleCount);
+  Sint peopleCountValue = INTEGER_VALUE(peopleCount);
   bool usingMlociValue = INTEGER_VALUE(usingMloci);
   char firstIdBuffer[1024];
   char secondIdBuffer[1024];
   char famidBuffer[1024];
   char famid[1024];
   char FAMILY_ID_DELIMITER[2] = "-";
-  long shareOutOrderIndex = 0L;
+  Sint shareOutOrderIndex = 0L;
   int currentFamilyCount = 0;
 
   if(peopleCountValue < 1) {

@@ -1,6 +1,7 @@
 #ifndef SHRINK_DATA_H
 #define SHRINK_DATA_H
 
+#include "verS.h"
 #include "multic.h"
 
 class ShrinkData {

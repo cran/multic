@@ -1,6 +1,7 @@
 #ifndef MAX_FUN_H
 #define MAX_FUN_H
 
+#include "verS.h"
 #include "Maxfun_fun.h"
 #include "Calculate.h"
 #include "multic.h"

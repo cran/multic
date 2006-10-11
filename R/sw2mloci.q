@@ -7,6 +7,10 @@
 ## mloci.out.before.gz or mloci.out.before respectively.
 #############################################################################
 sw2mloci <- function(directory, map = "", output.directory = ".") {
+
+  stop("The sw2mloci function does not currently work properly.  ",
+       "Look for bug fixes in a future multic release.\n")
+  
   directory <- as.character(directory)
   output.directory <- as.character(output.directory)
 

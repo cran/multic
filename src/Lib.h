@@ -5,6 +5,8 @@
 #define BAD  0.0
 #define TINY 1.0e-20
 
+#include "verS.h"
+
 class Lib {
  public:
   // Statistics part
@@ -46,7 +48,7 @@ You can only pass vector data structures as arguments from S-Plus to a
 externally defined C routine.
 
 A developer might need to perform the following tasks on the data type(s) - 
-double, int, float, long.
+double, int, float, Sint.
 
 1) Dynamically allocate a vector.
 2) Dynamically allocate a matrix.
@@ -81,7 +83,7 @@ Create int vector i
 int *i;
 i=ivectorS(0,9);
 
-Create long matrix Y
+Create Sint matrix Y
 ---------------------
 float **Y;
 Y=fmatrixS(0,4,0,5);
@@ -99,80 +101,80 @@ fMatToVec(F,Fvec,0,4,0,1);
 
 ******************************************************************************/
 
-  static double *dvectorS(long nl, long nh);
+  static double *dvectorS(Sint nl, Sint nh);
   /* allocate a double vector with subscript range v[nl..nh] */
 
-  static float *fvectorS(long nl, long nh);
+  static float *fvectorS(Sint nl, Sint nh);
   /* allocate a float vector with subscript range v[nl..nh] */
 
-  static int *ivectorS(long nl, long nh);
+  static int *ivectorS(Sint nl, Sint nh);
   /* allocate an int vector with subscript range v[nl..nh] */
 
-  static long *lvectorS(long nl, long nh);
-  /* allocate an long vector with subscript range v[nl..nh] */
+  static Sint *lvectorS(Sint nl, Sint nh);
+  /* allocate an Sint vector with subscript range v[nl..nh] */
 
-  static double **dmatrixS(long nrl, long nrh, long ncl, long nch);
+  static double **dmatrixS(Sint nrl, Sint nrh, Sint ncl, Sint nch);
   /* allocate a double matrix with subscript range m[nrl..nrh][ncl..nch] */
 
-  static float **fmatrixS(long nrl, long nrh, long ncl, long nch);
+  static float **fmatrixS(Sint nrl, Sint nrh, Sint ncl, Sint nch);
   /* allocate a float matrix with subscript range m[nrl..nrh][ncl..nch] */
 
-  static int **imatrixS(long nrl, long nrh, long ncl, long nch);
+  static int **imatrixS(Sint nrl, Sint nrh, Sint ncl, Sint nch);
   /* allocate a int matrix with subscript range m[nrl..nrh][ncl..nch] */
 
-  static long **lmatrixS(long nrl, long nrh, long ncl, long nch);
-  /* allocate a long matrix with subscript range m[nrl..nrh][ncl..nch] */
+  static Sint **lmatrixS(Sint nrl, Sint nrh, Sint ncl, Sint nch);
+  /* allocate a Sint matrix with subscript range m[nrl..nrh][ncl..nch] */
 
-  static double **dVecToMat(double *Yvec, long nrl,long nrh,long ncl,long nch);
+  static double **dVecToMat(double *Yvec, Sint nrl,Sint nrh,Sint ncl,Sint nch);
   /***************************************************************************
    * allocate a double matrix with subscript range m[nrl..nrh][ncl..nch]      *
    * and copy the values of the vector Yvec into the allocated double matrix. *
    ***************************************************************************/
 
-  static long **lVecToMat(long *Yvec, long nrl,long nrh,long ncl,long nch);
+  static Sint **lVecToMat(Sint *Yvec, Sint nrl,Sint nrh,Sint ncl,Sint nch);
   /*************************************************************************
-   * allocate a long matrix with subscript range m[nrl..nrh][ncl..nch]      *
-   * and copy the values of the vector Yvec into the allocated long matrix. *
+   * allocate a Sint matrix with subscript range m[nrl..nrh][ncl..nch]      *
+   * and copy the values of the vector Yvec into the allocated Sint matrix. *
    *************************************************************************/
 
-  static float **fVecToMat(float *Yvec, long nrl,long nrh,long ncl,long nch);
+  static float **fVecToMat(float *Yvec, Sint nrl,Sint nrh,Sint ncl,Sint nch);
   /**************************************************************************
    * allocate a float matrix with subscript range m[nrl..nrh][ncl..nch]      * 
    * and copy the values of the vector Yvec into the allocated float matrix. *
    **************************************************************************/
 
-  static int **iVecToMat(int *Yvec, long nrl,long nrh,long ncl,long nch);
+  static int **iVecToMat(int *Yvec, Sint nrl,Sint nrh,Sint ncl,Sint nch);
   /*************************************************************************
    * allocate a int matrix with subscript range m[nrl..nrh][ncl..nch]       *
    * and copy the values of the vector Yvec into the allocated int matrix.  *
    *************************************************************************/
 
-  static void dMatToVec(double **Ymat,double *Yvec,long nrl,long nrh,long ncl,
-		  long nch);
+  static void dMatToVec(double **Ymat,double *Yvec,Sint nrl,Sint nrh,Sint ncl,
+		  Sint nch);
   /**************************************************************
    * copy the values of a double matrix with subscript range     *
    * Ymat[nrl..nrh][ncl..nch] into a double vector Yvec.         *
    **************************************************************/
 
-  static void fMatToVec(float **Ymat,float *Yvec,long nrl,long nrh,long ncl,
-		  long nch);
+  static void fMatToVec(float **Ymat,float *Yvec,Sint nrl,Sint nrh,Sint ncl,
+		  Sint nch);
   /**************************************************************
    * copy the values of a float matrix with subscript range      *
    * Ymat[nrl..nrh][ncl..nch] into a float vector Yvec.          *
    **************************************************************/
 
-  static void iMatToVec(int **Ymat,int *Yvec,long nrl,long nrh,long ncl,
-		  long nch);
+  static void iMatToVec(int **Ymat,int *Yvec,Sint nrl,Sint nrh,Sint ncl,
+		  Sint nch);
   /**************************************************************
    * copy the values of a int matrix with subscript range        *
    * Ymat[nrl..nrh][ncl..nch] into a int vector Yvec.            *
    **************************************************************/
 
-  static void lMatToVec(long **Ymat,long *Yvec,long nrl,long nrh,long ncl,
-		  long nch);
+  static void lMatToVec(Sint **Ymat,Sint *Yvec,Sint nrl,Sint nrh,Sint ncl,
+		  Sint nch);
   /**************************************************************
-   * copy the values of a long matrix with subscript range       *
-   * Ymat[nrl..nrh][ncl..nch] into a long vector Yvec.           *
+   * copy the values of a Sint matrix with subscript range       *
+   * Ymat[nrl..nrh][ncl..nch] into a Sint vector Yvec.           *
    **************************************************************/
 
 static int*   ivector(int nl, int nh);

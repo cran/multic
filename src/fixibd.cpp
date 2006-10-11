@@ -73,7 +73,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <iostream>
-#include <S.h>
+#include "verS.h"
 using namespace std;
  
 /* Define */
@@ -258,7 +258,9 @@ void create_sorted_phi2_file(char *phiFileName, char *sortedPhiFileName)
 {
   char sort_command[COMMAND_LENGTH];
 
-  sprintf(sort_command, "sort +1 -2 %s -o %s", phiFileName,
+  // Adding the -n switch should fix a bug on 64-bit systems.
+  // Also now using -k flag instead of old way of specifying keys.
+  sprintf(sort_command, "sort -k 2,2n -k 1,1n %s -o %s", phiFileName,
 	  sortedPhiFileName);
   system(sort_command);
 }
@@ -331,7 +333,9 @@ void sort_ibd_file(char *ibdDirectoryName, char *file_name,
   
   sprintf(file_path, "%s/%s", ibdDirectoryName, file_name);
 
-  sprintf(sort_command,"sort +1 -2 %s -o %s", file_path, temporaryIbdName);
+  // Adding the -n switch should fix a bug on 64-bit systems
+  // Also now using -k flag instead of old way of specifying keys.
+  sprintf(sort_command,"sort -k 2,2n -k 1,1n %s -o %s", file_path, temporaryIbdName);
   system(sort_command);
 }
 

@@ -1,9 +1,8 @@
 #include <iostream>
 #include "multicString.h"
 
-#include <S.h>
+#include "verS.h"
 #ifdef USING_R
-#include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
@@ -62,7 +61,7 @@ s_object *getFamilySizes(s_object *famids, s_object *ids) {
 #ifdef USING_R
   int
 #else
-  long
+  Sint
 #endif
     *familySizesPtr = INTEGER_POINTER(familySizes);
   int familySizesIndex = 0;

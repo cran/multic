@@ -1,6 +1,7 @@
 #ifndef LIKELIHOODFUN_H
 #define LIKELIHOODFUN_H
 
+#include "verS.h"
 #include <fstream>
 #include "Estimator.h"
 #include "multic.h"

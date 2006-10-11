@@ -1,6 +1,7 @@
 #ifndef COMPOSITE_H
 #define COMPOSITE_H
 
+#include "verS.h"
 #include "Model.h"
 #include "Vector.h"
 

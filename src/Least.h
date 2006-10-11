@@ -6,6 +6,7 @@ using the overall mean of each trait as the mean of the trait values of all
 fathers, mothers and sibs.  Also, least1.c includes least squares estimation 
 for boundary */
 
+#include "verS.h"
 #include "Estimator.h"
 #include "ReadFamilyData.h"
 #include "multic.h"

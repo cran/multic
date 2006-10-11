@@ -4,7 +4,6 @@
 #include "Lib.h"
 #include <stdlib.h>
 #include <math.h>
-#include <S.h>
 
 #define NR_END 1
 
@@ -423,15 +422,15 @@ double Lib::GetExSder(int n, double **mat_v, double **mat_x, double **mat_y) {
 
 /*****************************************************************************/
 double **Lib::dVecToMat(double *Yvec,  
-			long nrl,
-			long nrh,
-			long ncl,
-			long nch){
+			Sint nrl,
+			Sint nrh,
+			Sint ncl,
+			Sint nch){
   /**************************************************************************
    * allocate a double matrix with subscript range m[nrl..nrh][ncl..nch]     * 
    * and copy the values of the vector Yvec into the allocated double matrix.* 
    **************************************************************************/
-  long i,j,k;
+  Sint i,j,k;
   double **Y;
 
   Y=dmatrix(nrl,nrh,ncl,nch);
@@ -447,15 +446,15 @@ double **Lib::dVecToMat(double *Yvec,
 /*****************************************************************************/
 void Lib::dMatToVec(double **Ymat,
 		     double *Yvec,  
-		     long nrl,
-		     long nrh,
-		     long ncl,
-		     long nch){
+		     Sint nrl,
+		     Sint nrh,
+		     Sint ncl,
+		     Sint nch){
   /**************************************************************
 * copy the values of a double matrix with subscript range     *
 * Ymat[nrl..nrh][ncl..nch] into a double vector Yvec.         *
 **************************************************************/
-  long i,j,k;
+  Sint i,j,k;
 
   k=0;
   for (j=ncl;j<=nch;j++){
@@ -467,15 +466,15 @@ void Lib::dMatToVec(double **Ymat,
 }
 /*****************************************************************************/
 int **Lib::iVecToMat(int *Yvec,  
-		     long nrl,
-		     long nrh,
-		     long ncl,
-		     long nch){
+		     Sint nrl,
+		     Sint nrh,
+		     Sint ncl,
+		     Sint nch){
   /*************************************************************************
    * allocate a int matrix with subscript range m[nrl..nrh][ncl..nch]       *
    * and copy the values of the vector Yvec into the allocated int matrix.  *
    *************************************************************************/
-  long i,j,k;
+  Sint i,j,k;
   int **Y;
 
   Y=imatrix(nrl,nrh,ncl,nch);
@@ -491,15 +490,15 @@ int **Lib::iVecToMat(int *Yvec,
 /*****************************************************************************/
 void Lib::iMatToVec(int **Ymat,
 		     int *Yvec,  
-		     long nrl,
-		     long nrh,
-		     long ncl,
-		     long nch){
+		     Sint nrl,
+		     Sint nrh,
+		     Sint ncl,
+		     Sint nch){
   /**************************************************************
 * copy the values of a int matrix with subscript range        *
 * Ymat[nrl..nrh][ncl..nch] into a int vector Yvec.            *
 **************************************************************/
-  long i,j,k;
+  Sint i,j,k;
 
   k=0;
   for (j=ncl;j<=nch;j++){

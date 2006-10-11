@@ -42,7 +42,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cctype>
 #include <iomanip>
 #include <iostream>
-#include <S.h>
 using namespace std;
 
 Least::Least(TraitMarkerCov_par *tmc, ShareRelation *sa, int rs,
@@ -144,7 +143,7 @@ void Least::getresponse(){
 	y[yu1][i][j] = fortArray[dataIndex].traits[yu1];
       }
 
-      /* trait values in fort.12 are long float. */
+      /* trait values in fort.12 are Sint float. */
       for(k=0; k < itraits; k++){
 	if (missing_flag[i][j] != 1) {
 	  ybar[k] = ybar[k] + y[k][i][j];

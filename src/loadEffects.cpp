@@ -34,12 +34,12 @@ Input: char **lociNames - Each (row) index of lociNames will be filled with
        char **logLikStatus - Each (row) index of logLikStatus will contain a
                              string representing whether the loglikelihood
                              represnts a convervgent or non-convergent value.
-       long *traitCount - An integer value specifying the number of traits that
+       Sint *traitCount - An integer value specifying the number of traits that
                           were used in the multic calculations.
-       long *covariateCount - An integer value specifying the number of
+       Sint *covariateCount - An integer value specifying the number of
                               covariates that were used in the multic
                               calculations.
-       long *lociCount - An integer value specifying the number of loci that
+       Sint *lociCount - An integer value specifying the number of loci that
                          were used in the multic calculations.  This value does
                          include the null hypothesis calculation.
 Output: NONE
@@ -58,7 +58,7 @@ Update: (Date, Modified By, Modification Description)
 ******************************************************************************/
 #include <fstream>
 #include <iostream>
-#include <S.h>
+#include "verS.h"
 using namespace std;
 
 extern "C" {
@@ -74,9 +74,9 @@ void loadEffects(char **lociNames,
 		 double *parentOffspring,
 		 double *logLikelihoods,
 		 char **logLikStatus,
-		 long *fixedEffectsCountLong,
-		 long *randomEffectsCountLong,
-		 long *lociCount) {
+		 Sint *fixedEffectsCountLong,
+		 Sint *randomEffectsCountLong,
+		 Sint *lociCount) {
 
   // Open for reading "summary.log" and test for failure
   ifstream summaryLog("summary.log");

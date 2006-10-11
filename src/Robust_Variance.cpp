@@ -9,7 +9,6 @@
 #include "Model.h"
 #include "multic.h"
 #include <cstdlib>
-#include <S.h>
 #define singular 1.0e-10
 
 using namespace std;

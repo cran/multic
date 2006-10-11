@@ -1,6 +1,7 @@
 #ifndef MAX_FUN_ADD_H
 #define MAX_FUN_ADD_H
 
+#include "verS.h"
 //#include "Maxfun_source.h"
 #include "TraitMarkerCov_par.h"
 #include "InitValue_par.h"

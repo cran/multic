@@ -29,7 +29,7 @@ using namespace std;
 
 // The internal function that can use STL.
 void sw2lociFilesInternal(const char **swIbdFileNames,
-			  long *ibdFileCount,
+			  Sint *ibdFileCount,
 			  const char **swMapFileName);
 
 // Word/string processing functions.
@@ -99,6 +99,7 @@ char *double2ascii(double n, int precision);
 #define SMALL_BUFFER_LENGTH 32
 #define MED_BUFFER_LENGTH 1024
 #define TOKEN_DELIMITER " \t\n"
+#define DEBUG 1 // PV
 
 /**
  * sw2lociFiles is defined as extern "C" so Splus and R can call it, but I 
@@ -106,14 +107,17 @@ char *double2ascii(double n, int precision);
  * (the Sun CC compiler won't allow it).
  */
 extern "C" void sw2lociFiles(const char **swIbdFileNames,
-			     long *ibdFileCount,
+			     Sint *ibdFileCount,
 			     const char **swMapFileName) {
   sw2lociFilesInternal(swIbdFileNames, ibdFileCount, swMapFileName);
 }
 
 void sw2lociFilesInternal(const char **swIbdFileNames,
-			  long *ibdFileCount,
+			  Sint *ibdFileCount,
 			  const char **swMapFileName) {
+
+  cout << "Inside sw2lociFilesInternal" << endl;
+
   char version[SMALL_BUFFER_LENGTH] = "";
   char chromosome[SMALL_BUFFER_LENGTH] = "";
   char line[MED_BUFFER_LENGTH] = "";
@@ -166,7 +170,7 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
   // Process all of the files specified in swIbdFileNames.
   for(int i = 0; i < *ibdFileCount; i++) {
     const char *swIbdFileName = swIbdFileNames[i];
-    //    cout << swIbdFileName << endl;
+    cout << swIbdFileName << endl; // uncommented by PV to debug
     cout << ". ";
     cout.flush();
     if( (i+1) % 35 == 0) {
@@ -261,6 +265,8 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
 	    << pedigree << "-" << secondId << "\t" 
 	    << kinshipCoeff << "\t" << -1 << endl;
 
+      // PV Here's where the -1's get written
+
     } else if(matchesNewMarker280(line)) {
       multic_strncpy(marker, strtok(line, TOKEN_DELIMITER),
 		     MED_BUFFER_LENGTH-1);
@@ -277,6 +283,8 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
 	    << pedigree << "-" << secondId << "\t" 
 	    << kinshipCoeff << "\t" << -1 << endl;
 
+      // PV Here's where the -1's get written
+
     } else if(matchesNewCM280(line)) {
       multic_strncpy(cM, strtok(line, TOKEN_DELIMITER), MED_BUFFER_LENGTH-1);
 
@@ -289,6 +297,9 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
 	    << kinshipCoeff << "\t" << -1 << endl;
+
+      // PV Here's where the -1's get written
+
     }
   }
 

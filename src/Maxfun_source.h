@@ -1,6 +1,7 @@
 #ifndef MAX_FUN_SOURCE_H
 #define MAX_FUN_SOURCE_H
 
+#include "verS.h"
 #include "Maxfun_fun.h"
 
 class Maxfun_source {

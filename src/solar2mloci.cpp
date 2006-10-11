@@ -11,7 +11,7 @@ Description: solar2mloci receives a string representing the name of a
              that the next information came from.  mloci.out is ouput in the
              (m)ibd directory specified in the first parameter.
 Author: Eric Lunde, 10-23-03
-Updates: Eric Lunde, 06-07-2005, I added a parameter, long *gzipWhenComplete.
+Updates: Eric Lunde, 06-07-2005, I added a parameter, Sint *gzipWhenComplete.
          There is a parameter to delete.fixed.dir in solar2mloci.q.  If this is
          TRUE, there is no need to gzip the ibd files after the've been made
          into mloci.
@@ -23,13 +23,13 @@ Updates: Eric Lunde, 06-07-2005, I added a parameter, long *gzipWhenComplete.
 #include <cstdio>
 #include <iomanip>
 #include <cstring>
-#include <S.h>
+#include "verS.h"
 using namespace std;
 
 extern "C" {
 
-void solar2mloci(char **directoryName, char **ibdNames, long *ibdNamesSize,
-	       char **uniqueIds, long *gzipWhenComplete) {
+void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
+	       char **uniqueIds, Sint *gzipWhenComplete) {
   // Define the "gloabl" constants for the function
   const char *MLOCI_OUT = "mloci.out";
   char *MLOCI_OUT_GZ = (char *) malloc(sizeof(char) * strlen(MLOCI_OUT) + 4);
@@ -209,7 +209,7 @@ Input: char **directoryName - directoryName is the singular name of the
                          hold one of the mibd file that has the most digits in
                          the last section of the file name and all of the other
                          file names with less digits in that same section.
-       long *ibdNamesSize - ibdNamesSize is a scalar value representing the
+       Sint *ibdNamesSize - ibdNamesSize is a scalar value representing the
                             amount of items in ibdNames.
 Output: NONE
 Side Effects: The file names specifed in ibdNames that have less then the most
@@ -218,7 +218,7 @@ Side Effects: The file names specifed in ibdNames that have less then the most
               applied to those files.
 Author: Eric Lunde, 10-24-03
 ******************************************************************************/
-void alignMibdFiles(char **directoryName, char **ibdNames, long *ibdNamesSize)
+void alignMibdFiles(char **directoryName, char **ibdNames, Sint *ibdNamesSize)
 {
   const int MAX_FILE_NAME_LENGTH = 128;
   const int MAX_DISTANCE_VALUE_LENGTH = 32;

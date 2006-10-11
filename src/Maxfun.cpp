@@ -7,7 +7,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
-#include <S.h>
 
 using namespace std;
 
@@ -522,7 +521,7 @@ double Maxfun::Like_func() {
     for (j = 0; j < (icovs+1)*total_trait_values; j++)
       MuBeta_vec[j]=Lib::dvector(0,total_trait_values*N[i]-1);
 
-    // need change? for long data
+    // need change? for Sint data
     for (j = 0; j < icovs; j++) {
       d_vec[j]  = Lib::dvector(0,N[i]-1);
     }

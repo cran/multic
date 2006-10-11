@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include <S.h>
+#include "verS.h"
 using namespace std;
 
 extern "C" {
@@ -11,9 +11,9 @@ extern "C" {
  * shareOutName (most likely share.out) and represent the same ordering that
  * has already been defined in shareOutName (most likely share.out).
  ****************************************************************************/
-void validateShareOut(long *familySizes, long *familiesCount, char **id,
-		      long *idsCount, char **shareOutName,
-		      long *passedValidation)
+void validateShareOut(Sint *familySizes, Sint *familiesCount, char **id,
+		      Sint *idsCount, char **shareOutName,
+		      Sint *passedValidation)
 {
   // Perform some bounds checking before using familySizes, familiesCount,
   // id, and idsCount
@@ -22,7 +22,7 @@ void validateShareOut(long *familySizes, long *familiesCount, char **id,
       *familiesCount RECOVER(NULL_ENTRY);
   }
 
-  for(long l = 0; l < *familiesCount; l++) {
+  for(Sint l = 0; l < *familiesCount; l++) {
     if(familySizes[l] < 1) {
       PROBLEM "familySizes[%ld] was passed a value of '%ld'.\nThis value must be positive.\nvalidateShareOut.cpp key 23\n",
 	l, familySizes[l] RECOVER(NULL_ENTRY);
@@ -35,8 +35,8 @@ void validateShareOut(long *familySizes, long *familiesCount, char **id,
   }
 
   /* Commented out on 11/9/2004 by Eric Lunde because id changed from type
-     long * to char **
-  for(long l = 0; l < *idsCount; l++) {
+     Sint * to char **
+  for(Sint l = 0; l < *idsCount; l++) {
     if(id[l] < 1) {
     PROBLEM "id[%d] was passed a value of '%d'.\nThis value must be positive.\nvalidateShareOut.cpp key 38\n",
     l, id[l] RECOVER(NULL_ENTRY);
@@ -52,21 +52,21 @@ void validateShareOut(long *familySizes, long *familiesCount, char **id,
     
   // Since we are dealing with ids in an array format, firstIdIndex and
   // secondIdIndex represent the indices of those two values.
-  long firstIdIndex, secondIdIndex;
+  Sint firstIdIndex, secondIdIndex;
   
   // i, j, and k are used only as for loop iteration variables.
-  long i, j, k;
+  Sint i, j, k;
 
   // firstId and secondId are the actual id values specified in the array
   // 'id'.  shareOutFirstId and shareOutSecondId are the actual id values
   // taken from the file shareOutName (most likely share.out).
-  //  long firstId, secondId, shareOutFirstId, shareOutSecondId;
+  //  Sint firstId, secondId, shareOutFirstId, shareOutSecondId;
   char *firstId, *secondId, shareOutFirstId[32], shareOutSecondId[32];
 
   // shareOutLine Number is a variable to keep track of what line number of
   // shareOutName (most likely, share.out) we are currently extracting data
   // from.  This is used to aid the user when an inconsistancy has been found.
-  long shareOutLineNumber = 0;
+  Sint shareOutLineNumber = 0;
 
   // firstIdIndex begins at -2 because when switching families in the linear
   // data, we need to shift the firstIdIndex two places (once for it to index
