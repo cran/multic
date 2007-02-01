@@ -13,6 +13,7 @@
 \alias{check.data.for.missing.values}
 \alias{check.for.full.data}
 \alias{clean}
+\alias{collapseMibd}
 \alias{combine.null.and.alt.initial.values}
 \alias{copy}
 \alias{copy.files.to.tmp.space}
@@ -20,6 +21,7 @@
 \alias{expand.locus}
 \alias{expand.mloci}
 \alias{expand.share}
+\alias{expandMibd}
 \alias{fitted.multic}
 \alias{fixibd}
 \alias{formula.multic}
@@ -66,6 +68,7 @@
 \alias{make.block.id.pair}
 \alias{make.kinship.file}
 \alias{max.multic}
+\alias{mergeWithKinship}
 \alias{missing.value}
 \alias{mloci.split}
 \alias{mlociCut}
@@ -90,6 +93,7 @@
 \alias{remove.temp.files}
 \alias{residuals.multic}
 \alias{run.alternative.multic}
+\alias{sortIbdCols}
 \alias{summary.multic}
 \alias{trim}
 \alias{upp.tri.as.vector}
@@ -107,4 +111,4 @@ is not expected to be used by the user and thus, no significant
 documentation exists.
 }
 \keyword{}
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 37351.

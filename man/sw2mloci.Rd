@@ -9,10 +9,10 @@ mloci.out needed my multic, altering the centimorgan values if a map
 argument is provided.
 }
 \usage{
-sw2mloci(directory, map="", output.directory=".")
+sw2mloci(ibd.directory, map="", output.directory=".", famid = NULL, id = NULL, dadid = NULL, momid = NULL, directory = NULL)
 }
 \arguments{
-\item{directory}{
+\item{ibd.directory }{
 a character object specifying the name of the directory that contains
 the SimWalk IBD files.  This can be an absolute or relative path.
 }
@@ -20,12 +20,29 @@ the SimWalk IBD files.  This can be an absolute or relative path.
 a character object specifying the name of a .map file to be used to
 modify the centimorgan values in the mloci.out file.  This can be an
 absolute or relative path and does not have to be in the same
-directory as the parameter \code{directory}.
+directory as the parameter \code{ibd.directory}.
 }
 \item{output.directory }{
 a character object specifying the name of the directory to put the
 finished mloci.out.gz.  This can be an absolute or relative path.  If
 the directory does not exist, it will be created.
+}
+\item{famid}{
+Vector of family id values.
+}
+\item{id}{
+Vector of individual id values.
+}
+\item{dadid}{
+Vector of father id values.
+}
+\item{momid}{
+Vector of mother id values
+}
+\item{directory}{
+Deprecated -- replaced by ibd.directory, but included for backward
+compatibility.  If not NULL and ibd.directory is NULL, then its value
+is assigned to ibd.directory.
 }
 }
 \value{
@@ -61,4 +78,4 @@ sw2mloci(".", "sw18/c18.map", output.directory = "multicInput")
 }
 \keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 37351.

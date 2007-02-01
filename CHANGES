@@ -1,6 +1,13 @@
 CHANGES: Log of significant changes between revisions
 
 #############################################################################
+# multic 0.3.0
+#############################################################################
+  - sw2mloci function is now fully functional, although (in R) it
+    cause memory mapping errors if the machine it's being run on has
+    insufficient memory.
+
+#############################################################################
 # multic 0.2.2
 #############################################################################
 BUG FIXES

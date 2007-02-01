@@ -43,8 +43,8 @@ s_object *getFamilySizes(s_object *famids, s_object *ids) {
   */
 
   // Do a little length checking on famids and ids
-  int famidsLength = LENGTH(famids);
-  int idsLength = LENGTH(ids);
+  Sint famidsLength = LENGTH(famids);
+  Sint idsLength = LENGTH(ids);
 
   if(famidsLength != idsLength) {
     cerr << "The length of famids (" << famidsLength << ") does not match "
@@ -58,13 +58,14 @@ s_object *getFamilySizes(s_object *famids, s_object *ids) {
   // famidsLength amount of families.
   s_object *familySizes = NEW_INTEGER(famidsLength);
 
-#ifdef USING_R
+  /*#ifdef USING_R
   int
 #else
   Sint
 #endif
-    *familySizesPtr = INTEGER_POINTER(familySizes);
-  int familySizesIndex = 0;
+  */
+  Sint *familySizesPtr = INTEGER_POINTER(familySizes);
+  Sint familySizesIndex = 0;
   familySizesPtr[0] = 1;
 
   // Save the first family's famid snd first person's id
@@ -76,7 +77,7 @@ s_object *getFamilySizes(s_object *famids, s_object *ids) {
 
   multic_SET_STRING_ELT(familyLabels, familySizesIndex, savedFamid);
 
-  for(int i = 1; i < famidsLength; i++) {
+  for(Sint i = 1; i < famidsLength; i++) {
     if(strcmp(savedFamid, multic_STRING_ELT(famids, i)) != 0
        || strcmp(savedId, multic_STRING_ELT(ids, i)) == 0) {
       // Since we've found a new family, increase the familySizesIndex

@@ -157,9 +157,10 @@ recover.multic <- function() {
   print("please implement recover.multic")
 }
 
+## Shouldn't need as of Splus 8, but we'll keep it around for now.
 multic.strsplit <- function(str, sep = " ") {
   result <- NULL
-  if(using.R()) {
+  if(using.R() || version$major >= 8) {
     if(!missing(sep)){
       result <- unlist(strsplit(str, sep, fixed = TRUE))
     }
