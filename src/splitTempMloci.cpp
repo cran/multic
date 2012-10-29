@@ -40,7 +40,7 @@ s_object *splitTempMloci(s_object *fileName) {
   char lociDirectory[32] = "loci";
   char *token;
 
-  char *fileNameValue = CHARACTER_VALUE(fileName);
+  const char *fileNameValue = CHARACTER_VALUE(fileName);
 
   // Get the number of loci in this mloci.out file by issuing a
   // 'grep "^#" | wc' command on mloci.out
