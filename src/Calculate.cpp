@@ -334,7 +334,7 @@ void Calculate::main_fun(TraitMarkerCov_par *tmc, InitValue_par *init){
 
   if (init_need_ibd_flag == YES) {
     fp_loci.open(loci_file);
-    if (fp_loci == NULL) {
+    if (fp_loci.fail()) {
       PROBLEM "The file %s could not be opened for reading\nCalculate.cpp key 192",
 	loci_file RECOVER(NULL_ENTRY);
     }

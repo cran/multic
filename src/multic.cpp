@@ -279,7 +279,7 @@ void multic(char **famid,
       composite.add(&p2);
 
       ofstream outfp("least.log", ios::app);
-      if(outfp == NULL) {
+      if(outfp.fail()) {
 	PROBLEM "The file least.log could not be opened for appending.\nmultic.cpp key 281"
 	  RECOVER(NULL_ENTRY);
       }
@@ -378,7 +378,7 @@ void multic(char **famid,
     }
 
     ofstream outfp("multic.log", ios::app);
-    if(outfp == NULL) {
+    if(outfp.fail()) {
       PROBLEM "The file multic.log could not be opened for appending.\nmultic.cpp key 246\n"
 	RECOVER(NULL_ENTRY);
     }

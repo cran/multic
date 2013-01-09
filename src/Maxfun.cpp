@@ -290,12 +290,12 @@ void Maxfun::getamp(int *a_flag, int *mt_flag, int *p_flag2){
 void Maxfun::OpenFiles()
 {
   fp_loci.open(loci_file);
-  if (fp_loci == NULL) {
+  if (fp_loci.fail()) {
     PROBLEM "The file %s could not be opened for reading.\nMaxFun.cpp key 280\n",
       loci_file RECOVER(NULL_ENTRY);
   }
   maxfunfile.open("maxfun.par");
-  if (maxfunfile == NULL) {
+  if (maxfunfile.fail()) {
     PROBLEM "The file maxfun.par could not be opened for reading.\nMaxFun.cpp key 292\n"
       RECOVER(NULL_ENTRY);
   }
