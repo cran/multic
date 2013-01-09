@@ -8,7 +8,6 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
 
 extern "C" {
 
@@ -32,7 +31,7 @@ s_object *loadYBetaDiffFile(s_object *fileName, s_object *familyCount) {
 
   s_object *list = NEW_LIST(familyCountValue);
  
-  ifstream fin(fileNameValue);
+  std::ifstream fin(fileNameValue);
   if(fin.fail()) {
     PROBLEM "The file '%s' could not be opened for reading.\nloadYBetaDiff.cpp key 20\n",
       fileNameValue RECOVER(NULL_ENTRY);

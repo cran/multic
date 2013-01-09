@@ -46,11 +46,7 @@ sw2mloci <- function(ibd.directory, map="", output.directory=".",
   }
 
   ## Get the names of all the files in the specified directory.
-  all.files <- if(using.R()) {
-    list.files(ibd.directory)
-  } else {
-    files.in.dir(ibd.directory)
-  }
+  all.files <- list.files(ibd.directory)
 
   ## Narrow the files down to only the IBD files.
   ibd.regexpr <- "^IBD-.*"
@@ -100,11 +96,8 @@ sw2mloci <- function(ibd.directory, map="", output.directory=".",
   }
 
   ## Refresh the list after files have been gunzip'ed.
-  all.files <- if(using.R()) {
-    list.files(ibd.directory)
-  } else {
-    files.in.dir(ibd.directory)
-  }
+  all.files <- list.files(ibd.directory)
+ 
   ibd.files <- paste(ibd.directory,
                      all.files[regexpr(ibd.regexpr, all.files) > 0],
                      sep = "/")
@@ -128,7 +121,7 @@ sw2mloci <- function(ibd.directory, map="", output.directory=".",
 
   ## Check to see if all the output.directory exists.
   if(!multic.is.dir(output.directory)) {
-    result <- multic.mkdir(output.directory)
+    result <- dir.create(output.directory)
     if( !result ) {
       warning(output.directory, " could ne be created or written to.\n",
               output.file, " will be in the current directory.\n",
@@ -241,13 +234,9 @@ mergeWithKinship <- function (famid, id, dadid, momid) {
 
     ## Write out mibd header info and mibd table
     write(mloci.out.file[mibd.index[ii]], file="mloci.out", append=TRUE)
-    if (is.R()) {
-      write.table(this.mibd, file="mloci.out", quote=FALSE,
-                  row.names=FALSE, col.names=FALSE, sep="\t", append=TRUE)
-    } else {
-      write.table(this.mibd, file="mloci.out", quote.strings=FALSE,
-                  dimnames.write=FALSE, sep="\t", append=TRUE)
-    }
+    write.table(this.mibd, file="mloci.out", quote=FALSE,
+                row.names=FALSE, col.names=FALSE, sep="\t", append=TRUE)
+
     cat(".")
     if (ii %% 50 ==0) {
       cat("\n")
@@ -286,7 +275,7 @@ expandMibd <- function (mibd) {
 }
 
 collapseMibd <- function (mibd) {
-  if (dimnames(mibd)[[2]][1] != "famid") {
+  if (dimnames(mibd)[[2]][1] != "famid" && dimnames(mibd)[[2]][1] != "FAMILY") {
     stop("ERROR: collapseMibd can't find famid column to collapse.\n")
   }
   # remove "famid" from dimnames

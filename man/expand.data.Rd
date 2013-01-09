@@ -39,6 +39,5 @@ famids <- sample(famid, length(unique(famid)), replace = TRUE)
 expaned.ped.phen <- expand.data(famids, ped.phen)
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

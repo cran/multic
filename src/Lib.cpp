@@ -4,17 +4,18 @@
 #include "Lib.h"
 #include <stdlib.h>
 #include <math.h>
+#include "Rostream.h"
+#include "Rstreambuf.h"
 
+using namespace Rcpp;
 #define NR_END 1
-
-using namespace std;
 
 void Lib::PrintOneVector(int n, double *vec) {
   int i;
 
   for( i = 0; i < n; i++) {
-    //cout << setw(25) << setprecision(15) << vec[i] << ' ' << endl;
-    cout << setw(15) << vec[i] << ' ' << endl;
+    //cout << std::setw(25) << setprecision(15) << vec[i] << ' ' << std::endl;
+    Rcout << std::setw(15) << vec[i] << ' ' << std::endl;
   }
 }
 
@@ -22,7 +23,7 @@ void Lib::PrintOneVector(int n, int *vec) {
   int i;
 
   for( i = 0; i < n; i++) {
-    cout << setw(15) << vec[i] << ' ' << endl;
+    Rcout << std::setw(15) << vec[i] << ' ' << std::endl;
   }
 }
 
@@ -33,9 +34,9 @@ void Lib::PrintOneMatrix(int nr, int nc, double **a) {
 
   for( i = 0; i < nr; i++) {
     for( j = 0; j < nc; j++) {
-      cout << setw(15) << a[i][j] << ' ';
+      Rcout << std::setw(15) << a[i][j] << ' ';
     }
-    cout << endl;
+    Rcout << std::endl;
   }
 }
 

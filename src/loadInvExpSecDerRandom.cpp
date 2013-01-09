@@ -43,7 +43,6 @@ Update: (Date, Modified By, Modification Description)
 #include <fstream>
 #include <iostream>
 #include "verS.h"
-using namespace std;
 
 extern "C" {
 
@@ -51,7 +50,7 @@ void loadInvExpSecDerRandom(double *invExpSecDerRandomMatrix,
 			    Sint *randomEffectsCount,
 			    Sint *altHypCount) {
   // Open "invExpSecDerRandom.log" and test for failure
-  ifstream invExpSecDerRandom("invExpSecDerRandom.log");
+  std::ifstream invExpSecDerRandom("invExpSecDerRandom.log");
   if(invExpSecDerRandom.fail()) {
     PROBLEM "The file invExpSecDerRandom.log could not be opened for reading.\ninvExpSecDerRandom.cpp key 55\n"
       RECOVER(NULL_ENTRY);

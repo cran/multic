@@ -10,7 +10,6 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
 
 extern "C" {
 
@@ -53,7 +52,7 @@ s_object *splitTempMloci(s_object *fileName) {
 
   // Read the number of loci from the output file just created by the unix
   // command
-  ifstream tempFile(tempFileName);
+  std::ifstream tempFile(tempFileName);
   if(tempFile.fail()) {
     PROBLEM "Error opening %s.\nsplitTempMloci.cpp key 28\n",
       tempFileName RECOVER(NULL_ENTRY);
@@ -84,7 +83,7 @@ s_object *splitTempMloci(s_object *fileName) {
   snprintf(command, MAX_LINE_LENGTH, "mkdir %s", lociDirectory);
   system(command);
   
-  ifstream mloci(fileNameValue);
+  std::ifstream mloci(fileNameValue);
   if(mloci.fail()) {
     PROBLEM "Error opening %s.\nsplitTempMloci.cpp key 44\n",
       fileNameValue RECOVER(NULL_ENTRY);
@@ -96,7 +95,7 @@ s_object *splitTempMloci(s_object *fileName) {
 
   // Create the first loci output file
   snprintf(pathName, MAX_LINE_LENGTH, "%s/%s", lociDirectory, ibdName);
-  ofstream loci(pathName);
+  std::ofstream loci(pathName);
   if(loci.fail()) {
     PROBLEM "Error opening %s.\nsplitTempMloci.cpp key 46\n",
       pathName RECOVER(NULL_ENTRY);
@@ -107,7 +106,7 @@ s_object *splitTempMloci(s_object *fileName) {
   lociNamesIndex++;
 
   // Begin writing to the first loci file.
-  loci << delimiter << " " << ibdName << endl;
+  loci << delimiter << " " << ibdName << std::endl;
 
   // Read mloci until it is empty
   while(mloci.good()) {
@@ -140,13 +139,13 @@ s_object *splitTempMloci(s_object *fileName) {
       lociNamesIndex++;
 
       // Begin writing to the next loci file.
-      loci << delimiter << " " << ibdName << endl;
+      loci << delimiter << " " << ibdName << std::endl;
 
       // Get the next line from mloci
       mloci.getline(line, MAX_LINE_LENGTH);    
     }
 
-    loci << line << endl;
+    loci << line << std::endl;
   }
 
   loci.close();

@@ -25,7 +25,11 @@
 
 #include <S.h>
 #include "multicString.h"
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
 using namespace std;
+using namespace Rcpp;
 
 // The internal function that can use STL.
 void sw2lociFilesInternal(const char **swIbdFileNames,
@@ -48,8 +52,8 @@ bool matchesNewCM280(const char *line);
 bool matchesNewCM291(const char *line);
 
 // NameKosambiMap definitions and functions.
-typedef pair<const string, double> NameKosambiMapEntry;
-typedef map<string, double> NameKosambiMap;
+typedef pair<const std::string, double> NameKosambiMapEntry;
+typedef map<std::string, double> NameKosambiMap;
 NameKosambiMap getNameKosambiMap(const char *mapFileName);
 void printNameKosambiEntry(NameKosambiMapEntry &ent);
 void deleteNameKosambiEntry(NameKosambiMapEntry &ent);
@@ -59,8 +63,8 @@ typedef pair<const double, char *> SwMibdMapEntry;
 typedef map<double, char *> SwMibdMap;
 SwMibdMap getSwMibdMap(const char *mapFileName,
 		       const char *ibdFileName);
-SwMibdMap getSwMibdMap280(ifstream &ibdFile, const char *mapFileName);
-SwMibdMap getSwMibdMap291(ifstream &ibdFile, const char *mapFileName);
+SwMibdMap getSwMibdMap280(std::ifstream &ibdFile, const char *mapFileName);
+SwMibdMap getSwMibdMap291(std::ifstream &ibdFile, const char *mapFileName);
 void printSwMibdEntry(SwMibdMapEntry &ent);
 void deleteSwMibdEntry(SwMibdMapEntry &ent);
 
@@ -74,12 +78,12 @@ void printCmFileNameEntry(CmFileNameMapEntry &ent);
 void deleteCmFileNameEntry(CmFileNameMapEntry &ent);
 
 // CmFileMap definitions and functions.
-typedef pair<const double, ofstream *> CmFileMapEntry;
-typedef map<double, ofstream *> CmFileMap;
+typedef pair<const double, std::ofstream *> CmFileMapEntry;
+typedef map<double, std::ofstream *> CmFileMap;
 CmFileMap getCmFileMap(CmFileNameMap &cmFileNameMap, const char *directory);
 void printCmFileEntry(CmFileMapEntry &ent);
 void deleteCmFileEntry(CmFileMapEntry &ent);
-ofstream *getMibd(CmFileMap &cm2fileMap, double cM);
+std::ofstream *getMibd(CmFileMap &cm2fileMap, double cM);
 
 // Functions to process the differences in IBD file formats
 void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap);
@@ -116,6 +120,8 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
 			  Sint *ibdFileCount,
 			  const char **swMapFileName) {
 
+  Rcout << "Inside sw2lociFilesInternal" << std::endl;
+
   char version[SMALL_BUFFER_LENGTH] = "";
   char chromosome[SMALL_BUFFER_LENGTH] = "";
   char line[MED_BUFFER_LENGTH] = "";
@@ -132,7 +138,7 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
    * the IBD files, reading for the chromosome number and SimWalk version,
    * and closing the file.
    */
-  ifstream swIbdFile(swIbdFileNames[0]);
+  std::ifstream swIbdFile(swIbdFileNames[0]);
   if(swIbdFile.fail()) {
     PROBLEM "\n%s could not be opened for reading.\nsw2mloci.cpp key 80\n",
       swIbdFileNames[0] RECOVER(NULL_ENTRY);
@@ -141,10 +147,10 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
   while(swIbdFile.getline(line, MED_BUFFER_LENGTH)) {
     if(strstr(line, "This run has the integer label:")) {
       multic_strncpy(chromosome, getLastWord(line), SMALL_BUFFER_LENGTH-1);
-      //      cout << "chromosome = " << chromosome << endl;
+      //      cout << "chromosome = " << chromosome << std::endl;
     } else if(strstr(line, "Results of the Identity By Descent Analysis from SimWalk2")) {
       multic_strncpy(version, getLastWord(line), SMALL_BUFFER_LENGTH-1);
-      //      cout << "version = " << version << endl;
+      //      cout << "version = " << version << std::endl;
     }
 
     // Stop reading when necessary.
@@ -168,11 +174,11 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
   // Process all of the files specified in swIbdFileNames.
   for(int i = 0; i < *ibdFileCount; i++) {
     const char *swIbdFileName = swIbdFileNames[i];
-    cout << swIbdFileName << endl; // uncommented by PV to debug
-    cout << ". ";
-    cout.flush();
+    Rcout << swIbdFileName << std::endl; // uncommented by PV to debug
+    Rcout << ". ";
+    Rcout.flush();
     if( (i+1) % 35 == 0) {
-      cout << endl;
+      Rcout << std::endl;
     }
 
     if(strcmp(version, "2.80") == 0) {
@@ -187,9 +193,9 @@ void sw2lociFilesInternal(const char **swIbdFileNames,
 	version RECOVER(NULL_ENTRY);
     }
   }
-  cout << endl;
+  Rcout << std::endl;
 
-  // Close ofstreams and delete the ofstream objects.
+  // Close std::ofstreams and delete the std::ofstream objects.
   for_each(cmFileMap.begin(), cmFileMap.end(), deleteCmFileEntry);
 
   // Concatenate all the files into one mloci.out
@@ -212,7 +218,7 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
   char version[SMALL_BUFFER_LENGTH] = "";
   char line[MED_BUFFER_LENGTH] = "";
 
-  ifstream swIbdFile(swIbdFileName);
+  std::ifstream swIbdFile(swIbdFileName);
   if(swIbdFile.fail()) {
     PROBLEM "\n%s could not be opened for reading.\nsw2mloci.cpp key 75",
       swIbdFileName RECOVER(NULL_ENTRY);
@@ -258,10 +264,10 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
       }
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
-      ofstream *mibd = getMibd(cmFileMap, atof(cM));
+      std::ofstream *mibd = getMibd(cmFileMap, atof(cM));
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
-	    << kinshipCoeff << "\t" << -1 << endl;
+	    << kinshipCoeff << "\t" << -1 << std::endl;
 
       // PV Here's where the -1's get written
 
@@ -276,10 +282,10 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
       }
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
-      ofstream *mibd = getMibd(cmFileMap, atof(cM));
+      std::ofstream *mibd = getMibd(cmFileMap, atof(cM));
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
-	    << kinshipCoeff << "\t" << -1 << endl;
+	    << kinshipCoeff << "\t" << -1 << std::endl;
 
       // PV Here's where the -1's get written
 
@@ -291,10 +297,10 @@ void ibd2locis280(const char *swIbdFileName, CmFileMap &cmFileMap) {
       }
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
-      ofstream *mibd = getMibd(cmFileMap, atof(cM));
+      std::ofstream *mibd = getMibd(cmFileMap, atof(cM));
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
-	    << kinshipCoeff << "\t" << -1 << endl;
+	    << kinshipCoeff << "\t" << -1 << std::endl;
 
       // PV Here's where the -1's get written
 
@@ -314,7 +320,7 @@ void ibd2locis291(const char *swIbdFileName, CmFileMap &cmFileMap) {
   char version[SMALL_BUFFER_LENGTH] = "";
   char line[MED_BUFFER_LENGTH] = "";
 
-  ifstream swIbdFile(swIbdFileName);
+  std::ifstream swIbdFile(swIbdFileName);
   if(swIbdFile.fail()) {
     PROBLEM "\n%s could not be opened for reading.\nsw2mloci.cpp key 75",
       swIbdFileName RECOVER(NULL_ENTRY);
@@ -360,15 +366,12 @@ void ibd2locis291(const char *swIbdFileName, CmFileMap &cmFileMap) {
       for(int i = 0; i < 3; i++) {
 	strtok(NULL, TOKEN_DELIMITER);
       }
-
-      // PV Multiply kinship coefficient by 2 here (use atof function)
-      // Or, leave it in sw2mloci.q?
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
-      ofstream *mibd = getMibd(cmFileMap, atof(cM));
+      std::ofstream *mibd = getMibd(cmFileMap, atof(cM));
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
-	    << kinshipCoeff << "\t" << -1 << endl;
+	    << kinshipCoeff << "\t" << -1 << std::endl;
 
     } else if(matchesNewCM291(line)) {
       strtok(line, TOKEN_DELIMITER);
@@ -379,12 +382,12 @@ void ibd2locis291(const char *swIbdFileName, CmFileMap &cmFileMap) {
       }
       char *kinshipCoeff = strtok(NULL, TOKEN_DELIMITER);
 
-      ofstream *mibd = getMibd(cmFileMap, atof(cM));
+      std::ofstream *mibd = getMibd(cmFileMap, atof(cM));
       *mibd << pedigree << "-" << firstId << "\t"
 	    << pedigree << "-" << secondId << "\t" 
 	// The -1 could be replaced by the family structure kinship coeff
 	// from the 2.91 IBD files
-	    << kinshipCoeff << "\t" << -1 << endl;
+	    << kinshipCoeff << "\t" << -1 << std::endl;
     }
   }
 
@@ -419,7 +422,7 @@ char *getLastWord(char *line) {
  * false otherwise.
  */
 bool matchesNewPair280(const char *line) {
-  //  cout << "in matchesNewPair280" << endl;
+  //  cout << "in matchesNewPair280" << std::endl;
   char *localLine = NULL;
   char *token = NULL;
   int tokenCount = 0;
@@ -475,7 +478,7 @@ bool matchesNewPair280(const char *line) {
  * false otherwise.
  */
 bool matchesNewMarker280(const char *line) {
-  //  cout << "in matchesNewMarker280" << endl;
+  //  cout << "in matchesNewMarker280" << std::endl;
   char *localLine = NULL;
   char *token = NULL;
   int tokenCount = 0;
@@ -525,7 +528,7 @@ bool matchesNewMarker280(const char *line) {
  * false otherwise.
  */
 bool matchesNewCM280(const char *line) {
-  //  cout << "in matchesNewCM280" << endl;
+  //  cout << "in matchesNewCM280" << std::endl;
   char *localLine = NULL;
   char *token = NULL;
   int tokenCount = 0;
@@ -622,14 +625,14 @@ bool isEmpty(const char *word) {
  * getMibd is a simple function to perform the find on the CmFileMap and its
  * associated error checks.
  */
-ofstream *getMibd(CmFileMap &cmFileMap, double cM) {
+std::ofstream *getMibd(CmFileMap &cmFileMap, double cM) {
   CmFileMap::iterator iter = cmFileMap.find(cM);
   if(iter == cmFileMap.end()) {
     PROBLEM "Cannot find key: %f in cM-file map.\nsw2mloci.cpp key 499", cM
       RECOVER(NULL_ENTRY);
   }
 
-  ofstream *mibd = iter->second;
+  std::ofstream *mibd = iter->second;
 
   return mibd;
 }
@@ -657,7 +660,7 @@ ofstream *getMibd(CmFileMap &cmFileMap, double cM) {
  */
 SwMibdMap getSwMibdMap(const char *mapFileName, const char *ibdFileName) {
 
-  ifstream swIbdFile(ibdFileName);
+  std::ifstream swIbdFile(ibdFileName);
   if(swIbdFile.fail()) {
     PROBLEM "\nCannot open %s for reading.\nsw2mloci.cpp key 614\n",
       ibdFileName RECOVER(NULL_ENTRY);    
@@ -686,7 +689,7 @@ SwMibdMap getSwMibdMap(const char *mapFileName, const char *ibdFileName) {
   swIbdFile.close();
 
   /*
-    cout << "swMibdMap = " << endl;
+    cout << "swMibdMap = " << std::endl;
     for_each(swMibdMap.begin(), swMibdMap.end(), printSwMibdEntry);
   */
 
@@ -697,7 +700,7 @@ SwMibdMap getSwMibdMap(const char *mapFileName, const char *ibdFileName) {
  * getSwMibdMap280 specifically reads a SimWalk 2.80 version IBD file and 
  * returns an SwMibdMap
  */
-SwMibdMap getSwMibdMap280(ifstream &swIbdFile, const char *mapFileName) {
+SwMibdMap getSwMibdMap280(std::ifstream &swIbdFile, const char *mapFileName) {
   SwMibdMap swMibdMap;
 
   NameKosambiMap nameKosambiMap;
@@ -775,7 +778,7 @@ SwMibdMap getSwMibdMap280(ifstream &swIbdFile, const char *mapFileName) {
   free(previousName);
 
   /*
-    cout << "swMibdMap = " << endl;
+    cout << "swMibdMap = " << std::endl;
     for_each(swMibdMap.begin(), swMibdMap.end(), printSwMibdEntry);
   */
 
@@ -788,8 +791,8 @@ SwMibdMap getSwMibdMap280(ifstream &swIbdFile, const char *mapFileName) {
  * SwMibdEntry's via a for_each command;
  */
 void printSwMibdEntry(SwMibdMapEntry &ent) {
-  cout << "orig cM = " << ent.first << ", "
-    "calc cM = " << ent.second << endl;  
+  Rcout << "orig cM = " << ent.first << ", "
+    "calc cM = " << ent.second << std::endl;  
 }
 
 /**
@@ -808,7 +811,7 @@ void deleteSwMibdEntry(SwMibdMapEntry &ent) {
 NameKosambiMap getNameKosambiMap(const char *mapFileName) {
   NameKosambiMap nameKosambiMap;
 
-  ifstream mapFile(mapFileName);
+  std::ifstream mapFile(mapFileName);
   if(mapFile.fail()) {
     PROBLEM "\n%s could not be opened for reading.\nsw2mloci.cpp key 378",
       mapFileName RECOVER(NULL_ENTRY);    
@@ -837,7 +840,7 @@ NameKosambiMap getNameKosambiMap(const char *mapFileName) {
   }
 
   /*
-    cout << "nameKosambiMap = " << endl;
+    cout << "nameKosambiMap = " << std::endl;
     for_each(nameKosambiMap.begin(), nameKosambiMap.end(),
     printNameKosambiEntry);
   */
@@ -850,8 +853,8 @@ NameKosambiMap getNameKosambiMap(const char *mapFileName) {
  * or all NameKosambiEntry's via a for_each command;
  */
 void printNameKosambiEntry(NameKosambiMapEntry &ent) {
-  cout << "name = " << ent.first << ", "
-    "kosambi = " << ent.second << endl;  
+  Rcout << "name = " << ent.first << ", "
+    "kosambi = " << ent.second << std::endl;  
 }
 
 void deleteNameKosambiEntry(NameKosambiMapEntry &ent) {
@@ -882,7 +885,7 @@ void trimTrailingDecimalZeros(char *decimalNumber) {
 
 /**
  * getCmFileMap creates a map object between the centimorgan value, double,
- * and the open file handle to the desired file, ofstream *.  Whether the
+ * and the open file handle to the desired file, std::ofstream *.  Whether the
  * file name is of the form mibd.(chromosome).(integer) or
  * mibd.(chromosome).(double), depends on whether or not a map file name has
  * been specified
@@ -904,21 +907,21 @@ CmFileMap getCmFileMap(CmFileNameMap &cmFileNameMap, const char *directory) {
 	     mibdFileName);
 
     // This could be a temp file instead of a real mibd.(chrom).(cm) file.
-    //    ofstream *mibd = new ofstream(mibdFileName, ios::app);
-    ofstream *mibd = new ofstream(fullFileName, ios::app);
+    //    std::ofstream *mibd = new std::ofstream(mibdFileName, ios::app);
+    std::ofstream *mibd = new std::ofstream(fullFileName, ios::app);
     if(mibd->fail()) {
       PROBLEM "\n%s could not be opened for writing.\nsw2mloci.cpp key 752",
 	fullFileName RECOVER(NULL_ENTRY);
     }
     free(fullFileName);
 
-    *mibd << "# " << mibdFileName << endl;
+    *mibd << "# " << mibdFileName << std::endl;
 
     cmFileMap.insert(CmFileMapEntry(iter->first, mibd));
   }
 
   /*
-    cout << "cmFileMap = " << endl;
+    cout << "cmFileMap = " << std::endl;
     for_each(cmFileMap.begin(), cmFileMap.end(), printCmFileEntry);
   */
 
@@ -930,8 +933,8 @@ CmFileMap getCmFileMap(CmFileNameMap &cmFileNameMap, const char *directory) {
  * or all CmFileMapEntry's via a for_each command.
  */
 void printCmFileEntry(CmFileMapEntry &ent) {
-  cout << "cM = " << ent.first << ", mibd file address = " << ent.second
-       << endl;
+  Rcout << "cM = " << ent.first << ", mibd file address = " << ent.second
+       << std::endl;
 }
 
 /**
@@ -947,7 +950,7 @@ void deleteCmFileEntry(CmFileMapEntry &ent) {
  * Concatenate all the files into one mloci.out
  */
 void lociFiles2mloci(CmFileNameMap &cmFileNameMap, const char *directory) {
-  ofstream mloci("mloci.out");
+  std::ofstream mloci("mloci.out");
   if(mloci.fail()) {
     PROBLEM "\nError opening mloci.out for writing.\nsw2mloci.cpp key 938"
       RECOVER(NULL_ENTRY);
@@ -962,7 +965,7 @@ void lociFiles2mloci(CmFileNameMap &cmFileNameMap, const char *directory) {
     snprintf(fullFileName, fullFileNameLength, "%s/%s", directory,
 	     iter->second);
 
-    ifstream mibd(fullFileName);
+    std::ifstream mibd(fullFileName);
     if(mibd.fail()) {
       PROBLEM "\nError opening %s for reading.\nsw2mloci.cpp key 953",
 	fullFileName RECOVER(NULL_ENTRY);
@@ -971,7 +974,7 @@ void lociFiles2mloci(CmFileNameMap &cmFileNameMap, const char *directory) {
     char buffer[MED_BUFFER_LENGTH];
     while(mibd.good()) {
       mibd.getline(buffer, MED_BUFFER_LENGTH - 1);
-      mloci << buffer << endl;
+      mloci << buffer << std::endl;
     }
 
     mibd.close();
@@ -1004,7 +1007,7 @@ CmFileNameMap getCmFileNameMap(const char *swIbdFileName,
   }
 
   /*
-    cout << "cmFileNameMap = " << endl;
+    cout << "cmFileNameMap = " << std::endl;
     for_each(cmFileNameMap.begin(), cmFileNameMap.end(),
     printCmFileNameEntry);
   */
@@ -1017,8 +1020,8 @@ CmFileNameMap getCmFileNameMap(const char *swIbdFileName,
  * or all CmFileNameMapEntry's via a for_each command.
  */
 void printCmFileNameEntry(CmFileNameMapEntry &ent) {
-  cout << "cM = " << ent.first << ", mibd file name = " << ent.second
-       << endl;
+  Rcout << "cM = " << ent.first << ", mibd file name = " << ent.second
+       << std::endl;
 }
 
 /**
@@ -1033,7 +1036,7 @@ void deleteCmFileNameEntry(CmFileNameMapEntry &ent) {
  * getSwMibdMap291 specifically reads a SimWalk 2.91 version IBD file and 
  * returns an SwMibdMap
  */
-SwMibdMap getSwMibdMap291(ifstream &swIbdFile, const char *mapFileName) {
+SwMibdMap getSwMibdMap291(std::ifstream &swIbdFile, const char *mapFileName) {
   SwMibdMap swMibdMap;
 
   NameKosambiMap nameKosambiMap;
@@ -1121,7 +1124,7 @@ SwMibdMap getSwMibdMap291(ifstream &swIbdFile, const char *mapFileName) {
  * false otherwise.
  */
 bool matchesNewPair291(const char *line) {
-  //  cout << "in matchesNewPair291" << endl;
+  //  cout << "in matchesNewPair291" << std::endl;
   char *localLine = NULL;
   char *token = NULL;
   int tokenCount = 0;
@@ -1179,7 +1182,7 @@ bool matchesNewPair291(const char *line) {
  * function will need to not call the 2.80 version.
  */
 bool matchesNewMarker291(const char *line) {
-  //  cout << "in matchesNewMarker291" << endl;
+  //  cout << "in matchesNewMarker291" << std::endl;
   return matchesNewMarker280(line);
 }
 
@@ -1190,7 +1193,7 @@ bool matchesNewMarker291(const char *line) {
  * false otherwise.
  */
 bool matchesNewCM291(const char *line) {
-  //  cout << "in matchesNewCM291" << endl;
+  //  cout << "in matchesNewCM291" << std::endl;
   char *localLine = NULL;
   char *token = NULL;
   int tokenCount = 0;

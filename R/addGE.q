@@ -25,7 +25,7 @@
 ########################################################################
 
 addGE <- function(multic.objs, combine=2, plotit=FALSE, ibd.dist, statistic=c("lrt","wald"),
-                  legend=TRUE, ...) {
+                  legend=TRUE, ylim=NULL, ...) {
 
 
   statistic <- match.arg(statistic)
@@ -35,8 +35,6 @@ addGE <- function(multic.objs, combine=2, plotit=FALSE, ibd.dist, statistic=c("l
     
   ## check to see that all objects have the same length
   ## if using mibd files
-  ibdname <- unlist(unpaste(names(multic.objs[[1]]$major.gene1[1,1,1:2])[-1],'.'))
-  if(ibdname[1]=='mibd') chrom <- ibdname[2]
   
   n.traits <- length(multic.objs)
   n.markers <- length(cM)
@@ -150,23 +148,27 @@ addGE <- function(multic.objs, combine=2, plotit=FALSE, ibd.dist, statistic=c("l
   ###################################################################################
   ###################################################################################
 
-  if(plotit==T) {  
+  if(plotit==TRUE) {
+    if(!is.null(ylim)) my.ylim <- ylim
+    if(is.null(ylim)) my.ylim <- c(0, max(c(3,lod),na.rm=T) + .5)
+    
     ## Plot the -log10 p-values
-    plot(x=cMrep, y=lod, type='n', ylab=paste('-log10(',casefold(statistic,up=T),'P-Value)'),
-         xlab=paste('Chromosome ',chrom,':',' Position', sep=''), ...)
+    plot(x=cMrep, y=lod, type='n', ylab=paste('-log10(',casefold(statistic,upper=T),'P-Value)'),
+         xlab=' Position', ylim=my.ylim, ...)
     for(i in unique(comb)) {
       ok <- comb == i
       code <- match(i,unique(comb))
       lines(x=cMrep[ok], y=lod[ok], lty=code, lwd=2, col=code)
-      }
-
-  if(legend==T){
-      key(x=min(cMrep), y=par()$usr[4]+.5,
-          lines=list(lty=1:n.comb, col=1:n.comb),
-          text=list(unique(comb), col=1:n.comb), columns=n.comb, between=1)
-      }
-
     }
+
+    if(legend==TRUE){
+
+      legend(x=min(cMrep), y=par()$usr[4],
+             lty=1:n.comb, col=1:n.comb, legend=unique(comb),
+             ncol=n.comb,lwd=2)
+    }
+
+  }
   ###################################################################################
   ###################################################################################
   

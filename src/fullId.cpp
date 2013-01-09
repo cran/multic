@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstring>
 #include "verS.h"
-using namespace std;
 
 extern "C" {
 
@@ -22,10 +21,10 @@ void fullId(char **id, Sint *idLength, Sint *familySizes,
     familySize = familySizes[i];
     for(Sint j = 0; j < *loci; j++) {
       for(Sint k = 0; k < familySize; k++) {
-	//	fullId[fullIdIndex] = id[baseFamilyIndex + k];
-	//	cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
-	strncpy(fullId[fullIdIndex], id[baseFamilyIndex + k], *idMaxLength);
-	fullIdIndex++;
+        //      fullId[fullIdIndex] = id[baseFamilyIndex + k];
+        //      cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
+        strncpy(fullId[fullIdIndex], id[baseFamilyIndex + k], *idMaxLength);
+        fullIdIndex++;
       }
     }
     baseFamilyIndex += familySize;

@@ -7,8 +7,6 @@
 #include <Rdefines.h>
 #endif
 
-using namespace std;
-
 // multic_SET_STRING_ELT abstracts the concept of putting a string into 
 // an S character vector.  This is currently only used for added string to 
 // unoccupied vector elements.  So if this is used to overwrite some string

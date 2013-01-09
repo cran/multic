@@ -38,7 +38,10 @@ Updates: (Date, Modifyied By, Modification Description)
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern "C" {
 
@@ -51,10 +54,10 @@ s_object *loadFamilyLogLikelihoods(s_object *familyCount,
   double zero = 0.0;
   char file[] = "fam.lik";
 
-  ifstream logLikelihoodFile(file);
+  std::ifstream logLikelihoodFile(file);
   if(logLikelihoodFile.fail()) {
-    cerr << "The file " << file << " could not be opened for reading" << endl
-	 << "loadFamilyLogLikelihoods.cpp key 51" << endl;
+    Rcerr << "The file " << file << " could not be opened for reading" << std::endl
+	  << "loadFamilyLogLikelihoods.cpp key 51" << std::endl;
     return NEW_NUMERIC(0);
   }
 

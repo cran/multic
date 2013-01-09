@@ -8,7 +8,10 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern "C" {
 
@@ -28,22 +31,22 @@ s_object *makeBlockIdPair(s_object *uniqueIds, s_object *familySizes) {
   Sint currentFamilySize = 0;
 
 
-  cout << "Calculating idPairLength" << endl;
+  Rcout << "Calculating idPairLength" << std::endl;
   // Compute how many id-pairs there will be.
   Sint idPairLength = 0;
   for(Sint i = 0; i < LENGTH(familySizes); i++) {
     currentFamilySize = INTEGER_POINTER(familySizes)[i];
     idPairLength += (currentFamilySize - 1) * currentFamilySize / 2;
-    //cout << "currentFamilySize = " << currentFamilySize << endl;
-    //cout << "idPairLength = " << idPairLength << endl;
+    //cout << "currentFamilySize = " << currentFamilySize << std::endl;
+    //cout << "idPairLength = " << idPairLength << std::endl;
   }
   Sint idPairIndex = 0;
 
-  //cout << "After loop to compute # of id pairs" << endl;
+  //cout << "After loop to compute # of id pairs" << std::endl;
 
   s_object *idPairs = NEW_CHARACTER(idPairLength * 2);
 
-  //cout << "Before last big loop" << endl;
+  //cout << "Before last big loop" << std::endl;
 
 
   // PROBLEM WITH sw2mloci HAPPENS IN THIS LOOP
@@ -51,8 +54,8 @@ s_object *makeBlockIdPair(s_object *uniqueIds, s_object *familySizes) {
   for(Sint i = 0; i < LENGTH(familySizes); i++) {
     currentFamilySize = INTEGER_POINTER(familySizes)[i];
 
-    //cout << "\ni = " << i << endl;
-    //cout << "currentFamilySize = " << currentFamilySize << endl;
+    //cout << "\ni = " << i << std::endl;
+    //cout << "currentFamilySize = " << currentFamilySize << std::endl;
 
     // j iterates over the first familySizes[i] - 1 persons of each family
     // (This will be the first of an id pair and the last person in the
@@ -78,7 +81,7 @@ s_object *makeBlockIdPair(s_object *uniqueIds, s_object *familySizes) {
     cumFamilySize += currentFamilySize;
   }
 
-  //cout << "After last big loop" << endl;
+  //cout << "After last big loop" << std::endl;
 
   s_object *dim = NEW_INTEGER(2);
   INTEGER_POINTER(dim)[0] = idPairLength;
@@ -86,7 +89,7 @@ s_object *makeBlockIdPair(s_object *uniqueIds, s_object *familySizes) {
 
   SET_DIM(idPairs, dim);
 
-  cout << "Returning from makeBlockIdPair" << endl;
+  Rcout << "Returning from makeBlockIdPair" << std::endl;
 
   return idPairs;
 }

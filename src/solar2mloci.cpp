@@ -24,7 +24,10 @@ Updates: Eric Lunde, 06-07-2005, I added a parameter, Sint *gzipWhenComplete.
 #include <iomanip>
 #include <cstring>
 #include "verS.h"
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern "C" {
 
@@ -41,14 +44,14 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
   const int PATH_LENGTH = 1024;
   
   // mloci_out is the handle to the output file MLOCI_OUT
-  ofstream *mloci_out;
+  std::ofstream *mloci_out;
 
   // command is a char array to hold a system command
   char command[COMMAND_LENGTH];
   // ibdFile is the file we will be converting and appending to
   //   mloci.out.  Although the name of the variable is ibdFile, it
   //   could reference an mibd file as well
-  ifstream *ibdFile;
+  std::ifstream *ibdFile;
 
   // The *Column variables will hold the information extracted from the
   // (m)ibd files
@@ -73,7 +76,7 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
 
   // Construct the full path name for 'mloci.out'
   snprintf(fullPathName, PATH_LENGTH, "%s/%s", directoryName[0], MLOCI_OUT);
-  mloci_out = new ofstream(fullPathName);
+  mloci_out = new std::ofstream(fullPathName);
 
   // Test for successful opening
   if(mloci_out->fail()) {
@@ -81,17 +84,17 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
       fullPathName RECOVER(NULL_ENTRY);
   }
 
-  cout << "Creating mloci.out:";
+  Rcout << "Creating mloci.out:";
 
   // For each (non-directory) file in the directory, produce the loci.out
   // information and append it to mloci.out
   //  while( (dirEntry = readdir(directory)) != NULL ) {
   for(int i=0; i<*ibdNamesSize; i++) {
     if( (i % 35) == 0 ) {
-      cout << endl;
+      Rcout << std::endl;
     }
-    cout << ". ";
-    cout.flush();
+    Rcout << ". ";
+    Rcout.flush();
 
     // Create the file's full (relative) path name to make referencing easier
     snprintf(fullPathName, PATH_LENGTH, "%s/%s", directoryName[0],
@@ -103,8 +106,8 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
     if(system(command) == 0) {
       if(strcmp(ibdNames[i], ".") != 0
 	 && strcmp(ibdNames[i], "..") != 0) {
-	cout << "'" << ibdNames[i]  << "' is a directory -- ignored"
-	     << endl;
+	Rcout << "'" << ibdNames[i]  << "' is a directory -- ignored"
+	     << std::endl;
       }
       continue;
     }
@@ -131,7 +134,7 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
       ibdNames[i][ strlen(ibdNames[i])-3 ] = '\0';
     }
     
-    ibdFile = new ifstream(fullPathName);
+    ibdFile = new std::ifstream(fullPathName);
     
     // Test for successful opening
     if(ibdFile->fail()) {
@@ -141,7 +144,7 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
     
     // Begin each new loci-appending with the '#' to indicate separation
     // and the name of the original file that the information came from
-    *mloci_out << "# " << ibdNames[i] << endl;
+    *mloci_out << "# " << ibdNames[i] << std::endl;
     
     // Append to mloci.out the appropriate values.  If the first two columns
     // are NOT equal, the write the third column to mloci.out three times
@@ -151,16 +154,16 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
 	/*
 	*mloci_out << setw(FIELD_WIDTH) << firstColumn
 		   << setw(FIELD_WIDTH) << secondColumn
-		   << setw(FIELD_WIDTH) << thirdColumn << endl;
+		   << setw(FIELD_WIDTH) << thirdColumn << std::endl;
 		   */
 	/*
 	*mloci_out << firstColumn
 		   << '\t' << secondColumn
-		   << '\t' << thirdColumn << endl;
+		   << '\t' << thirdColumn << std::endl;
 	*/
 	*mloci_out << uniqueIds[firstColumn - 1]
 		   << '\t' << uniqueIds[secondColumn - 1]
-		   << '\t' << thirdColumn << endl;
+		   << '\t' << thirdColumn << std::endl;
 	
       }
       ibdFile->getline(restOfLine, END_OF_LINE_LENGTH);
@@ -177,7 +180,7 @@ void solar2mloci(char **directoryName, char **ibdNames, Sint *ibdNamesSize,
     }
   }
 
-  cout << "Done!" << endl;
+  Rcout << "Done!" << std::endl;
 
   // Close and mloci.out
   delete mloci_out;

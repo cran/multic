@@ -19,7 +19,7 @@ multic <- function(formula,
   ## ################ ##
   
   ## Parse the values we want out of the data object
-  call <- match.call(expand = FALSE)
+  call <- match.call(expand.dots = FALSE)
   call <- call[match(c("", "formula", "data", "famid", "id", "dadid",
                        "momid", "sex", "ascertainment", "subset"),
                      names(call), nomatch=0)]
@@ -31,12 +31,11 @@ multic <- function(formula,
 
   ## as.factor is needed to get character data evaluated in the data object
   ## R only allows integer, logical, and numeric
-  if(using.R()) {
-    call$famid <- substitute(as.factor(famid))
-    call$id <- substitute(as.factor(id))
-    call$dadid <- substitute(as.factor(dadid))
-    call$momid <- substitute(as.factor(momid))
-  }
+  call$famid <- substitute(as.factor(famid))
+  call$id <- substitute(as.factor(id))
+  call$dadid <- substitute(as.factor(dadid))
+  call$momid <- substitute(as.factor(momid))
+
 
   ## Use as.factor for sex during S-Plus and R to make searching for invalid
   ## sex codes uniform across platforms
@@ -1153,52 +1152,56 @@ validate.parents <- function(famid, id, dadid, momid, sex) {
 ## If we want to use the sequential ids instead of the large ids that SOLAR
 ## assigned, we must read 'pedindex.cde', locate the field that tells us
 ## where to find the sequential id in 'pedindex.out', and make all the
-## appropriate translations  
-apply.sequential.ids <- function(id, dadid, momid) {
+## appropriate translations
+
+## Can't call importData without Splus. This function doesn't seem to be
+## called from anywhere. Let's see if we can do without it.
+## Pat Votruba, 1/25/2013
+#apply.sequential.ids <- function(id, dadid, momid) {
   ## Read pedindex.cde for the locations of sequential and original
   ## identifiers
-  pedindex.cde <- importData('pedindex.cde', type='ASCII')
+#  pedindex.cde <- importData('pedindex.cde', type='ASCII')
   
   ## id.index is the row of pedindex.cde that holds the id "ID" in the
   ## second column
-  id.index <- match('ID', pedindex.cde[2])
+#  id.index <- match('ID', pedindex.cde[2])
     
   ## Calculate the sum of adding all the rows of column 1 up to (but not
   ## including) the row that holds the id "ID"
-  origIdStart <- sum(pedindex.cde[seq(1, id.index-1), 1])
+#  origIdStart <- sum(pedindex.cde[seq(1, id.index-1), 1])
   
   ## Find how many characters are in the field labeled by "ID"
-  origIdLen <- pedindex.cde[match('ID', pedindex.cde[2]), 1]
+#  origIdLen <- pedindex.cde[match('ID', pedindex.cde[2]), 1]
   
   ## Find how many characters are in the field labeled by "IBDID"
-  seqIdLen <- pedindex.cde[1, match('IBDID', pedindex.cde[2])]
+#  seqIdLen <- pedindex.cde[1, match('IBDID', pedindex.cde[2])]
   
   ## Read pedindex.out for the sequential and original identifiers
-  form <- paste("%", seqIdLen, "f %", origIdStart-seqIdLen, "* %", origIdLen,
-                "f", sep='')
-  ids <- importData('pedindex.out', type='FASCII', format=form)
+#  form <- paste("%", seqIdLen, "f %", origIdStart-seqIdLen, "* %", origIdLen,
+#                "f", sep='')
+#  ids <- importData('pedindex.out', type='FASCII', format=form)
   
   ## Create translation from original id to sequential id function
-  translateId <-  function(originalId, idTable) {
-    if(originalId == 0) {
-      return (0)
-    }
-    return ( idTable[match(originalId, idTable[ ,2]), 1])
-  }
+#  translateId <-  function(originalId, idTable) {
+#    if(originalId == 0) {
+#      return (0)
+#    }
+#    return ( idTable[match(originalId, idTable[ ,2]), 1])
+#  }
   
   ## Sort ids - not necessary, consider deleting, Eric Lunde 9-03
-  orderedIds <- ids[order(ids[ ,2]), ]
+#  orderedIds <- ids[order(ids[ ,2]), ]
   
   ## Reassign the id, dadid, and momid to have the sequential identifiers
   ## seqIds <- apply(array(id), 1, translateId, orderedIds)
   ## seqDadIds <- apply(array(dadid), 1, translateId, orderedIds)
   ## seqMomIds <- apply(array(momid), 1, translateId, orderedIds)
-  id <- apply(array(id), 1, translateId, orderedIds)
-  dadid <- apply(array(dadid), 1, translateId, orderedIds)
-  momid <- apply(array(momid), 1, translateId, orderedIds)
+#  id <- apply(array(id), 1, translateId, orderedIds)
+#  dadid <- apply(array(dadid), 1, translateId, orderedIds)
+#  momid <- apply(array(momid), 1, translateId, orderedIds)
 
-  return(id, dadid, momid)
-}
+#  return(id, dadid, momid)
+#}
 
 ## upp.tri.as.vector is a small utility function to extract from a matrix
 ## object (x) the upper triangle and return the values in a vector.
@@ -1280,11 +1283,8 @@ calculate.initial.values <- function(initial.fit, covariates,
   
   ## Find out how many non "F"'s there are, not counting mu or mg
   constraint.count <- sum(constraints[c(-1, -3)] != "F")
-  if(using.R()) {
-    var <- var(residuals(initial.fit), na.rm = TRUE)
-  } else {
-    var <- var(residuals(initial.fit), na.method = 'omit')
-  }
+  var <- var(residuals(initial.fit), na.rm = TRUE)
+  
   values <- upp.tri.as.vector(var / constraint.count)
   zeroes <- rep(0, random.effects.count)
   initial.values.names <- paste("mu", 1:trait.count, sep = "")
@@ -1443,11 +1443,8 @@ calculate.descriptives <- function(trait, covariate, trait.names,
   trait.n <- apply(trait, 2,
                    function(trait) { return (sum(!is.na(trait))) } )
   trait.means <- apply(trait, 2, mean, na.rm = TRUE)
-  if(using.R()) {
-    trait.var <- apply(trait, 2, var, use = "complete.obs")
-  } else {
-    trait.var <- apply(trait, 2, var, na.method="omit")
-  }
+  trait.var <- apply(trait, 2, var, use = "complete.obs")
+
   trait.std.dev <- sqrt(trait.var)
   trait.min <- apply(trait, 2, min, na.rm = TRUE)
   trait.max <- apply(trait, 2, max, na.rm = TRUE)
@@ -1465,11 +1462,7 @@ calculate.descriptives <- function(trait, covariate, trait.names,
     cov.n <- apply(covariate, 2,
                    function(covariate) { return (sum(!is.na(covariate))) } )
     cov.means <- apply(covariate, 2, mean, na.rm = TRUE)
-    if(using.R()) {
-      cov.var <- apply(covariate, 2, var, use = "complete.obs")
-    } else {
-      cov.var <- apply(covariate, 2, var, na.method="omit")
-    }
+    cov.var <- apply(covariate, 2, var, use = "complete.obs")
     cov.std.dev <- sqrt(cov.var)
     cov.min <- apply(covariate, 2, min, na.rm = TRUE)
     cov.max <- apply(covariate, 2, max, na.rm = TRUE)
@@ -1783,7 +1776,7 @@ get.share.order <- function(share.out, length.id, family.sizes,
                "Probable causes are:\n",
                "- the input is not sorted by famid\n",
                "- the ", share.out.orig, " refers to a different\n",
-               "  set of families than the data agrument does\n",
+               "  set of families than the data argument does\n",
                "- if you are bootstrapping, either the data argument or\n",
                "  ", share.out.orig, " have not been properly expanded.\n",
                "multic.q key 1796", sep = ""))
@@ -1926,34 +1919,16 @@ calculate.cor.values <- function(trait, covariate, polygenic, environmental,
   cors <- list()
   trait.count <- ncol(trait)
 
-  if(using.R()) {
-    cors$pearson <- cor(cbind(trait, covariate), use = "complete.obs")
-  } else {
-    cors$pearson <- cor(cbind(trait, covariate), na.method = "omit")
-  }
+  cors$pearson <- cor(cbind(trait, covariate), use = "complete.obs")
   
   ## Use rank to get the ranks and then use cor to get the spearman
   ## correlation
   trait[trait == missing.value()] <- NA
   covariate[covariate == missing.value()] <- NA
-  if(using.R()) {
-    ranked <- apply(cbind(trait, covariate), 2, rank, na.last = "keep")
-    cors$spearman <- cor(ranked, use = "complete.obs")
-  } else {
-    ranked <- apply(cbind(trait, covariate), 2, rank)
-    
-    ## If NA's were present, they appear after ranking as the highest value
-    ## in that column.  We must replace the highest value in each column with
-    ## NA if they were there before ranking.
-    has.na <- apply(cbind(trait, covariate), 2, function(x) any(is.na(x)) )
-    if(any(has.na)) {  
-      maxes <- apply(ranked[, has.na, drop = FALSE], 2, max)
-      replacement.matrix <- t(apply(ranked[, has.na, drop = FALSE], 1,
-                                    function(x, y) x == y, maxes))
-      ranked[replacement.matrix] <- NA
-    }
-    cors$spearman <- cor(ranked, na.method = "omit")
-  }
+
+  ranked <- apply(cbind(trait, covariate), 2, rank, na.last = "keep")
+  cors$spearman <- cor(ranked, use = "complete.obs")
+
 
   if(trait.count > 1) {
     poly.effects <- polygenic[, "Estimate", ]
@@ -2103,17 +2078,17 @@ missing.value <- function() {
   return (-9)
 }
 
-check.for.full.data <- function(x) {
+check.for.full.data <- function(x, name) {
   xname <- substitute(x)
   if(any(is.null(x) | x == "NA" | is.na(x))) {
-    stop(paste("\n", x.name, " has at least one NULL or NA value.  ",
+    stop(paste("\n", xname, " has at least one NULL or NA value.  ",
                "multic cannot continue.",
                "\nmultic.q key 38\n", sep = ""))
   }
   if(any(is.na(x))) {
-    stop(paste("\n", x.name, " does not have value.  ",
+    stop(paste("\n", xname, " does not have value.  ",
                "multic cannot continue.\n",
-               "multic.q key 70\n", sep = ""))
+               "multic.q key 70\n", load = ""))
   } 
 }
 
@@ -2221,18 +2196,11 @@ make.kinship.file <- function(famid, id, dadid, momid, share.out,
   uuids <- paste(famid, id, sep = "-")
   ## Perhaps quite = TRUE can be eaten by Splus's ...
   if(run.alternative.hyps) {
-    if(using.R()) {
-      id.pairs <- scan(mloci.out,
-                       what = list(character(0), character(0), numeric(0)),
-                       n = sum(family.sizes * (family.sizes - 1) / 2) * 3,
-                       skip = 1,
-                       quiet = TRUE)
-    } else {
-      id.pairs <- scan(mloci.out,
-                       what = list(character(0), character(0), numeric(0)),
-                       n = sum(family.sizes * (family.sizes - 1) / 2) * 3,
-                       skip = 1)
-    }
+    id.pairs <- scan(mloci.out,
+                     what = list(character(0), character(0), numeric(0)),
+                     n = sum(family.sizes * (family.sizes - 1) / 2) * 3,
+                     skip = 1,
+                     quiet = TRUE)
     
     id.pairs <- data.frame(id.pairs)
     names(id.pairs) <- list("id1", "id2", "phi")
@@ -2246,14 +2214,11 @@ make.kinship.file <- function(famid, id, dadid, momid, share.out,
     id.pairs <- make.block.id.pair(uuids, as.integer(family.sizes))
   }
   
-  if(using.R()) {
-    if(! require(kinship, quietly = TRUE)) {
-      stop("kinship could not be found, multic.q key 338")
-    }
-  } else {
-    library(kinship)
+  if(! require(kinship2, quietly = TRUE)) {
+    stop("kinship2 could not be found, multic.q key 338")
   }
-  cat("Using kinship to generate phi values...\n")
+
+  cat("Using kinship2 to generate phi values...\n")
   bds <- makekinship(famid, uuids,
                      paste(famid, dadid, sep = "-"),
                      paste(famid, momid, sep = "-"))
@@ -2287,12 +2252,8 @@ make.kinship.file <- function(famid, id, dadid, momid, share.out,
                    siblings, spouses, parent.offsprings)
   
   ## Keep in mind that share.out's value is "kinship"
-  if(using.R()) {
-    write.table(kinship, share.out, row.names = FALSE,
-                col.names = FALSE, sep = "\t", quote = FALSE)
-  } else {
-    write.table(kinship, share.out, dimnames.write = FALSE, sep = "\t")
-  }
+  write.table(kinship, share.out, row.names = FALSE,
+              col.names = FALSE, sep = "\t", quote = FALSE)
 }
 
 ## family.count, unique.families, and family.sizes were created to provide

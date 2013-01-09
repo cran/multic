@@ -1,5 +1,5 @@
-\name{t.rank}
-\alias{t.rank}
+\name{tRank}
+\alias{tRank}
 \title{
   Empirical Normal Quantile transformation
 }
@@ -8,7 +8,7 @@ Transform a vector using the empirical normal quantile distribution (also
 called the van der Waerden normal scores).
 }
 \usage{
-t.rank(x)
+tRank(x)
 }
 \arguments{
 \item{x}{
@@ -22,14 +22,10 @@ A numerical vector that are approximately normally distributed.
 Lehman E.L. 1975.  Nonparametrics: Statistical Methods Based On
 Ranks. Holden-Day, Inc., San Francisco, CA (page 97)
 }
-\seealso{
-
-}
 \examples{
 \dontrun{
-stem(t.rank(1:100))
+stem(tRank(1:100))
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

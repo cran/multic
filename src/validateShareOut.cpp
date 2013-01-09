@@ -1,7 +1,10 @@
 #include <fstream>
 #include <iostream>
 #include "verS.h"
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern "C" {
 
@@ -44,7 +47,7 @@ void validateShareOut(Sint *familySizes, Sint *familiesCount, char **id,
   }
   */
 
-  ifstream shareOut(shareOutName[0]);
+  std::ifstream shareOut(shareOutName[0]);
   if( !shareOut.is_open() ) {
     PROBLEM "The file '%s' could not be opened.\nvalidateShareOut.cpp key 46\n",
       shareOutName[0] RECOVER(NULL_ENTRY);
@@ -114,12 +117,12 @@ void validateShareOut(Sint *familySizes, Sint *familiesCount, char **id,
 	//	if(firstId != shareOutFirstId || secondId != shareOutSecondId) {
 	if(strcmp(firstId, shareOutFirstId) != 0
 	   || strcmp(secondId, shareOutSecondId) != 0) {
-	  cerr << "The id combination, " << firstId << " and " << secondId 
-	       << ", does not match the" << endl << "file's id combination, "
-	       << shareOutFirstId << " and " << shareOutSecondId
-	       << ", on line number: " << shareOutLineNumber << " of " << endl
-	       << shareOutName[0] << endl << "Data validation failed."
-	       << endl;
+	  Rcerr << "The id combination, " << firstId << " and " << secondId 
+		<< ", does not match the" << std::endl << "file's id combination, "
+		<< shareOutFirstId << " and " << shareOutSecondId
+		<< ", on line number: " << shareOutLineNumber << " of " << std::endl
+		<< shareOutName[0] << std::endl << "Data validation failed."
+		<< std::endl;
 	  *passedValidation = 0;
 	  return;
 	}

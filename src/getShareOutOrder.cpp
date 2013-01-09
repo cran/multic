@@ -9,7 +9,6 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
 
 extern "C" {
 
@@ -40,7 +39,7 @@ s_object *getShareOutOrder(s_object *fileName, s_object *peopleCount,
 
   s_object *shareOutOrder = NEW_CHARACTER(peopleCountValue);
   
-  ifstream shareOut(fileNameValue);
+  std::ifstream shareOut(fileNameValue);
   if(shareOut.fail()) {
     PROBLEM "The file '%s' could not be opened for reading.\ngetShareOutOrder.cpp key 29\n",
       fileNameValue RECOVER(NULL_ENTRY);

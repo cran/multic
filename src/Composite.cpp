@@ -4,7 +4,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+using namespace Rcpp;
+
 
 Composite::Composite(){
   //  vector = new Vector();
@@ -22,12 +25,12 @@ int Composite::getElementCount(){
 }
 
 double Composite::getbeta_hat(){
-  cout<<"Error found at composite: getbeta_hat()"<<endl;
+  Rcout<<"Error found at composite: getbeta_hat()"<<std::endl;
   return 0;
 }
 
 void Composite::getv(double **v, int n) {
-  cout << "Call wrong method" << endl;
+  Rcout << "Call wrong method" << std::endl;
 }
 
 int Composite::getbeta_hat(double* beta, int n){
@@ -71,7 +74,7 @@ void Composite::getvsum(double** vorig, double** vstack, int n,
     temp->getv(tempv,n);
 
     double localestimator = temp->getbeta_hat();
-    //cout<<"beta="<<localestimator<<endl;
+    //cout<<"beta="<<localestimator<<std::endl;
     sd->Changedata(tempv,n);
     int kk = 0;
     //stack into one column of V matrix
@@ -80,7 +83,7 @@ void Composite::getvsum(double** vorig, double** vstack, int n,
 	vstack[kk++][i] = tempv[c1][c2];
 	//cout<<tempv[c1][c2]<<"  ";
       }
-      //cout<<"next"<<endl;
+      //cout<<"next"<<std::endl;
     }
     for(c1=0;c1<count;c1++){
       for(c2=0;c2<count;c2++){

@@ -1,6 +1,6 @@
 /******************************************************************************
 File: multic.cpp
-$Id: multic.cpp,v 1.21 2006/09/29 16:30:10 m015733 Exp $
+$Id: multic.cpp,v 1.22 2013/01/22 22:57:20 m015733 Exp $
 Description: This file defines the void function multic.  In the vast majority
              of cases, multic will be called from an Splus routine.  multic is
              a program that performs linkage analysis.  It uses variance
@@ -56,8 +56,10 @@ Update logs are now kept in CVS.
 #include <cstring>
 #include "verS.h"
 #include "Lib.h"
+#include "Rostream.h"
+#include "Rstreambuf.h"
 
-using namespace std;
+using namespace Rcpp;
 
 int ascert_ch;
 int ascert_flag;
@@ -134,15 +136,15 @@ void multic(char **famid,
   algorithm_flag = *algorithm_f;
 
   /*
-    cout << endl << "multic.cpp variables:" << endl
-    << "ascert_ch = " << ascert_ch << endl
-    << "ascert_flag = " << ascert_flag << endl
-    << "runopt_flag = " << runopt_flag << endl
-    << "need_ibd_flag = " << need_ibd_flag << endl
-    << "epsilon = " << epsilon << endl
-    << "fixtoboundary_ch = char(" << (int)fixtoboundary_ch << ")" << endl
-    << "fixtoboundary_flag = " << fixtoboundary_flag << endl
-    << "algorithm_flag = " << algorithm_flag << endl << endl;
+    cout << std::endl << "multic.cpp variables:" << std::endl
+    << "ascert_ch = " << ascert_ch << std::endl
+    << "ascert_flag = " << ascert_flag << std::endl
+    << "runopt_flag = " << runopt_flag << std::endl
+    << "need_ibd_flag = " << need_ibd_flag << std::endl
+    << "epsilon = " << epsilon << std::endl
+    << "fixtoboundary_ch = char(" << (int)fixtoboundary_ch << ")" << std::endl
+    << "fixtoboundary_flag = " << fixtoboundary_flag << std::endl
+    << "algorithm_flag = " << algorithm_flag << std::endl << std::endl;
   */
   
   // TraitMarkerCov_par is a class that stores the values for trait, loci,
@@ -202,11 +204,11 @@ void multic(char **famid,
       PROBLEM "Sorry, Maxfun doesn't work for Longitutal data so far.\nmultic.cpp key 202\n"
 	RECOVER(NULL_ENTRY);
     }
-    cout << "enter maxfun" << endl;
+    Rcout << "enter maxfun" << std::endl;
     Maxfun_add maxfun;
     maxfun.run(&tmc, &init, fortArray, *observationsCount, shareArray,
 	       relationCount);
-    cout << "exit maxfun" << endl;
+    Rcout << "exit maxfun" << std::endl;
   }
   
   // This Calculate object will be initialized later, but it must
@@ -247,11 +249,11 @@ void multic(char **famid,
       PROBLEM "Sorry, Least Square option doesn't work for Longitutal data so far.\nmultic.cpp key 247"
 	RECOVER(NULL_ENTRY);
     }
-    cout << "Running Least Square ..." << endl;
+    Rcout << "Running Least Square ..." << std::endl;
     Least least(&tmc, shareArray, relationCount, fortArray,
 		*observationsCount);
     least.least_main();
-    cout << "Exit Least Square." << endl;
+    Rcout << "Exit Least Square." << std::endl;
     
     if(itraits!=1 && algorithm_flag==1){
       // There should be an error message printed here, but as of 4-25-03,
@@ -263,7 +265,7 @@ void multic(char **famid,
 
     // algorithm_flag == 1 means least square estimation method
     if(itraits == 1 && algorithm_flag == 1) {
-      //      cout << "1) Entering Robust Variance Component." << endl;
+      //      cout << "1) Entering Robust Variance Component." << std::endl;
       Composite composite;
       
       MajorGene1 m1(&least);
@@ -289,7 +291,7 @@ void multic(char **famid,
       freeFortData(fortArray, (int) *observationsCount);
       free(shareArray);
       
-      //      cout << "Exiting Robust Variance Component." << endl;
+      //      cout << "Exiting Robust Variance Component." << std::endl;
       return;
     }
     
@@ -306,7 +308,7 @@ void multic(char **famid,
 		      (int) *familyCount);
   }
 
-  //  cout << "Entering multic." << endl;
+  //  cout << "Entering multic." << std::endl;
 
   // Calculate current time to display to user
   struct tm *timePtr;
@@ -321,12 +323,12 @@ void multic(char **famid,
     // print a newline, we need to print one here before we start the next 
     // ibd file.  Eric Lunde 01-08-04
     if(*printProgress) {
-      cout << "Calculating likelihoods for locus: '" << &ibdFileName[2]
+      Rcout << "Calculating likelihoods for locus: '" << &ibdFileName[2]
 	   << "' on " << asctime(timePtr);
     }
   }else if(runopt_flag == 2) {
     if(*printProgress) {
-      cout << "Calculating likelihoods under null hypothesis on "
+      Rcout << "Calculating likelihoods under null hypothesis on "
 	   << asctime(timePtr);
     }
   }
@@ -460,9 +462,9 @@ void readShareOut(const char *shareFileName, ShareRelation **sa, int *rc) {
 }
 
 void printShareRelation(ShareRelation *sr) {
-  cout << sr->seqId1 << '\t' << sr->seqId2 << '\t' // << setw(5)
+  Rcout << sr->seqId1 << '\t' << sr->seqId2 << '\t' // << setw(5)
        << sr->geneticSimilarity << '\t' << sr->areSiblings << '\t'
-       << sr->areSpouses << '\t' << sr->areParentChild << endl;
+       << sr->areSpouses << '\t' << sr->areParentChild << std::endl;
 }
 
 /*****************************
@@ -542,18 +544,18 @@ void readFort12(FortData **fa, int traitCount,
 
 void printFortData(FortData *fd, int traitCount, int covariateCount,
 		   int repeatCount) {
-  cout << fd->familyId << ' ' << fd->seqId << ' ' << fd->fatherId << ' '
+  Rcout << fd->familyId << ' ' << fd->seqId << ' ' << fd->fatherId << ' '
        << fd->motherId << ' ' << fd->sex;
   for(int j=0; j<traitCount * repeatCount; j++) {
-    cout << ' ' << fd->traits[j];
+    Rcout << ' ' << fd->traits[j];
   }
   for(int j=0; j<covariateCount * repeatCount; j++) {
-    cout << ' ' << fd->covariates[j];
+    Rcout << ' ' << fd->covariates[j];
   }
   if(ascert_flag == YES) {
-    cout << ' ' << fd->proband;
+    Rcout << ' ' << fd->proband;
   }
-  cout << endl;
+  Rcout << std::endl;
 }
 
 void freeFortData(FortData *fortArray, int observations) {

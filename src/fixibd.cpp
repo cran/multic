@@ -73,8 +73,11 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <iostream>
+#include <Rinterface.h>
 #include "verS.h"
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+using namespace Rcpp;
  
 /* Define */
 #define DIRECTORY_NAME_LENGTH 128
@@ -176,7 +179,7 @@ void fixibd(char **ibd_directory_name, char **fixed_ibd_directory_name,
 	  FILE_NAME_LENGTH-10-1);
 
   /* unzip all files of the input dir */
-  printf("Unzipping files in the input dir: %s\n", ibdDirectoryNameToPrint);
+  Rprintf("Unzipping files in the input dir: %s\n", ibdDirectoryNameToPrint);
   free(ibdDirectoryNameToPrint);
   unzip_dir(ibdDirectoryName);
   
@@ -187,7 +190,7 @@ void fixibd(char **ibd_directory_name, char **fixed_ibd_directory_name,
   }
   
   /* read each file in the directory */
-  printf("Fixing files:");
+  Rprintf("Fixing files:");
   while( (dptr=readdir(dirp)) ) {
     if( strcmp(dptr->d_name, "temp_ibd") == 0) {
       continue;
@@ -205,10 +208,11 @@ void fixibd(char **ibd_directory_name, char **fixed_ibd_directory_name,
     }
 
     if( (ibdFileCounter % 35) == 0 ) {
-      printf("\n");
+      Rprintf("\n");
     }
-    printf(". ");
-    fflush(stdout);
+    Rprintf(". ");
+    R_FlushConsole();
+    //fflush(stdout);
     ibdFileCounter++;
     
     sort_ibd_file(ibdDirectoryName, dptr->d_name, temporaryIbdName);
@@ -216,7 +220,7 @@ void fixibd(char **ibd_directory_name, char **fixed_ibd_directory_name,
 		 sortedPhiFileName, temporaryIbdName);
   }
   closedir(dirp);
-  printf("Done!\n");
+  Rprintf("Done!\n");
   
 
   sprintf(command, "\\rm -f %s %s", temporaryIbdName, sortedPhiFileName);
@@ -291,7 +295,7 @@ void unzip_dir(char *dir_name)
   sprintf(command,"gunzip -qf %s/*", dir_name);
   int systemResult = system(command);
   if( systemResult ) {
-    cout << "No files were unzipped in directory: " << dir_name << endl;
+    Rcout << "No files were unzipped in directory: " << dir_name << std::endl;
   }
 }
 
@@ -411,10 +415,10 @@ void fix_ibd_file(char *ibdDirectoryName,  char *ibd_file,
 	&& !feof(fp_mibd)) {
     flag=0;
     if(previousMi1 == mi1 && previousMi2 == mi2) {
-      cerr << endl << "Warning!  The ids: " << mi1 << " and " << mi2
-	   << " were found in consecutive rows." << endl
-	   << "This is not a valid (m)ibd file.  Processing will continue."
-	   << endl << endl;
+      Rcerr << std::endl << "Warning!  The ids: " << mi1 << " and " << mi2
+	    << " were found in consecutive rows." << std::endl
+	    << "This is not a valid (m)ibd file.  Processing will continue."
+	    << std::endl << std::endl;
     }
 
     fgets(line2, LINE_LENGTH-1, fp_phi);

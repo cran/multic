@@ -1,5 +1,14 @@
-# Default NAMESPACE created by R
-# Remove the previous line if you edit this file
+useDynLib(multic)
 
-# Export all names
-exportPattern(".")
+export(addGE, expand.data, expand.multic, multic.control,
+       multic, phi2share, plotFamilyLods, solar2mloci,
+       solar2multic, subsets, sw2mloci, tRank)
+
+## These methods are assigned to plotFamilyLods and tRank respectively.
+## R CMD check doesn't like these names because the functions aren't actually S3.
+## They're added to non.user.level.objects for backward compatibility.
+export(plot.family.lods, t.rank)
+
+S3method(plot, multic)
+S3method(print, multic)
+S3method(summary, multic)

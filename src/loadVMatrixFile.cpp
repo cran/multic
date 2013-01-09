@@ -8,7 +8,6 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
 
 extern "C" {
 
@@ -35,7 +34,7 @@ s_object *loadVMatrixFile(s_object *fileName, s_object *familyCount) {
 
   s_object *list = NEW_LIST(familyCountValue);
  
-  ifstream fin(fileNameValue);
+  std::ifstream fin(fileNameValue);
   if(fin.fail()) {
     PROBLEM "The file '%s' could not be opened for reading.\nloadVMatrix.cpp key 23\n",
       fileNameValue RECOVER(NULL_ENTRY);
@@ -49,12 +48,7 @@ s_object *loadVMatrixFile(s_object *fileName, s_object *familyCount) {
   s_object **vMatrix;
   double *vMatrixPtr;
   s_object **vMatrixDim;
-#ifdef USING_R
-  int *
-#else
-  Sint *
-#endif
-    vMatrixDimPtr;
+  Sint *vMatrixDimPtr;
 
   vMatrix = (s_object **) Salloc(familyCountValue, s_object *);
   vMatrixDim = (s_object **) Salloc(familyCountValue, s_object *);
@@ -63,7 +57,7 @@ s_object *loadVMatrixFile(s_object *fileName, s_object *familyCount) {
   }
 
   for(int fam = 0; fam < familyCountValue; fam++) {
-    //    cout << "fam = " << fam << endl;
+    //    cout << "fam = " << fam << std::endl;
     fin >> holder >> holder >> holder >> familySize >> holder >> traitCount;
     matrixRowCount = familySize * traitCount;
     matrixElementCount = matrixRowCount * matrixRowCount;

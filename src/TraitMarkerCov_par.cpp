@@ -6,7 +6,6 @@
 #include <cctype>
 #include <cstring>
 #include <cstdlib>
-using namespace std;
 
 TraitMarkerCov_par::TraitMarkerCov_par(Sint traitCount,
 				       Sint covariateCount,

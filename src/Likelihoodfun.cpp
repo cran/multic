@@ -42,8 +42,10 @@ Updates: (Date, Modified By, Modification Description)
 #include <cstdlib>
 #include <cctype>
 #include <cstdio>
+#include "Rostream.h"
+#include "Rstreambuf.h"
 
-using namespace std;
+using namespace Rcpp;
 
 extern int ascert_flag;
 
@@ -58,7 +60,7 @@ Likelihoodfun::Likelihoodfun() {
 Likelihoodfun::~Likelihoodfun() {
   fp_lookuplog.fill('#');
   fp_lookuplog.width(70);
-  fp_lookuplog << endl << "#" << endl;
+  fp_lookuplog << std::endl << "#" << std::endl;
   fp_lookuplog.close();
 }
 
@@ -159,7 +161,7 @@ void Likelihoodfun::GetVGZICPQMatrix(double **V_mat, double **G_mat[],
   }
 
   /*
-  cout << endl << "n_fam_member = " << n_fam_member << endl;
+  cout << std::endl << "n_fam_member = " << n_fam_member << std::endl;
   printf("%.3f %.3f %.3f %.3f %.3f %.3f %.3f\n",x_S[0],x_M1[0],x_M2[0],x_T[0],x_c[0],x_p[0],x_q[0]);
   for (i = 0; i < n_fam_member; i++) {
     for (j = 0; j < n_fam_member; j++)  
@@ -208,12 +210,12 @@ void Likelihoodfun::GetVGZICPQMatrix(double **V_mat, double **G_mat[],
   /*  vm = x_S *g_mat + x_M1*z1_mat + x_M2*z2_mat + x_c*c_mat + x_p*p_mat + x_q*q_mat. */ 
   for (k = 0; k < iinitvcnum; k++) {
     /*
-    cout<<x_S[k]<<endl;
-    cout<<x_M1[k]<<endl;
-    cout<<x_M2[k]<<endl;
-    cout<<x_c[k]<<endl;
-    cout<<x_p[k]<<endl;
-    cout<<x_q[k]<<endl;
+    cout<<x_S[k]<<std::endl;
+    cout<<x_M1[k]<<std::endl;
+    cout<<x_M2[k]<<std::endl;
+    cout<<x_c[k]<<std::endl;
+    cout<<x_p[k]<<std::endl;
+    cout<<x_q[k]<<std::endl;
     */
     
     for (i = 0; i < n_fam_member; i++) {
@@ -1088,7 +1090,7 @@ void Likelihoodfun::GetData(int n_fam_member) {
        change G_VAL 'printfirstfam_flag = NO' here.            */
     if (printfirstfam_flag == YES) { 
       if (j == 0) {
-	fp_lookuplog << endl << "FIRST FAMILY's DATA:" << endl;
+	fp_lookuplog << std::endl << "FIRST FAMILY's DATA:" << std::endl;
       }
       fp_lookuplog << fortArray[dataIndex].familyId << ' '
 		   << fortArray[dataIndex].seqId << ' '
@@ -1101,7 +1103,7 @@ void Likelihoodfun::GetData(int n_fam_member) {
       for(i=0; i<icovs; i++) {
 	fp_lookuplog << fortArray[dataIndex].covariates[i] << ' ';
       }
-      fp_lookuplog << endl;
+      fp_lookuplog << std::endl;
     }
 
     if (ascert_flag == YES) {
@@ -1113,11 +1115,11 @@ void Likelihoodfun::GetData(int n_fam_member) {
       if(fam.person[j].trait[i] == trait_array[i].t_misval) {
 	fam.person[j].missing_traitflag = 1;
       }
-      //      cout<<"trait="<<i<<" val="<<fam.person[j].trait[i]<<endl;      
+      //      cout<<"trait="<<i<<" val="<<fam.person[j].trait[i]<<std::endl;      
     }
     for ( i = 0; i < total_cov_values; i++) {
       fam.person[j].cov[i] = fortArray[dataIndex].covariates[i];
-      //      cout<<"cov"<<i<<"="<<fam.person[j].cov[i]<<endl;
+      //      cout<<"cov"<<i<<"="<<fam.person[j].cov[i]<<std::endl;
     }
   } // end of 'for ( j = 0; j < n_fam_member; j++) {'
 
@@ -1192,10 +1194,10 @@ void Likelihoodfun::Get_z_mat(int n_fam_member, double **z1_mat, double **z2_mat
 	  z2_mat[j][i] = mg2_pi;
 	}
 	else {
-	  cerr << "*** Get_z_mat debug ***" << endl <<
-	    "Error: can't handle more than two loci," << endl <<
-	    "please change the parameter file." << endl <<
-	    "(Likelihoodfun.cpp line 1327)" << endl;
+	  Rcerr << "*** Get_z_mat debug ***" << std::endl <<
+	    "Error: can't handle more than two loci," << std::endl <<
+	    "please change the parameter file." << std::endl <<
+	    "(Likelihoodfun.cpp line 1327)" << std::endl;
 	}
       }
     }

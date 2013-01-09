@@ -33,7 +33,10 @@ Updates: (Date, Modified By, Modification Description)
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 ReadFamilyData::ReadFamilyData(TraitMarkerCov_par *tmc, int col,
 			       Family *fam1, FortData *fa, int ds)
@@ -64,8 +67,8 @@ ReadFamilyData::ReadFamilyData(TraitMarkerCov_par *tmc, int col,
   
   // Test to see if there is at least 1 family.
   if(dataSize <= 0) {
-    cerr << "fort.12 contains no family data" << endl
-	 << "ReadFamilyData.cpp line 37" << endl;
+    Rcerr << "fort.12 contains no family data" << std::endl
+	  << "ReadFamilyData.cpp line 37" << std::endl;
   }else {
     familyCount = 1;
     for(int i=1; i<dataSize; i++) {

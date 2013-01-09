@@ -33,20 +33,12 @@ Author: Eric Lunde, 12/17/2004
 *********************/
 s_object *getResidualPlacement(s_object *familySizes, s_object *hasAllValues,
 			       s_object *lociCount) {
-  S_EVALUATOR
+  // I'm not sure what S_EVALUATOR does, but I'm guessing we don't need it now
+  // that we're dropping support for S-PLUS (PV 1/7/2009)
+  //S_EVALUATOR
  
-#ifdef USING_R
-  int
-#else
-  Sint
-#endif
-    *familySizesPtr = INTEGER_POINTER(familySizes);
-#ifdef USING_R
-  int
-#else
-  Sint
-#endif
-    *hasAllValuesPtr = LOGICAL_POINTER(hasAllValues);
+  Sint *familySizesPtr = INTEGER_POINTER(familySizes);
+  Sint *hasAllValuesPtr = LOGICAL_POINTER(hasAllValues);
   Sint lociCountValue = INTEGER_VALUE(lociCount);
 
   Sint familyCount = LENGTH(familySizes);
@@ -58,12 +50,7 @@ s_object *getResidualPlacement(s_object *familySizes, s_object *hasAllValues,
   }
 
   s_object *residualPlacement = NEW_LOGICAL(peopleCount * lociCountValue);
-#ifdef USING_R
-  int
-#else
-  Sint
-#endif
-    *residualPlacementPtr = LOGICAL_POINTER(residualPlacement);
+  Sint *residualPlacementPtr = LOGICAL_POINTER(residualPlacement);
   int residualPlacementIndex = 0;
 
   // For each family, repeat their hasAllValues data lociCount times.

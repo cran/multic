@@ -7,8 +7,10 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include "Rostream.h"
+#include "Rstreambuf.h"
 
-using namespace std;
+using namespace Rcpp;
 
 extern int ascert_ch;
 extern int ascert_flag;
@@ -236,7 +238,7 @@ void Maxfun::eval_fun(double TR[], double *FQE, int *NFE, int *LEX){
 
 
   for (i = 0; i < 8+icovs; i++)
-    cout << "TR[" << i << "]=" << TR[i] << endl;
+    Rcout << "TR[" << i << "]=" << TR[i] << std::endl;
 
   x_mu[0]      = TR[0];
   x_S[0]       = TR[1];
@@ -356,10 +358,10 @@ void Maxfun::Get_z_mat(int n_fam_member, double **z1_mat, double **z2_mat,double
 	  z3_mat[j][i] = mg1_f2;
 	}
 	else {
-	  cerr << "*** Get_z_mat debug ***" << endl <<
-	    "Error: can't handle more than two loci," << endl <<
-	    "please change the parameter file." << endl <<
-	    "(Maxfun.cpp line 343)" << endl;
+	  Rcerr << "*** Get_z_mat debug ***" << std::endl <<
+	    "Error: can't handle more than two loci," << std::endl <<
+	    "please change the parameter file." << std::endl <<
+	    "(Maxfun.cpp line 343)" << std::endl;
 	}
       }
     }           
@@ -594,7 +596,7 @@ double Maxfun::Like_func() {
     //    printf("V1 = %lf\n", V1);
     //    printf("V2 = %lf\n", V2);
     //    printf("V3 = %lf\n", V3);
-    cout << "ln_func = " << ln_func << endl;
+    Rcout << "ln_func = " << ln_func << std::endl;
     /*
       #endif
     */
@@ -679,13 +681,13 @@ double Maxfun::SRun()
   //    double temp_a[iinitvcnum], temp_c[iinitvcnum], temp_b[itraits];
    
 #ifdef DEBUG
-  printf("This is the start values after Check&Fix Covariates\n");
+  Rprintf("This is the start values after Check&Fix Covariates\n");
   for (i = 0; i < itraits; i++) {
-    printf("%10f ", x_mu[i]);
+    Rprintf("%10f ", x_mu[i]);
     for (k = 0; k < icovs; k++)
-      printf("%10f ", x_beta[i][k]);
+      Rprintf("%10f ", x_beta[i][k]);
   }
-  printf("\n");
+  Rprintf("\n");
   //PrintResults(DEBUG);
 #endif
        
@@ -863,7 +865,7 @@ double Maxfun::CF_1or2prob() {
      for each family. */
   for (i = 0; i < nfam; i++) {
 
-    //cout<<"i="<<i<<endl;
+    //cout<<"i="<<i<<std::endl;
 
     GetProb(N[i]);
 
@@ -905,8 +907,8 @@ double Maxfun::CF_1or2prob() {
 
     for(j=0;j<total_trait_values*Ni;j++){
       for(k=0;k<total_trait_values*Ni;k++)
-	printf("%.3f ",V_mat[j][k]);
-      printf("\n");
+	Rprintf("%.3f ",V_mat[j][k]);
+      Rprintf("\n");
     }
 
     Lib::CopyMatrix(temp_mat,total_trait_values*Ni, V_mat);
@@ -993,7 +995,7 @@ double Maxfun::CF_1or2prob() {
   free(MuBeta_vec);
 
 #ifdef DEBUG 
-  printf("\nLoglik = %lf\n", ln_func);
+  Rprintf("\nLoglik = %lf\n", ln_func);
 #endif
   return ln_func;
 }
@@ -1111,8 +1113,8 @@ void Maxfun::GetProb_z_mat(int n_fam_member, double **z1_mat, double **z2_mat) {
 	  }
 	}
 	else {
-	  cerr << "Error: can't handle more than two loci," << endl;
-	  cerr << "please change the parameter file." << endl << endl;
+	  Rcerr << "Error: can't handle more than two loci," << std::endl;
+	  Rcerr << "please change the parameter file." << std::endl << std::endl;
 	}
       }
     }

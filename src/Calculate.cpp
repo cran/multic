@@ -105,11 +105,15 @@ Updates: (Date, Modified By, Modification Description)
 #include <cstring>
 #include <new>
 #include <cfloat>
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern int ascert_flag, run_flag, runopt_flag, need_ibd_flag,
   fixtoboundary_flag, algorithm_flag;
 extern double epsilon;
+
 
 // char *ibdFN was added by Eric Lunde on 7-11-03 to initialize ibdFileName
 // ShareRelation *shareArr was added by Eric Lunde on 7-30-03 to initialize
@@ -312,7 +316,7 @@ void Calculate::main_fun(TraitMarkerCov_par *tmc, InitValue_par *init){
 
   /* Get initial G_VAL 'imubeta_dim' and 'ismtcpq_dim' here and they may be
      changed if "runopt == 3" or some parameters are fixed.         */
-  //  cout << "GetDim - 1 key 277" << endl;
+  //  cout << "GetDim - 1 key 277" << std::endl;
   GetDim();
 
   mubeta_dim = imubeta_dim;
@@ -486,7 +490,7 @@ void Calculate::OpenFiles(){
 void Calculate::CloseFiles() {
   fp_log.fill('#');
   fp_log.width(70);
-  fp_log << endl << "#" << endl;
+  fp_log << std::endl << "#" << std::endl;
 
   fp_out.close();
   fp_mu.close();
@@ -506,44 +510,49 @@ void Calculate::CloseFiles() {
 /* Print the title, update time and copyright for the program.
 */
 void Calculate::PrintTitle(ostream *fp) {
-  *fp << endl
+  *fp << std::endl
       << "\tAnalyze Multivariate Traits with Covariance Program\t(MULTIC)"
-      << endl;
-  *fp << "\tACT:\tAnalysis for Complex Traits Package" << endl;
-  *fp << "\tRevision " << REVISION << " (" << DISTRIBDATE << ")" << endl;
-  *fp << "\tCopyright(C) 1997" << endl;
-  *fp << "\tDepartment of Epidemiology" << endl;
-  *fp << "\tUT M.D. Anderson Cancer Center" << endl;
-  *fp << "\tAll rights reserved." << endl << endl << endl;
+      << std::endl;
+  *fp << "\tACT:\tAnalysis for Complex Traits Package" << std::endl;
+  *fp << "\tRevision " << REVISION << " (" << DISTRIBDATE << ")" << std::endl;
+  *fp << "\tCopyright(C) 1997" << std::endl;
+  *fp << "\tDepartment of Epidemiology" << std::endl;
+  *fp << "\tUT M.D. Anderson Cancer Center" << std::endl;
+  *fp << "\tAll rights reserved." << std::endl << std::endl << std::endl;
 }
 
 /* Print the paremeters information for the program.
 */
 void Calculate::PrintParaInfo() {
-  cout << "\t(Convergence value :  " << BREAKVAL << ")" << endl << endl;
-  cout << "\tHere are the maximum numbers for your data file," << endl;
-  cout << "\tplease check them before you continue to run the program." <<endl;
-  cout << "\t Maximum number of traits:               " << MAXNUMTRAIT
-       << " (multivariate data)" << endl;
-  cout << "\t                                   or    " << 1
-       << " (longitudinal data)" << endl;
-  cout << "\t Maximum number of unlinked marker loci: " << MAXNUMMARKER <<endl;
-  cout << "\t Maximum number of covariates:           " << MAXNUMCOV << endl;
-  cout << "\t Maximum number of repeat measurement (longitudinal data only): "
-       << MAXREPEATMST << endl;
-  cout << "\t Maximum number of alleles at a locus:   " << NUMALLELE << endl;
-  cout << "\t Maximum number of each family member:   " << FAMMEMNUM << endl;
+
+  //  cout << "\t(Convergence value :  " << BREAKVAL << ")" << std::endl << std::endl;
+  Rcout << "\t(Convergence value :  " << BREAKVAL << ")" << std::endl << std::endl;
+
+  
+
+  Rcout << "\tHere are the maximum numbers for your data file," << std::endl;
+  Rcout << "\tplease check them before you continue to run the program." <<std::endl;
+  Rcout << "\t Maximum number of traits:               " << MAXNUMTRAIT
+       << " (multivariate data)" << std::endl;
+  Rcout << "\t                                   or    " << 1
+       << " (longitudinal data)" << std::endl;
+  Rcout << "\t Maximum number of unlinked marker loci: " << MAXNUMMARKER <<std::endl;
+  Rcout << "\t Maximum number of covariates:           " << MAXNUMCOV << std::endl;
+  Rcout << "\t Maximum number of repeat measurement (longitudinal data only): "
+       << MAXREPEATMST << std::endl;
+  Rcout << "\t Maximum number of alleles at a locus:   " << NUMALLELE << std::endl;
+  Rcout << "\t Maximum number of each family member:   " << FAMMEMNUM << std::endl;
 }
 
 /****************************
    Print the three input files (and their purpose) to the screen
 *****************************/
 void Calculate::PrintInputFiles() {
-  cout << "\nYou should have the following input files:\n";
-  cout << "\t'fort.12'     --- family data file;\n";
-  cout << "\t'loci.out'    --- marker information file;\n";
-  cout << "\t'share.out'   --- relationship information file.\n";
-  cout << "\n\t The program is running, please wait ... \n\n";
+  Rcout << "\nYou should have the following input files:\n";
+  Rcout << "\t'fort.12'     --- family data file;\n";
+  Rcout << "\t'loci.out'    --- marker information file;\n";
+  Rcout << "\t'share.out'   --- relationship information file.\n";
+  Rcout << "\n\t The program is running, please wait ... \n\n";
 }
 
 /***************************
@@ -589,7 +598,7 @@ void Calculate::GetIbd_flag() {
 void Calculate::PrintSummary(struct tm *now, double time_secs) {
   char *run_date;
   run_date = asctime(now);
-  fp_log << "\t\t" << run_date << endl;
+  fp_log << "\t\t" << run_date << std::endl;
   PrintTitle(&fp_log);
   /*
     printf("\t(It is running at %d-%d-%d)\n",now->tm_mon +1,
@@ -597,126 +606,126 @@ void Calculate::PrintSummary(struct tm *now, double time_secs) {
   */
 
   fp_log << "\tThe program used cpu time: "<< time_secs << "  seconds"
-	 << endl << endl << endl;
-  fp_log << "\t\t =====================" << endl;
-  fp_log << "\t\t| SUMMARY OF ANALYSIS |" << endl;
-  fp_log << "\t\t =====================" << endl;
+	 << std::endl << std::endl << std::endl;
+  fp_log << "\t\t =====================" << std::endl;
+  fp_log << "\t\t| SUMMARY OF ANALYSIS |" << std::endl;
+  fp_log << "\t\t =====================" << std::endl;
 
   /* Print the data type here, longitudinal or multivariate data.
      added 12-16-97.
   */
   if (datatype == LONGITUDINAL)
-    fp_log << "\t\t ( longitudinal data )" << endl;
+    fp_log << "\t\t ( longitudinal data )" << std::endl;
   else if (datatype == MULTIVARIATE)
-    fp_log << "\t\t ( multivariate data )" << endl;
+    fp_log << "\t\t ( multivariate data )" << std::endl;
 
   PrintSummaryP1();
   PrintSummaryP2();
   if (converg_flag == YES) {    
     PrintSummaryP3(FIRST);
-    fp_log << endl << "\t(3). Log Likelihood after convergence:" << endl;
+    fp_log << std::endl << "\t(3). Log Likelihood after convergence:" << std::endl;
     if (runopt_flag == 1) {
-      fp_log << "\t        L(A) =    " << loglikelihood_A << endl;
+      fp_log << "\t        L(A) =    " << loglikelihood_A << std::endl;
       summaryLog << setprecision(10)
 		 << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << endl;
+		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << std::endl;
     }else {
-      fp_log << "\t        L(0) =    " << loglikelihood_0 << endl;
+      fp_log << "\t        L(0) =    " << loglikelihood_0 << std::endl;
       summaryLog << setprecision(10)
 		 << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_0
-		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << endl;
+		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << std::endl;
     }
   }else {
     if (breakstephalf_run1 == NO) {
       /* Second time use G_VAL 'N1' in the program.       */
-      fp_log << endl << endl
+      fp_log << std::endl << std::endl
 	     << "\t***THERE ARE NO CONVERGENT VALUES AFTER " << N1
-	     << " ITERATIONS." << endl;
-      fp_log << endl << "\t***THE LAST OUTPUTS ARE:";
+	     << " ITERATIONS." << std::endl;
+      fp_log << std::endl << "\t***THE LAST OUTPUTS ARE:";
       PrintSummaryP3(FIRST);
-      fp_log << endl << "\t(3). Log Likelihood (non-convergent value):"
-	     << endl;
+      fp_log << std::endl << "\t(3). Log Likelihood (non-convergent value):"
+	     << std::endl;
       if (runopt_flag == 1) {
 	fp_log << "\t        L(A) (non-convergent)  =    " << loglikelihood_A
-	       << endl;
+	       << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << std::endl;
       }else {
 	fp_log << "\t        L(0) (non-convergent)  =    " << loglikelihood_0
-	       << endl;
+	       << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_0
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << std::endl;
       }
     }else if (breakstephalf_run1 == YES) {
-      fp_log << endl << endl << "\t*$*THERE ARE NO CONVERGENT VALUES AFTER "
-	     << BREAKSTEPHALF <<" STEP-HALFING." << endl;
-      fp_log << endl << "\t***THE LAST OUTPUTS ARE:";
+      fp_log << std::endl << std::endl << "\t*$*THERE ARE NO CONVERGENT VALUES AFTER "
+	     << BREAKSTEPHALF <<" STEP-HALFING." << std::endl;
+      fp_log << std::endl << "\t***THE LAST OUTPUTS ARE:";
       PrintSummaryP3(FIRST);
-      fp_log << endl << "\t(3). Log Likelihood (non-convergent value):"
-	     << endl;
+      fp_log << std::endl << "\t(3). Log Likelihood (non-convergent value):"
+	     << std::endl;
       if (runopt_flag == 1) {
 	fp_log << "\t        L(A) (non-convergent)  =    " << loglikelihood_A
-	       << endl;
+	       << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << std::endl;
       }else {
 	fp_log << "\t        L(0) (non-convergent)  =    " << loglikelihood_0
-	       << endl;
+	       << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_0
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" << std::endl;
       }
     }
   }
   if ((runopt_flag == 3) || (runopt_flag == 4)) {
     if (final_flag == YES) {
       PrintSummaryP3(SECOND);
-      fp_log << endl << "\t(3). Log Likelihood under the hypothesis of"
-	     << endl;
-      fp_log << "\t     with major gene component(s):" << endl;
-      fp_log << "\t        L(A) =    " << loglikelihood_A << endl;
+      fp_log << std::endl << "\t(3). Log Likelihood under the hypothesis of"
+	     << std::endl;
+      fp_log << "\t     with major gene component(s):" << std::endl;
+      fp_log << "\t        L(A) =    " << loglikelihood_A << std::endl;
       summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << endl;
+		 << setw(SUMMARY_LOG_FIELD_WIDTH) << "converg" << std::endl;
 
       /* added LRT ; 5/13/97.  */
-      fp_log << endl << "\t        LRT = -2*(L(0)-L(A)) =    "
-	     << -2*(loglikelihood_0 - loglikelihood_A) << endl;
+      fp_log << std::endl << "\t        LRT = -2*(L(0)-L(A)) =    "
+	     << -2*(loglikelihood_0 - loglikelihood_A) << std::endl;
     }else {
       if (breakstephalf_run2 == NO) {
-	fp_log << endl << endl
+	fp_log << std::endl << std::endl
 	       << "\t***THERE ARE NO CONVERGENT VALUES AFTER " << N1
-	       << " ITERATIONS." << endl;
-	fp_log << endl << "\t***THE LAST OUTPUTS ARE:";
+	       << " ITERATIONS." << std::endl;
+	fp_log << std::endl << "\t***THE LAST OUTPUTS ARE:";
 	PrintSummaryP3(SECOND);
-	fp_log << endl
-	       << "\t(3). Log Likelihood (non-convergent value) under" << endl;
+	fp_log << std::endl
+	       << "\t(3). Log Likelihood (non-convergent value) under" << std::endl;
 	fp_log << "\t     the hypothesis of with major gene component(s):"
-	       << endl;
+	       << std::endl;
 	fp_log << "\t        L(A) (non-convergent)  =    "
-	       << loglikelihood_A << endl;
+	       << loglikelihood_A << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" <<  endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" <<  std::endl;
       }else if (breakstephalf_run2 == YES) {
-	fp_log << endl << endl
+	fp_log << std::endl << std::endl
 	       << "\t*$*THERE ARE NO CONVERGENT VALUES AFTER " << BREAKSTEPHALF
-	       << " STEP-HALFING." << endl;
-	fp_log << endl << "\t*$*THE LAST OUTPUTS ARE:";
+	       << " STEP-HALFING." << std::endl;
+	fp_log << std::endl << "\t*$*THE LAST OUTPUTS ARE:";
 	PrintSummaryP3(SECOND);
-	fp_log << endl
-	       << "\t(3). Log Likelihood (non-convergent value) under" << endl;
+	fp_log << std::endl
+	       << "\t(3). Log Likelihood (non-convergent value) under" << std::endl;
 	fp_log << "\t     the hypothesis of with major gene component(s):"
-	       << endl;
+	       << std::endl;
 	fp_log << "\t        L(A) (non-convergent)  =    " << loglikelihood_A
-	       << endl;
+	       << std::endl;
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << loglikelihood_A
-		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" <<  endl;
+		   << setw(SUMMARY_LOG_FIELD_WIDTH) << "non-converg" <<  std::endl;
       }
 
       /* added (non-converg) LRT ; 2/20/98.  */
-      fp_log << endl << "\t       (non-converg)LRT = -2*(L(0)-L(A)) =    "
-	     << -2*(loglikelihood_0 - loglikelihood_A) << endl;
+      fp_log << std::endl << "\t       (non-converg)LRT = -2*(L(0)-L(A)) =    "
+	     << -2*(loglikelihood_0 - loglikelihood_A) << std::endl;
     }
   }
-  //  summaryLog << endl;
+  //  summaryLog << std::endl;
 }
 
 
@@ -743,35 +752,35 @@ void Calculate::PrintSummaryP1() {
     total_individual += N[i];
   }
 
-  fp_log << endl << endl << "\t";
+  fp_log << std::endl << std::endl << "\t";
   int originalFill = fp_log.fill('-');
   int originalWidth = fp_log.width(11);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
-  fp_log << "\tINPUT FILES" << endl;
+  fp_log << "\tINPUT FILES" << std::endl;
   fp_log << "\t";
   originalFill = fp_log.fill('-');
   originalWidth = fp_log.width(11);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
   //    if (datatype == MULTIVARIATE)
-  fp_log << "\t(1). Parameter file:   '" << multic_para_file << "'" << endl;
+  fp_log << "\t(1). Parameter file:   '" << multic_para_file << "'" << std::endl;
   //    else if (datatype == LONGITUDINAL)
   //        fp_log << "\t(1). Parameter file:   '" << longic_para_file << "'" << end;
-  fp_log << "\t     --------------" << endl;
-  //  fp_log << "\t     " << para_str1 << endl;
-  fp_log << "\t     " << para_str2 << endl;
-  fp_log << "\t     " << para_str3 << endl;
-  fp_log << "\t     ..." << endl;
-  fp_log << "\t     --------------" << endl << endl;
-  fp_log << "\t(2). Family data file: '" << data_file << "'" << endl;
-  fp_log << "\t     (Total number of families   : " << nfam << endl;
+  fp_log << "\t     --------------" << std::endl;
+  //  fp_log << "\t     " << para_str1 << std::endl;
+  fp_log << "\t     " << para_str2 << std::endl;
+  fp_log << "\t     " << para_str3 << std::endl;
+  fp_log << "\t     ..." << std::endl;
+  fp_log << "\t     --------------" << std::endl << std::endl;
+  fp_log << "\t(2). Family data file: '" << data_file << "'" << std::endl;
+  fp_log << "\t     (Total number of families   : " << nfam << std::endl;
   fp_log << "\t      Total number of individuals: " << total_individual
-	 << ")" << endl;
+	 << ")" << std::endl;
 }
 
 /* Print the parameters of the analysis in the log file.
@@ -779,18 +788,18 @@ void Calculate::PrintSummaryP1() {
 void Calculate::PrintSummaryP2() {
   int i;
 
-  fp_log << endl << endl << "\t";
+  fp_log << std::endl << std::endl << "\t";
   int originalFill = fp_log.fill('-');
   int originalWidth = fp_log.width(27);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
-  fp_log << "\tPARAMETERS FOR THE ANALYSIS" << endl;
+  fp_log << "\tPARAMETERS FOR THE ANALYSIS" << std::endl;
   fp_log << "\t";
   originalFill = fp_log.fill('-');
   originalWidth = fp_log.width(27);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
@@ -800,7 +809,7 @@ void Calculate::PrintSummaryP2() {
     if ((total_trait_values > 1) && (i != (total_trait_values-1)))
       fp_log << ", ";
   }
-  fp_log << "." << endl;
+  fp_log << "." << std::endl;
 
   fp_log << "\t(2). " << iloci << " Marker(s):    ";
   for (i = 0; i < iloci; i++) {
@@ -808,7 +817,7 @@ void Calculate::PrintSummaryP2() {
     if ((iloci > 1) && (i != (iloci-1)))
       fp_log << ", ";
   }
-  fp_log << "." << endl;
+  fp_log << "." << std::endl;
 
   fp_log << "\t(3). " << icovs << " Covariate(s): ";
   for (i = 0; i < icovs; i++) {
@@ -816,22 +825,22 @@ void Calculate::PrintSummaryP2() {
     if ((icovs > 1) && (i != (icovs-1)))
       fp_log << ", ";
   }
-  fp_log << "." << endl;
+  fp_log << "." << std::endl;
 
   fp_log << "\t(4). Ascertainment:  ";
   if (ascert_flag == YES)
-    fp_log << "YES." << endl;
+    fp_log << "YES." << std::endl;
   else if (ascert_flag == NO)
-    fp_log << "NO." << endl;
+    fp_log << "NO." << std::endl;
 }
 
 /* Print the results of the analysis in the log file.
 */
 void  Calculate::PrintSummaryP3(int H_Aor0_flag) {
-  fp_log << endl << endl << "\t";
+  fp_log << std::endl << std::endl << "\t";
   int originalFill = fp_log.fill('-');
   int originalWidth = fp_log.width(31);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
@@ -839,18 +848,18 @@ void  Calculate::PrintSummaryP3(int H_Aor0_flag) {
 
   if ( (H_Aor0_flag == SECOND)
        || ((H_Aor0_flag == FIRST) && (runopt_flag == 1))) {
-    fp_log << "(H_A)" << endl;
-    summaryLog << "# " << ibdFileName << endl;
+    fp_log << "(H_A)" << std::endl;
+    summaryLog << "# " << ibdFileName << std::endl;
   }else if ((H_Aor0_flag == FIRST)
 	    &&((runopt_flag == 2) || (runopt_flag == 3) || (runopt_flag == 4))){
-    fp_log << "(H_0)" << endl;
-    summaryLog << "# null " << endl;
+    fp_log << "(H_0)" << std::endl;
+    summaryLog << "# null " << std::endl;
   }
 
   fp_log << "\t";
   originalFill = fp_log.fill('-');
   originalWidth = fp_log.width(31);
-  fp_log << "-" << endl;
+  fp_log << "-" << std::endl;
   fp_log.fill(originalFill);
   fp_log.width(originalWidth);
 
@@ -865,10 +874,10 @@ void Calculate::PrintSummaryP3_Result_1(int H_Aor0_flag) {
   char  temp_str[STRING+5];
 
   kv = 0;
-  fp_log << "\t(1). Covariate coefficients:" << endl;
-  fp_log << "\t                             Estimate             S.E." << endl;
+  fp_log << "\t(1). Covariate coefficients:" << std::endl;
+  fp_log << "\t                             Estimate             S.E." << std::endl;
   for (i = 0; i < itraits; i++) {
-    fp_log << "\tTrait " << i+1 << " (" << trait_array[i].t_name << "):" << endl;
+    fp_log << "\tTrait " << i+1 << " (" << trait_array[i].t_name << "):" << std::endl;
     for (j = 0; j < icovs+1; j++) {
       if (j == 0) {
 	if ((H_Aor0_flag == SECOND)
@@ -880,12 +889,12 @@ void Calculate::PrintSummaryP3_Result_1(int H_Aor0_flag) {
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_mu_A[i];
 	  fp_log.unsetf(ios::left | ios::right);
 	  if (init_mu_flag == ESTIMATE) {
-	    fp_log << setw(15) << mubeta_A_sd[kv] << endl;
+	    fp_log << setw(15) << mubeta_A_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << mubeta_A_sd[kv]
-		       << endl;
+		       << std::endl;
 	  }else if (init_mu_flag == FIXED) {
-	    fp_log << setw(15) << "(Fixed)" << endl;
-	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << endl;
+	    fp_log << setw(15) << "(Fixed)" << std::endl;
+	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << std::endl;
 	  }
 	}else if ((H_Aor0_flag == FIRST)
 		  &&
@@ -901,12 +910,12 @@ void Calculate::PrintSummaryP3_Result_1(int H_Aor0_flag) {
 	  // the alternative hypothesis starting values, Eric Lunde, 9-09-03
 	  estimates[estimatesIndex++] = x_mu_0[i];
 	  if (init_mu_flag == ESTIMATE) {
-	    fp_log << setw(15) << mubeta_0_sd[kv] << endl;
+	    fp_log << setw(15) << mubeta_0_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << mubeta_0_sd[kv]
-		       << endl;
+		       << std::endl;
 	  }else if (init_mu_flag == FIXED) {
-	    fp_log << setw(15) << "(Fixed)" << endl;
-	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << endl;
+	    fp_log << setw(15) << "(Fixed)" << std::endl;
+	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << std::endl;
 	  }
 	}
       }
@@ -920,12 +929,12 @@ void Calculate::PrintSummaryP3_Result_1(int H_Aor0_flag) {
 	  fp_log.unsetf(ios::left | ios::right);
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_beta_A[i][j-1];
 	  if (init_mu_flag == ESTIMATE) {
-	    fp_log << setw(15) << mubeta_A_sd[kv] << endl;
+	    fp_log << setw(15) << mubeta_A_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << mubeta_A_sd[kv]
-		       << endl;
+		       << std::endl;
 	  }else if (init_mu_flag == FIXED) {
-	    fp_log << setw(15) << "(Fixed)" << endl;
-	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << endl;
+	    fp_log << setw(15) << "(Fixed)" << std::endl;
+	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << std::endl;
 	  }
 	}
 	else if ((H_Aor0_flag == FIRST)
@@ -951,20 +960,20 @@ void Calculate::PrintSummaryP3_Result_1(int H_Aor0_flag) {
 	  coefficients[coefficientsIndex] = x_beta_0[i][j-1];
 	  coefficientsIndex++;
 	  if (init_mu_flag == ESTIMATE) {
-	    fp_log << setw(15) << mubeta_0_sd[kv] << endl;
+	    fp_log << setw(15) << mubeta_0_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << mubeta_0_sd[kv]
-		       << endl;
+		       << std::endl;
 	  }else if (init_mu_flag == FIXED) {
-	    fp_log << setw(15) << "(Fixed)" << endl;
-	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << endl;
+	    fp_log << setw(15) << "(Fixed)" << std::endl;
+	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << "(Fixed)" << std::endl;
 	  }
 	}
       }
       kv++;
     }
-    fp_log << endl;
+    fp_log << std::endl;
   }
-  fp_log << endl;
+  fp_log << std::endl;
 }
 
 /* Print the second part of  results of the analysis in the log file.
@@ -973,9 +982,9 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
   int   i,j,kv,ks;
 
   kv = ks = 0;
-  fp_log << "\t(2). Variance components:" << endl;
-  fp_log << "\t                             Estimate             S.E." << endl;
-  fp_log << "\t\tPolygenic:" << endl;
+  fp_log << "\t(2). Variance components:" << std::endl;
+  fp_log << "\t                             Estimate             S.E." << std::endl;
+  fp_log << "\t\tPolygenic:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND)
@@ -984,23 +993,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_S_A[ks] << setw(0) << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_S_A[ks];
 	if (s_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (s_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (s_A_flag_array[ks] == FIXED) {
 	  if (s_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (s_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
@@ -1017,33 +1026,33 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_S_0[ks];
 	estimates[estimatesIndex++] = x_S_0[ks];
 	if (s_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (s_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (s_0_flag_array[ks] == FIXED) {
 	  if (s_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (s_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
   ks = 0;
-  fp_log << "\t\tFirst Major gene:" << endl;
+  fp_log << "\t\tFirst Major gene:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND)
@@ -1052,23 +1061,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_M1_A[ks] << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_M1_A[ks];
 	if (m1_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (m1_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (m1_A_flag_array[ks] == FIXED) {
 	  if (m1_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (m1_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
@@ -1085,33 +1094,33 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_M1_0[ks];
 	estimates[estimatesIndex++] = x_M1_0[ks];
 	if (m1_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (m1_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (m1_0_flag_array[ks] == FIXED) {
 	  if (m1_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (m1_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
   ks = 0;
-  fp_log << "\t\tSecond Major gene:" << endl;
+  fp_log << "\t\tSecond Major gene:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND)
@@ -1120,23 +1129,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_M2_A[ks] << setw(0) << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_M2_A[ks];
 	if (m2_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (m2_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (m2_A_flag_array[ks] == FIXED) {
 	  if (m2_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (m2_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
@@ -1153,33 +1162,33 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_M2_0[ks];
 	estimates[estimatesIndex++] = x_M2_0[ks];
 	if (m2_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (m2_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (m2_0_flag_array[ks] == FIXED) {
 	  if (m2_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (m2_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
   ks = 0;
-  fp_log << "\t\tEnvironment:" << endl;
+  fp_log << "\t\tEnvironment:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
 /*
@@ -1191,19 +1200,19 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 		   << x_T_A[i] << setw(0) << "\t";
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_T_A[i];
 	    if (t_A_flag_array[i] == ESTIMATE) {
-	      fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	      fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-			 << endl;
+			 << std::endl;
 	      kv++;
 	    }else if (t_A_flag_array[i] == FIXED) {
 	      if (t_A_fix_flag_array[ks] == INTERNALLY) {
-		fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+		fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 		summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			   << (int)'I' << endl;
+			   << (int)'I' << std::endl;
 	      }else if (t_A_fix_flag_array[ks] == EXTERNALLY) {
-		fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+		fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 		summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			   << (int)'E' << endl;
+			   << (int)'E' << std::endl;
 	      }
 	    }
 	  }else if ((H_Aor0_flag == FIRST)
@@ -1219,19 +1228,19 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_T_0[i];
 	    estimates[estimatesIndex++] = x_T_0[i];
 	    if (t_0_flag_array[i] == ESTIMATE) {
-	      fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	      fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-			 << endl;
+			 << std::endl;
 	      kv++;
 	    }else if (t_0_flag_array[i] == FIXED) {
 	      if (t_0_fix_flag_array[ks] == INTERNALLY) {
-		fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+		fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 		summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			   << (int)'I' << endl;
+			   << (int)'I' << std::endl;
 	      }else if (t_0_fix_flag_array[ks] == EXTERNALLY) {
-		fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+		fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 		summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			   << (int)'E' << endl;
+			   << (int)'E' << std::endl;
 	      }
 	    }
 	  }
@@ -1245,19 +1254,19 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 		 << x_T_A[ks] << '\t';
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_T_A[ks];
 	  if (t_A_flag_array[ks] == ESTIMATE) {
-	    fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	    fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		       << endl;
+		       << std::endl;
 	    kv++;
 	  }else if (t_A_flag_array[ks] == FIXED) {
 	    if (t_A_fix_flag_array[ks] == INTERNALLY) {
-	      fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	      fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			 << (int)'I' << endl;
+			 << (int)'I' << std::endl;
 	    }else if (t_A_fix_flag_array[ks] == EXTERNALLY) {
-	      fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	      fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			 << (int)'E' << endl;
+			 << (int)'E' << std::endl;
 	    }
 	  }
 	}else if ((H_Aor0_flag == FIRST)
@@ -1273,19 +1282,19 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_T_0[ks];
 	  estimates[estimatesIndex++] = x_T_0[ks];
 	  if (t_0_flag_array[ks] == ESTIMATE) {
-	    fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	    fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		       << endl;
+		       << std::endl;
 	    kv++;
 	  }else if (t_0_flag_array[ks] == FIXED) {
 	    if (t_0_fix_flag_array[ks] == INTERNALLY) {
-	      fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	      fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			 << (int)'I' << endl;
+			 << (int)'I' << std::endl;
 	    }else if (t_0_fix_flag_array[ks] == EXTERNALLY) {
-	      fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	      fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	      summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-			 << (int)'E' << endl;
+			 << (int)'E' << std::endl;
 	    }
 	  }
 	}
@@ -1293,12 +1302,12 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 //      }
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
-  fp_log << "\t(3). Shared common environmental variance components:" << endl;
+  fp_log << "\t(3). Shared common environmental variance components:" << std::endl;
   ks = 0;
-  fp_log << "\t                             Estimate             S.E." << endl;
-  fp_log << "\t\tShared Sibship:" << endl;
+  fp_log << "\t                             Estimate             S.E." << std::endl;
+  fp_log << "\t\tShared Sibship:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND) || ((H_Aor0_flag == FIRST) && (runopt_flag == 1))) {
@@ -1306,23 +1315,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_c_A[ks] << setw(0) << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_c_A[ks];
 	if (c_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (c_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (c_A_flag_array[ks] == FIXED) {
 	  if (c_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (c_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
@@ -1339,33 +1348,33 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_c_0[ks];
 	estimates[estimatesIndex++] = x_c_0[ks];
 	if (c_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (c_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (c_0_flag_array[ks] == FIXED) {
 	  if (c_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (c_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
   ks = 0;
-  fp_log << "\t\tShared Spouse:" << endl;
+  fp_log << "\t\tShared Spouse:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND)
@@ -1374,23 +1383,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_p_A[ks] << setw(0) << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_p_A[ks];
 	if (p_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (p_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (p_A_flag_array[ks] == FIXED) {
 	  if (p_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-		       << (int)'I' << endl;
+		       << (int)'I' << std::endl;
 	  }else if (p_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH)
-		       << (int)'E' << endl;
+		       << (int)'E' << std::endl;
 	  }
 	}
       }else if ((H_Aor0_flag == FIRST)
@@ -1406,33 +1415,33 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_p_0[ks];
 	estimates[estimatesIndex++] = x_p_0[ks];
 	if (p_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (p_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (p_0_flag_array[ks] == FIXED) {
 	  if (p_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (p_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 
   ks = 0;
-  fp_log << "\t\tShared Parent-Offspring:" << endl;
+  fp_log << "\t\tShared Parent-Offspring:" << std::endl;
   for (i = 0; i < total_trait_values; i++) {
     for (j = i; j < total_trait_values; j++) {
       if ((H_Aor0_flag == SECOND)
@@ -1441,23 +1450,23 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	       << x_q_A[ks] << setw(0) << "\t";
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_q_A[ks];
 	if (q_A_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_A_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_A_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_A_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (q_A_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (q_A_flag_array[ks] == FIXED) {
 	  if (q_A_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (q_A_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }else if ((H_Aor0_flag == FIRST)
@@ -1473,30 +1482,30 @@ void Calculate::PrintSummaryP3_Result_2(int H_Aor0_flag) {
 	summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << x_q_0[ks];
 	estimates[estimatesIndex++] = x_q_0[ks];
 	if (q_0_flag_array[ks] == ESTIMATE) {
-	  fp_log << setw(15) << smtcpq_0_sd[kv] << endl;
+	  fp_log << setw(15) << smtcpq_0_sd[kv] << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << smtcpq_0_sd[kv]
-		     << endl;
+		     << std::endl;
 	  kv++;
 	}else if (q_0_flag_array[ks] == CONSTRAINT) {
-	  fp_log << setw(15) << "(Constraint)" << endl;
+	  fp_log << setw(15) << "(Constraint)" << std::endl;
 	  summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'C'
-		     << endl;
+		     << std::endl;
 	}else if (q_0_flag_array[ks] == FIXED) {
 	  if (q_0_fix_flag_array[ks] == INTERNALLY) {
-	    fp_log << setw(15) << "(FIXED INTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED INTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'I'
-		       << endl;
+		       << std::endl;
 	  }else if (q_0_fix_flag_array[ks] == EXTERNALLY) {
-	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << endl;
+	    fp_log << setw(15) << "(FIXED EXTERNALLY)" << std::endl;
 	    summaryLog << setw(SUMMARY_LOG_FIELD_WIDTH) << (int)'E'
-		       << endl;
+		       << std::endl;
 	  }
 	}
       }
       ks++;
     }
   }
-  fp_log << endl;
+  fp_log << std::endl;
 }
 
 double Calculate::ConvergCriterion1(double prev_val) {
@@ -1535,18 +1544,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      s(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      s(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      s(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      s(A)" << i << "     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      s(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      s(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      s(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      s(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_S[i]              = BOUNDARY;
 	  s_flag_array[i]     = FIXED;
@@ -1568,18 +1577,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      m1(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m1(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      m1(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m1(A)" << i << "     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      m1(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m1(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      m1(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m1(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_M1[i]              = BOUNDARY;
 	  m1_flag_array[i]     = FIXED;
@@ -1601,18 +1610,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      m2(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m2(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      m2(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m2(A)" << i << "     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      m2(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m2(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      m2(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      m2(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_M2[i]              = BOUNDARY;
 	  m2_flag_array[i]     = FIXED;
@@ -1630,7 +1639,7 @@ int Calculate::Fixtoboundary() {
   if (datatype == MULTIVARIATE) {
     for (i = 0; i < env_vcnum; i++) {
       if (t_flag_array[i] == ESTIMATE) {	
-	//cout << "x_T["<<i<<"]  = " << x_T[i] << endl;
+	//cout << "x_T["<<i<<"]  = " << x_T[i] << std::endl;
 	if (fabs(x_T[i] - BOUNDARY) <= CLOSETOBOUNDARY) {
 	  if (ascert_flag == YES) {
 	    j = imubeta_dim+s_vcnum+m1_vcnum+m2_vcnum+i;
@@ -1644,19 +1653,19 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      t(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      t(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      t(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      t(A)" << i << "     S.E." << std::endl;
 	  }
 	  else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      t(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      t(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      t(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      t(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_T[i]              = BOUNDARY;
 	  t_flag_array[i]     = FIXED;
@@ -1684,19 +1693,19 @@ int Calculate::Fixtoboundary() {
 	    }
 	    if (run_flag == FIRST) {
 	      if ((runopt_flag == 3) || (runopt_flag == 4))
-		fp_lookuplog << "      t(0)" << i << "     S.E." << endl;
+		fp_lookuplog << "      t(0)" << i << "     S.E." << std::endl;
 	      else
-		fp_lookuplog << "      t(A)" << i << "     S.E.xz" << endl;
+		fp_lookuplog << "      t(A)" << i << "     S.E.xz" << std::endl;
 	    }
 	    else {
 	      if ((runopt_flag == 3) || (runopt_flag == 4))
-		fp_lookuplog << "      t(A)" << i << "     S.E." << endl;
+		fp_lookuplog << "      t(A)" << i << "     S.E." << std::endl;
 	      else
-		fp_lookuplog << "      t(0)" << i << "     S.E." << endl;
+		fp_lookuplog << "      t(0)" << i << "     S.E." << std::endl;
 	    }
 
 	    fp_lookuplog << "        " << temp_mean << "       " << temp_se
-			 << endl;
+			 << std::endl;
 
 	    x_T[i]              = BOUNDARY;
 	    t_flag_array[i]     = FIXED;
@@ -1727,18 +1736,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      c(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      c(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      c(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      c(A)" << i << "     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      c(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      c(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      c(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      c(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_c[i]              = BOUNDARY;
 	  c_flag_array[i]     = FIXED;
@@ -1760,18 +1769,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      p(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      p(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      p(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      p(A)" << i << "     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      p(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      p(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      p(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      p(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " <<  temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_p[i]              = BOUNDARY;
 	  p_flag_array[i]     = FIXED;
@@ -1793,18 +1802,18 @@ int Calculate::Fixtoboundary() {
 	  }
 	  if (run_flag == FIRST) {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      q(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      q(0)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      q(A)%d     S.E." << endl;
+	      fp_lookuplog << "      q(A)%d     S.E." << std::endl;
 	  }else {
 	    if ((runopt_flag == 3) || (runopt_flag == 4))
-	      fp_lookuplog << "      q(A)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      q(A)" << i << "     S.E." << std::endl;
 	    else
-	      fp_lookuplog << "      q(0)" << i << "     S.E." << endl;
+	      fp_lookuplog << "      q(0)" << i << "     S.E." << std::endl;
 	  }
 
 	  fp_lookuplog << "        " << temp_mean << "       " << temp_se
-		       << endl;
+		       << std::endl;
 
 	  x_q[i]              = BOUNDARY;
 	  q_flag_array[i]     = FIXED;
@@ -1922,12 +1931,12 @@ void Calculate::CalculateDiffOfPara(double *prev_mu, double **prev_beta,
 	  *converg1_flag = NO;
       }
     }
-    //    cout << "(sum_mubeta < BREAKVAL) = " << (sum_mubeta < BREAKVAL) << " Calc.cpp key 1887" << endl;
-    //    cout << "(stephalf_flag == 0) = " << (stephalf_flag == 0) << " Calc.cpp key 1887" << endl;
+    //    cout << "(sum_mubeta < BREAKVAL) = " << (sum_mubeta < BREAKVAL) << " Calc.cpp key 1887" << std::endl;
+    //    cout << "(stephalf_flag == 0) = " << (stephalf_flag == 0) << " Calc.cpp key 1887" << std::endl;
     if ((sum_mubeta < BREAKVAL) && (stephalf_flag == 0)) {
       /* Change G_VAL 'mu_flag' here.              */
 #ifdef DEBUG
-      cout << "sum_mubeta < BREAKVAL" << endl;
+      Rcout << "sum_mubeta < BREAKVAL" << std::endl;
 #endif
       mu_flag = FIXED;
       for (i = 0; i < imubeta_dim; i++) {
@@ -2048,7 +2057,7 @@ double Calculate::CalculateLik(double *prev_mu, double **prev_beta,
   for (i = 0; i < iinitvcnum; i++) {
     temp_inc_s[i]  = new_inc_s[i];
     inc_s[i]       = new_inc_s[i];
-    //cout << "inc_s["<<i<<"] = " << inc_s[i] << endl;
+    //cout << "inc_s["<<i<<"] = " << inc_s[i] << std::endl;
     temp_inc_m1[i] = new_inc_m1[i];
     inc_m1[i]      = new_inc_m1[i];
     temp_inc_m2[i] = new_inc_m2[i];
@@ -2433,13 +2442,13 @@ void Calculate::SCondOfInc() {
 	  }
 	}else if( (x_T[i]+inc_t[i]) < 0) {
 	  while ( (temp_t[i]+inc_t[i]) < 0)  {
-	    //cout << "inc_T["<<i<<"] = " << inc_t[i] << endl;
-	    //cout << "temp_t["<<i<<"] = " << temp_t[i] << endl;
+	    //cout << "inc_T["<<i<<"] = " << inc_t[i] << std::endl;
+	    //cout << "temp_t["<<i<<"] = " << temp_t[i] << std::endl;
 	    inc_t[i] = inc_t[i]/2.0;
 	    x_T[i]   = temp_t[i] + inc_t[i] ;
 	  }
 	}else {
-	  //cout << "inc_T["<<i<<"] = " << inc_t[i] << endl;
+	  //cout << "inc_T["<<i<<"] = " << inc_t[i] << std::endl;
 	  x_T[i] += inc_t[i];
 	}
       }
@@ -2601,7 +2610,7 @@ void Calculate::SaveMeanAndFlag() {
 void Calculate::Get_SE() {
   int i,kv;
   
-  //  cout << "GetDim - 3 key 2567" << endl;
+  //  cout << "GetDim - 3 key 2567" << std::endl;
   GetDim();      /* Get new 'imubeta_dim' and 'ismtcpq_dim'.   */
   
   if (ascert_flag == YES) {
@@ -2931,7 +2940,7 @@ void Calculate::SRun() {
   /* First time use G_VAL 'N1' in the program.                */
 
   if(printProgress) {
-    cout << "Iteration Number:\n";
+    Rcout << "Iteration Number:\n";
   }
   for (j = 0; j < N1; j++) {
     // Print iteration count for user to know that the program is working and 
@@ -3012,8 +3021,8 @@ void Calculate::SRun() {
 	      fp_mu << setw(10) << x_beta[i][k];
 	    }
 	  }
-	  fp_out << endl;
-	  fp_mu << endl;
+	  fp_out << std::endl;
+	  fp_mu << std::endl;
 
 	  /* print the parameters to the output files.  */
 	  PrintResults(NONDEBUG);
@@ -3028,8 +3037,8 @@ void Calculate::SRun() {
 	      fp_mu << setw(10) << x_beta[i][k];
 	    }
 	  }
-	  fp_out << endl;
-	  fp_mu << endl;
+	  fp_out << std::endl;
+	  fp_mu << std::endl;
 
 	  /* print the parameters to the output files.  */
 	  PrintResults(NONDEBUG);
@@ -3040,12 +3049,12 @@ void Calculate::SRun() {
     } // Closes 'if (break_flag == YES) {'
     dataIndex = 0;
   } // Closes 'for (j = 0; j < N1; j++) {'  
-  cout << endl;
+  Rcout << std::endl;
 
   // Write the number of iterations to a file for Splus to read back in
   ofstream iter(iteration_file, ios::app);
-  iter << markerName << endl;
-  iter << (j + 1) << endl;
+  iter << markerName << std::endl;
+  iter << (j + 1) << std::endl;
   iter.close();
 
   // Write to the appropriate file each family's loglikelihood
@@ -3059,12 +3068,12 @@ void Calculate::SRun() {
     for(int i=0; i<nfam; i++) {
       fam_lik << " " /* setw(15) */ << uniqueFamilyIds[i];
     }
-    fam_lik << endl;
+    fam_lik << std::endl;
     fam_lik << "null";
     for(int i=0; i<nfam; i++) {
       fam_lik << " " /* setw(15) */ << familyLoglikelihoods[i];
     }
-    fam_lik << endl;
+    fam_lik << std::endl;
     fam_lik.close();
   }else if(run_flag == SECOND
 	   || (run_flag == FIRST && runopt_flag == 1) ) {
@@ -3077,12 +3086,12 @@ void Calculate::SRun() {
     for(int i=0; i<nfam; i++) {
       fam_lik << " " /* setw(15) */ << familyLoglikelihoods[i];
     }
-    fam_lik << endl;
+    fam_lik << std::endl;
     fam_lik.close();
   }
 
   if ((run_flag == SECOND) || ((run_flag == FIRST) && (runopt_flag == 1))) {
-    fp_lik << ln_func << endl;
+    fp_lik << ln_func << std::endl;
     loglikelihood_A = ln_func;
   }
   else if ((run_flag == FIRST) && ((runopt_flag == 2) || (runopt_flag == 3)
@@ -3394,8 +3403,8 @@ void Calculate::PrintMarkerErrorMg(int curfam_ptr, int nextfam_ptr) {
 
   dataIndex = curfam_ptr;
 
-  fp_log << endl << "***ERROR: this family data marker information is wrong:"
-	 << endl;
+  fp_log << std::endl << "***ERROR: this family data marker information is wrong:"
+	 << std::endl;
   fp_log << "> ";
   fp_lookuplog << fortArray[dataIndex].familyId << ' '
 	       << fortArray[dataIndex].seqId << ' '
@@ -3408,12 +3417,12 @@ void Calculate::PrintMarkerErrorMg(int curfam_ptr, int nextfam_ptr) {
   for(int i=0; i<icovs; i++) {
     fp_lookuplog << fortArray[dataIndex].covariates[i] << ' ';
   }
-  cout << endl << endl;
+  Rcout << std::endl << std::endl;
 
-  cout << endl << "***ERROR: this family data marker information is wrong:"
-       << endl;
-  cout << "> " << curfam_str << endl << endl;
-  cout << "Please correct this family data." << endl << endl;
+  Rcout << std::endl << "***ERROR: this family data marker information is wrong:"
+       << std::endl;
+  Rcout << "> " << curfam_str << std::endl << std::endl;
+  Rcout << "Please correct this family data." << std::endl << std::endl;
   dataIndex = nextfam_ptr;
 }
 
@@ -3504,107 +3513,107 @@ void Calculate::PrintResults(int debug_flag) {
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) << x_S[i] << ' ';
+      Rcout << setw(10) << x_S[i] << ' ';
     else {
       fp_out << setw(10) << x_S[i] << ' ';
       fp_s << setw(10) << x_S[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << "debug_flag" << endl;
+    Rcout << "debug_flag" << std::endl;
   else {
-    fp_out << endl;
-    fp_s << endl;
+    fp_out << std::endl;
+    fp_s << std::endl;
   }
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) <<  x_M1[i] << ' ';
+      Rcout << setw(10) <<  x_M1[i] << ' ';
     else {
       fp_out << setw(10) << x_M1[i] << ' ';
       fp_m1 << setw(10) << x_M1[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_m1 << endl;
+    fp_out << std::endl;
+    fp_m1 << std::endl;
   }
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) << x_M2[i] << ' ';
+      Rcout << setw(10) << x_M2[i] << ' ';
     else {
       fp_out << setw(10) << x_M2[i] << ' ';
       fp_m2 << setw(10) << x_M2[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_m2 << endl;
+    fp_out << std::endl;
+    fp_m2 << std::endl;
   }
 
   for (i = 0; i < env_vcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) << x_T[i] << ' ';
+      Rcout << setw(10) << x_T[i] << ' ';
     else {
       fp_out << setw(10) << x_T[i] << ' ';
       fp_t << setw(10) << x_T[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_t << endl;
+    fp_out << std::endl;
+    fp_t << std::endl;
   }
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) <<  x_c[i] << ' ';
+      Rcout << setw(10) <<  x_c[i] << ' ';
     else {
       fp_out << setw(10) << x_c[i] << ' ';
       fp_sib << setw(10) << x_c[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_sib << endl;
+    fp_out << std::endl;
+    fp_sib << std::endl;
   }
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw (10) << x_p[i] << ' ';
+      Rcout << setw (10) << x_p[i] << ' ';
     else {
       fp_out << setw(10) << x_p[i] << ' ';
       fp_pp << setw(10) << x_p[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_pp << endl;
+    fp_out << std::endl;
+    fp_pp << std::endl;
   }
 
   for (i = 0; i < iinitvcnum; i++) {
     if (debug_flag == 1)       /* 1= DEBUG  */
-      cout << setw(10) << x_q[i] << ' ';
+      Rcout << setw(10) << x_q[i] << ' ';
     else {
       fp_out << setw(10) << x_q[i] << ' ';
       fp_po << setw(10) << x_q[i] << ' ';
     }
   }
   if (debug_flag == 1)           /* 1= DEBUG  */
-    cout << endl;
+    Rcout << std::endl;
   else {
-    fp_out << endl;
-    fp_po << endl;
+    fp_out << std::endl;
+    fp_po << std::endl;
   }
 }
 
@@ -3778,11 +3787,11 @@ double Calculate::AS_CalculateValues() {
   S_val     = x_S[0] + x_M1[0] + x_M2[0] + x_T[0] + x_c[0] + x_p[0] + x_q[0];
 
   /*
-    cout << "x_mu[0]=" << x_mu[0] << endl;
-    cout << "x_S[0]=" << x_S[0] << endl;
-    cout << "x_M1[0]=" << x_M1[0] << endl;
-    cout << "x_M2[0]=" << x_M2[0] << endl;
-    cout << "x_T[0]=" << x_T[0] << endl;
+    cout << "x_mu[0]=" << x_mu[0] << std::endl;
+    cout << "x_S[0]=" << x_S[0] << std::endl;
+    cout << "x_M1[0]=" << x_M1[0] << std::endl;
+    cout << "x_M2[0]=" << x_M2[0] << std::endl;
+    cout << "x_T[0]=" << x_T[0] << std::endl;
   */
 
   dataIndex = 0;
@@ -3994,23 +4003,23 @@ double Calculate::AS_CalculateValues() {
       // It may be inappropriate to exit the program now based only on this
       // info. - Eric Lunde, 2005-09-07
       if(ln_func > DBL_MAX) {
-	cerr << "ln_func > " << DBL_MAX << endl;
+	Rcerr << "ln_func > " << DBL_MAX << std::endl;
       } else if(ln_func < -DBL_MAX) {
-	cerr << "ln_func < " << -DBL_MAX << endl;
+	Rcerr << "ln_func < " << -DBL_MAX << std::endl;
       } else {
-	cerr << "This should never be printed to the screen" << endl;
+	Rcerr << "This should never be printed to the screen" << std::endl;
       }
-      cerr << "total_trait_values = " << total_trait_values << endl;
-      cerr << "Ni = " << Ni << endl;
-      cerr << "N[" << i << "] = " << N[i] << endl;
+      Rcerr << "total_trait_values = " << total_trait_values << std::endl;
+      Rcerr << "Ni = " << Ni << std::endl;
+      Rcerr << "N[" << i << "] = " << N[i] << std::endl;
       Lib::PrintOneMatrix(total_trait_values*Ni, total_trait_values*Ni,
 			  temp_mat);
       
-      cerr << "V1 = " << V1 << endl;
-      cerr << "V2 = " << V2 << endl;
-      cerr << "V3 = " << V3 << endl;
-      cerr << "ln_func = " << ln_func << endl;
-      PROBLEM "ln_func is not a number\nCalculate.cpp key 4034\n"
+      Rcerr << "V1 = " << V1 << std::endl;
+      Rcerr << "V2 = " << V2 << std::endl;
+      Rcerr << "V3 = " << V3 << std::endl;
+      Rcerr << "ln_func = " << ln_func << std::endl;
+      PROBLEM "ln_func is not a number\nThe determinant is too large or too small\nCalculate.cpp key 4034\n"
 	RECOVER(NULL_ENTRY);
     }
 
@@ -4028,7 +4037,7 @@ double Calculate::AS_CalculateValues() {
        << "  logcf = "
        << (-1.0/2.0)*log(S_val)+(-1.0/2.0)*(YDrp_vec[0]*YDrp_vec[0])/S_val
        << " diff="
-       << (-1.0/2.0)*(V2+V3)-(-1.0/2.0)*log(S_val)-(-1.0/2.0)*(YDrp_vec[0]*YDrp_vec[0])/S_val << endl;
+       << (-1.0/2.0)*(V2+V3)-(-1.0/2.0)*log(S_val)-(-1.0/2.0)*(YDrp_vec[0]*YDrp_vec[0])/S_val << std::endl;
     */
 
     kc = 0;
@@ -4186,11 +4195,11 @@ double Calculate::AS_CalculateValues() {
   }
 
   /*
-    cout << "after:  exsder_cfmubeta=" exsder_cfmubeta[0] << endl;
-    cout << "after:  exsder_cfmusmtcpq=" << exsder_cfmusmtcpq << endl;
-    cout << "after:  exsder_cfsmtcpq=" <<  exsder_cfsmtcpq << endl;
-    cout << "after:  fder_cfmubeta=" << fder_cfmubeta[0] << endl;
-    cout << "after:  fder_cfsmtcpq=" << fder_cfsmtcpq << endl;
+    cout << "after:  exsder_cfmubeta=" exsder_cfmubeta[0] << std::endl;
+    cout << "after:  exsder_cfmusmtcpq=" << exsder_cfmusmtcpq << std::endl;
+    cout << "after:  exsder_cfsmtcpq=" <<  exsder_cfsmtcpq << std::endl;
+    cout << "after:  fder_cfmubeta=" << fder_cfmubeta[0] << std::endl;
+    cout << "after:  fder_cfsmtcpq=" << fder_cfsmtcpq << std::endl;
   */
 
   AS_SGetExSderMatrix(Exsder_mat, exsder_mubeta, exsder_smtcpq,
@@ -4211,9 +4220,9 @@ double Calculate::AS_CalculateValues() {
   Lib::InverseOfMatrix(inv_Exsder_mat, i_bigdim, Exsder_mat);
 
   if (final_flag == YES) {
-    cout << endl << "This is the inverse of Expected Second Derivative Matrix"
-	 << endl;
-    cout << "for mu, covariates and variance components:" << endl << endl;
+    Rcout << std::endl << "This is the inverse of Expected Second Derivative Matrix"
+	 << std::endl;
+    Rcout << "for mu, covariates and variance components:" << std::endl << std::endl;
     Lib::PrintOneMatrix(i_bigdim, i_bigdim, inv_Exsder_mat);
   }
   Lib::Multi_Matrix_Vector(inc_vec,    i_bigdim, i_bigdim,
@@ -4348,7 +4357,7 @@ void Calculate::AS_SGetFderVector(double *vec, double fder_mubeta[], double fder
     for (i = 0; i < imubeta_dim; i++) {
       vec[kv] = fder_mubeta[i] - fder_cfmubeta[i];
 #ifdef DEBUG
-      printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_mubeta[i],fder_cfmubeta[i]);
+      Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_mubeta[i],fder_cfmubeta[i]);
 #endif
       kv++;
     }
@@ -4356,49 +4365,49 @@ void Calculate::AS_SGetFderVector(double *vec, double fder_mubeta[], double fder
   for (i = 0; i < s_vcnum; i++) {
     vec[kv] = fder_s[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_s[i], fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_s[i], fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < m1_vcnum; i++) {
     vec[kv] = fder_m1[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_m1[i] , fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_m1[i] , fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < m2_vcnum; i++) {
     vec[kv] = fder_m2[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_m2[i] , fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_m2[i] , fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < t_vcnum; i++) {
     vec[kv] = fder_t[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_t[i], fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_t[i], fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < c_vcnum; i++) {
     vec[kv] = fder_c[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_c[i] , fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_c[i] , fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < p_vcnum; i++) {
     vec[kv] = fder_p[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_p[i] , fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_p[i] , fder_cfsmtcpq);
 #endif
     kv++;
   }
   for (i = 0; i < q_vcnum; i++) {
     vec[kv] = fder_q[i] - fder_cfsmtcpq;
 #ifdef DEBUG
-    printf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_q[i] , fder_cfsmtcpq);
+    Rprintf("vec[%d](%lf)=%lf-%lf\n",kv, vec[kv], fder_q[i] , fder_cfsmtcpq);
 #endif
     kv++;
   }
@@ -4426,7 +4435,7 @@ void Calculate::AS_GetIncValues(double *vec) {
 	  kb++;
 	}
 #ifdef DEBUG
-	cout << "new_inc_mu[" << i << "]=" << new_inc_mu[i] << endl;
+	Rcout << "new_inc_mu[" << i << "]=" << new_inc_mu[i] << std::endl;
 #endif
 	kv++;
       }
@@ -4475,10 +4484,10 @@ void Calculate::AS_GetIncValues(double *vec) {
     }
   }
 #ifdef DEBUG
-  cout << "new_inc_s[0]=" << new_inc_s[0] << endl;
-  cout << "new_inc_m1[0]=" << new_inc_m1[0] << endl;
-  cout << "new_inc_m2[0]=" << new_inc_m2[0] << endl;
-  cout << "new_inc_t[0]=" << new_inc_t[0] << endl;
+  Rcout << "new_inc_s[0]=" << new_inc_s[0] << std::endl;
+  Rcout << "new_inc_m1[0]=" << new_inc_m1[0] << std::endl;
+  Rcout << "new_inc_m2[0]=" << new_inc_m2[0] << std::endl;
+  Rcout << "new_inc_t[0]=" << new_inc_t[0] << std::endl;
 #endif
 }
 
@@ -4639,7 +4648,7 @@ double Calculate::NOAS_CalculateValues() {
      for each family. */
 
   for (i = 0; i < nfam; i++) {
-    //cout << "i = " << i << endl;
+    //cout << "i = " << i << std::endl;
     // Although the V_mat is allocated for enough space for
     // (total_trait_values*N[i])^2 elements.  They are not all used.  The
     // V_mat is only populated by (total_trait_values*Ni)^2 elements.
@@ -4816,6 +4825,18 @@ double Calculate::NOAS_CalculateValues() {
     Lib::InverseOfMatrix(V_mat_inv, total_trait_values*Ni, V_mat);
     
     V1 = Lib::DetermOfMatrix(total_trait_values*Ni, temp_mat);
+
+    // Added this code to keep it from crashing if determinate is too large
+    // or too small.
+    //if (V1 > DBL_MAX) {
+    //  V1 = DBL_MAX;
+    //} else if (V1 < -DBL_MAX) {
+    //  V1 = -DBL_MAX;
+    //}
+
+    // Mariza didn't like the above code (plus it didn't work anyway).
+    // She wants an error message that the matrix isn't converging.
+
     V2 = log(V1);
     V3 = Lib::Multi_Vectors_Matrix(total_trait_values*Ni, Y_vec, V_mat_inv, Y_vec);
 
@@ -4828,26 +4849,27 @@ double Calculate::NOAS_CalculateValues() {
       // It may be inappropriate to exit the program now based only on this
       // info. - Eric Lunde, 2005-09-07
       if(ln_func > DBL_MAX) {
-	cerr << "ln_func > " << DBL_MAX << endl;
+	Rcerr << "ln_func > " << DBL_MAX << std::endl;
       } else if(ln_func < -DBL_MAX) {
-	cerr << "ln_func < " << -DBL_MAX << endl;
+	Rcerr << "ln_func < " << -DBL_MAX << std::endl;
       } else {
-	cerr << "This should never be printed to the screen" << endl;
+	Rcerr << "This should never be printed to the screen" << std::endl;
       }
-      cerr << "total_trait_values = " << total_trait_values << endl;
-      cerr << "Ni = " << Ni << endl;
-      cerr << "N[" << i << "] = " << N[i] << endl;
+      Rcerr << "total_trait_values = " << total_trait_values << std::endl;
+      Rcerr << "Ni = " << Ni << std::endl;
+      Rcerr << "N[" << i << "] = " << N[i] << std::endl;
       Lib::PrintOneMatrix(total_trait_values*Ni, total_trait_values*Ni,
 			  temp_mat);
       
-      cerr << "V1 = " << V1 << endl;
-      cerr << "V2 = " << V2 << endl;
-      cerr << "V3 = " << V3 << endl;
-      cerr << "ln_func = " << ln_func << endl;
-      PROBLEM "ln_func is not a number\nCalculate.cpp key 4859\n"
+      Rcerr << "V1 = " << V1 << std::endl;
+      Rcerr << "V2 = " << V2 << std::endl;
+      Rcerr << "V3 = " << V3 << std::endl;
+      Rcerr << "ln_func = " << ln_func << std::endl;
+      // Changed RECOVER to WARNING to try to avoid program crash
+      PROBLEM "ln_func is not a number\nThe determinant is too large or too small\nCalculate.cpp key 4859\n"
 	RECOVER(NULL_ENTRY);
     }
-    //cout << "ln_func = " << ln_func << endl;
+    //cout << "ln_func = " << ln_func << std::endl;
     familyLoglikelihoods[i] = (-1.0/2.0)* (V2 + V3);
 
     kc = 0;
@@ -5019,8 +5041,8 @@ double Calculate::NOAS_CalculateValues() {
     Lib::InverseOfMatrix(inv_Exsder_mubeta_mat, mubeta_dim, Exsder_mubeta_mat);
 
     if (final_flag == YES) {
-      cout << endl << "This is the inverse of Expected Second Derivative Matrix";
-      cout << "for mu and covariates:" << endl << endl;
+      Rcout << std::endl << "This is the inverse of Expected Second Derivative Matrix";
+      Rcout << "for mu and covariates:" << std::endl << std::endl;
       Lib::PrintOneMatrix(mubeta_dim, mubeta_dim, inv_Exsder_mubeta_mat);
     }
   }
@@ -5042,8 +5064,8 @@ double Calculate::NOAS_CalculateValues() {
   Lib::InverseOfMatrix(inv_Exsder_smtcpq_mat, smtcpq_dim, Exsder_smtcpq_mat);
 
   if (final_flag == YES) {
-    cout << endl <<"This is the inverse of Expected Second Derivative Matrix"
-	 << "for variance components:" << endl << endl;
+    Rcout << std::endl <<"This is the inverse of Expected Second Derivative Matrix"
+	 << "for variance components:" << std::endl << std::endl;
     Lib::PrintOneMatrix(smtcpq_dim, smtcpq_dim, inv_Exsder_smtcpq_mat);
   }
 
@@ -5101,8 +5123,8 @@ double Calculate::NOAS_CalculateValues() {
   }
 
 #ifdef DEBUG
-  cout << endl << "Loglik = " << setw(20) << setprecision(10) << ln_func
-       << endl;
+  Rcout << std::endl << "Loglik = " << setw(20) << setprecision(10) << ln_func
+       << std::endl;
 #endif
 
   return ln_func;
@@ -5261,8 +5283,8 @@ void Calculate::GetIncValues(double *mubeta_vec,double *smtcpq_vec){
 /* Print the error message and the matrix if it is singular matrix.
 */
 void Calculate::PrintErrMsg(char *str_mat,char *str_routin,int mat_dim,double **x_mat) {
-  cout << "This is the singular " << str_mat << " matrix at routine "
-       << str_routin << ":" << endl << endl;
+  Rcout << "This is the singular " << str_mat << " matrix at routine "
+       << str_routin << ":" << std::endl << std::endl;
   Lib::PrintOneMatrix(mat_dim, mat_dim, x_mat);
   PROBLEM "Please fix the error first and then Run the program.\n"
     RECOVER(NULL_ENTRY);
@@ -5270,13 +5292,13 @@ void Calculate::PrintErrMsg(char *str_mat,char *str_routin,int mat_dim,double **
 
 void Calculate::printIterationNumber(int iterationNumber) {
     if(iterationNumber != 1) {
-      cout << ',';
+      Rcout << ',';
     }
     if( ( (iterationNumber - 1) % 10 ) == 0 && iterationNumber != 1) {
-      cout << endl;
+      Rcout << std::endl;
     }
-    cout << setw(4) << iterationNumber;
-    cout.flush();
+    Rcout << setw(4) << iterationNumber;
+    Rcout.flush();
 }
 
 void Calculate::writeInvExpSecDer() {
@@ -5314,15 +5336,15 @@ void Calculate::writeInvExpSecDer() {
     estimated[2 * iinitvcnum + i] = (int)(t_flag_array[i] == ESTIMATE);
   }
   
-  //fixedInvExpSecDer << ibdFileName << endl;
+  //fixedInvExpSecDer << ibdFileName << std::endl;
   randomInvExpSecDer << ibdFileName;
 
   if(ascert_flag == YES) {
     for(int i=0; i<imubeta_dim; i++) {
       for(int j=0; j<imubeta_dim; j++) {
-	fixedInvExpSecDer << inv_Exsder_mat[j][i] << endl;//setw(15) << inv_Exsder_mat[j][i];
+	fixedInvExpSecDer << inv_Exsder_mat[j][i] << std::endl;//setw(15) << inv_Exsder_mat[j][i];
       }
-      //fixedInvExpSecDer << endl;
+      //fixedInvExpSecDer << std::endl;
     }
 
     dataI = -1;
@@ -5331,7 +5353,7 @@ void Calculate::writeInvExpSecDer() {
 	dataI++;
       }
       dataJ = 0;
-      randomInvExpSecDer << endl;
+      randomInvExpSecDer << std::endl;
       for (estJ = 0; estJ < 3 * iinitvcnum; estJ++) {
 	if (estimated[estI] && estimated[estJ]) {
 	  // Since Splus will use the array command to shape this data into matrices,
@@ -5347,9 +5369,9 @@ void Calculate::writeInvExpSecDer() {
   }else {
     for(int i=0; i<itraits*(1 + icovs); i++) {
       for(int j=0; j<itraits*(1 + icovs); j++) {
-	fixedInvExpSecDer << inv_Exsder_mubeta_mat[j][i] << endl; //setw(15) << inv_Exsder_mubeta_mat[j][i];
+	fixedInvExpSecDer << inv_Exsder_mubeta_mat[j][i] << std::endl; //setw(15) << inv_Exsder_mubeta_mat[j][i];
       }
-      //fixedInvExpSecDer << endl;
+      //fixedInvExpSecDer << std::endl;
     }
     
     dataI = -1;
@@ -5358,7 +5380,7 @@ void Calculate::writeInvExpSecDer() {
 	dataI++;
       }
       dataJ = 0;
-      randomInvExpSecDer << endl;
+      randomInvExpSecDer << std::endl;
       for (estJ = 0; estJ < 3 * iinitvcnum; estJ++) {
 	if (estimated[estI] && estimated[estJ]) {
 	  // Since Splus will use the array command to shape this data into matrices,
@@ -5372,8 +5394,8 @@ void Calculate::writeInvExpSecDer() {
     }
   }
 
-  //fixedInvExpSecDer << endl;
-  randomInvExpSecDer << endl << endl;
+  //fixedInvExpSecDer << std::endl;
+  randomInvExpSecDer << std::endl << std::endl;
 
   delete [] estimated;
 
@@ -5589,7 +5611,7 @@ void Calculate::writeSavedVMatrixToFile(double ***localSavedVMatrix,
   for(int i=0; i<familyCount; i++) {
     v_matrix_log << "family: " << /*i*/uniqueFamilyIds[i] << " familySize: "
 		 << familySizes[i]
-		 << " traitCount: " << totalTraitCount << endl;
+		 << " traitCount: " << totalTraitCount << std::endl;
     for(int j=0; j<totalTraitCount * familySizes[i]; j++) {
       for(int k=0; k<totalTraitCount * familySizes[i]; k++) {
 	// We round to zero the values that are essentially zero.
@@ -5602,16 +5624,16 @@ void Calculate::writeSavedVMatrixToFile(double ***localSavedVMatrix,
 	// core dump, 0.0 / 0.0 {double} causes an NaN)
 	if(!(localSavedVMatrix[i][j][k] <= DBL_MAX
 	     || localSavedVMatrix[i][j][k] >= -DBL_MAX)) {
-	  cout << "localSavedVMatrix[" << i << "][" << j << "][" << k << "] = "
-	       << localSavedVMatrix[i][j][k] << endl;
+	  Rcout << "localSavedVMatrix[" << i << "][" << j << "][" << k << "] = "
+	       << localSavedVMatrix[i][j][k] << std::endl;
 	}
 	// The explicit printing of the ' ' is to ensure whitespace around
 	// the values so a simple fscanf will delimit the values.
 	v_matrix_log << ' ' << setw(14) << localSavedVMatrix[i][j][k];
       }
-      v_matrix_log << endl;
+      v_matrix_log << std::endl;
     }
-    v_matrix_log << endl;
+    v_matrix_log << std::endl;
   }
   
   // Close the file.
@@ -5896,7 +5918,7 @@ void Calculate::writeSavedYBetaDiffToFile(double ***localSavedYBetaDiff,
     yBetaDiffLog << "family: " << /*i*/uniqueFamilyIds[i]
 		 << " familySize: " << familySizes[i]
 		 << " totalTraitCount: " << totalTraitCount
-		 << endl;
+		 << std::endl;
     
     for(int j=0; j<totalTraitCount; j++) {
       for(int k=0; k<familySizes[i]; k++) {
@@ -5905,10 +5927,10 @@ void Calculate::writeSavedYBetaDiffToFile(double ***localSavedYBetaDiff,
 	yBetaDiffLog << ' ' << setw(14) << localSavedYBetaDiff[i][j][k];
       }
       if(familySizes[i] != 0) {
-	yBetaDiffLog << endl;
+	yBetaDiffLog << std::endl;
       }
     }
-    yBetaDiffLog << endl;
+    yBetaDiffLog << std::endl;
   }
 
   // Close the file

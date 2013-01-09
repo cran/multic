@@ -10,16 +10,30 @@ for the general behavior of this
 function and for the interpretation of x. 
 }
 \usage{
-plot.multic(x, ...)
+\method{plot}{multic}(x, ylim=NULL, xlim=NULL, lty=1, col=1, lwd=1, ...)
 }
 \arguments{
 \item{x}{
 a \code{multic} object
 }
+\item{xlim}{
+range for x-axis
+}
+\item{ylim}{
+range for y-axis
+}
+\item{lty}{
+line type. Default=1
+}
+\item{col}{
+line color. Default=1
+}
+\item{lwd}{
+line width.  Default=1
+}
 \item{\dots }{
-additional arguments like xlim, ylab, etc.
+additional arguments like xlab, ylab, etc.
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

@@ -89,6 +89,5 @@ solar2mloci("mibds/chrm10", "solarOutput/phi2.gz",
           "solarOutput/pedindex.out", "solarOutput/pedindex.cde") 
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

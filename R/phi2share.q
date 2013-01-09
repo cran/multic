@@ -94,12 +94,10 @@ phi2share <- function(phi2, pedigree.file, pedindex.out, pedindex.cde,
   share.out <- cbind(unique.ids[, 1], unique.ids[, 2], data[, 3],
                      siblings, spouses, parent.offsprings)
 
-  if(using.R()) {
-    write.table(share.out, 'share.out', row.names = FALSE, col.names = FALSE,
-                sep = "\t", quote = FALSE)
-  } else {
-    write.table(share.out, 'share.out', dimnames.write = FALSE, sep = "\t")
-  }
+
+  write.table(share.out, 'share.out', row.names = FALSE, col.names = FALSE,
+              sep = "\t", quote = FALSE)
+
 
   ## If the output directory is not the current directory and the directory
   ## does not exist, create it.
@@ -129,15 +127,10 @@ read.pedindex.out <- function(pedindex.out, pedindex.cde) {
                "phi2share.q key 57", sep = ""))
   }
 
-  if(using.R()) {
-    ## Add code to dynamically calcuate the 51 below (the lengths of the
-    ## lines).
-    pedindex.cde.data <-
-      read.fwf(pedindex.cde, widths = c(3, 51), skip = 1)
-    pedindex.cde.data[, 2] <- as.character(pedindex.cde.data[, 2])
-  } else {
-    pedindex.cde.data <- importData(pedindex.cde, type='ASCII')
-  }
+  ## Add code to dynamically calcuate the 51 below (the lengths of the
+  ## lines).
+  pedindex.cde.data <- read.fwf(pedindex.cde, widths = c(3, 51), skip = 1)
+  pedindex.cde.data[, 2] <- as.character(pedindex.cde.data[, 2])
 
   ## famid.index is the row of pedindex.cde that holds the id "FAMILY" in
   ## the second column
@@ -189,16 +182,14 @@ read.pedindex.out <- function(pedindex.out, pedindex.cde) {
                 famid.len, "s,%",
                 origIdStart-(famid.start + famid.len), "*,%",
                 origIdLen, "s", sep='')
-  if(using.R()) {
-    ids <- read.fwf(pedindex.out,
-                    c(seqIdLen, famid.start-seqIdLen, famid.len,
-                      origIdStart - (famid.start + famid.len), origIdLen ))
-    ids <- ids[, c(1, 3, 5)]
-    ids[, 2] <- as.character(ids[, 2])
-    ids[, 3] <- as.character(ids[, 3])
-  } else {
-    ids <- importData(pedindex.out, type='FASCII', format=form)
-  }
+
+  ids <- read.fwf(pedindex.out,
+                  c(seqIdLen, famid.start-seqIdLen, famid.len,
+                    origIdStart - (famid.start + famid.len), origIdLen ))
+  ids <- ids[, c(1, 3, 5)]
+  ids[, 2] <- as.character(ids[, 2])
+  ids[, 3] <- as.character(ids[, 3])
+
 
   ## Remove leading and trailing spaces
   ids[, 2] <- trim(ids[, 2])

@@ -15,7 +15,7 @@
 ##         {c("extra","upper left","upper middle","upper right")}
 ######################################################################
 
-plot.family.lods <- function(x, npeakfams = 5, title = NULL,
+plotFamilyLods <- function(x, npeakfams = 5, title = NULL,
                              title.cex = .75,legend=T,
                              legend.loc= c("left","middle","right","extra"),
                              type = c("top", "total", "proportion","all"), ...)
@@ -191,3 +191,7 @@ plot.family.lods <- function(x, npeakfams = 5, title = NULL,
 
   invisible(family.lods)
 }
+
+## Method renamed to plotFamilyLods because it's not S3.
+## Keep alias for backward compatibility.
+plot.family.lods <- plotFamilyLods

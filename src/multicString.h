@@ -11,7 +11,7 @@
 void multic_SET_STRING_ELT(s_object *stringArray, int index,
 			   const char *element);
 
-char *multic_STRING_ELT(s_object *stringArray, int index);
+const char *multic_STRING_ELT(s_object *stringArray, int index);
 
 // Function to safely do a strcpy
 char *multic_strncpy(char *dest, const char *src, int n);

@@ -1,4 +1,4 @@
-plot.multic <- function(x, ...) {
+plot.multic <- function(x, ylim=NULL, xlim=NULL, lty=1, col=1, lwd=1, ...) {
   if(!is.multic(x)) {
     stop("\n", substitute(x), "is not a multic object\n")
   }
@@ -29,20 +29,24 @@ plot.multic <- function(x, ...) {
   
   max.lod.score <- max(lod.scores)
   min.lod.score <- min(lod.scores)
-  default.xlim <- c(cM[1], cM[length(cM)])
+
+  if(is.null(xlim))  xlim <- c(cM[1], cM[length(cM)])
 
   y.min <- 0
   y.min <- ifelse(min.lod.score >= 0, 0, min.lod.score - 1)
-  default.ylim <- c(y.min, max.lod.score + 1)
+
+  if(is.null(ylim))  ylim <- c(y.min, max.lod.score + 1)
 
   ## Draw the actual curve of lod scores
   plot(x = cM,
        y = lod.scores,
        ...,
        type = 'l',
-       lty = 1,
-       xlim = default.xlim,
-       ylim = default.ylim,
+       lty = lty,
+       lwd = lwd,
+       col=col,
+       xlim = xlim,
+       ylim = ylim,
        xlab = "cM",
        ylab = "LOD")
   

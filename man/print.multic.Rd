@@ -10,7 +10,7 @@ for the general behavior of this
 function and for the interpretation of x. 
 }
 \usage{
-print.multic(x, ...)
+\method{print}{multic}(x, ...)
 }
 \arguments{
 \item{x}{
@@ -22,6 +22,5 @@ Currently \code{...} only exists to pass 'R CMD
 check' tests.
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

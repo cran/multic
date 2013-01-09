@@ -9,7 +9,7 @@ model will significantly increase the evidence of a genetic effect.
 }
 \usage{
 addGE(multic.objs, combine=2, plotit=FALSE, ibd.dist, statistic=c("lrt",
-"wald"), legend=TRUE, ...)
+"wald"), legend=TRUE, ylim=NULL, ...)
 }
 \arguments{
 \item{multic.objs }{
@@ -34,6 +34,9 @@ Character, default="lrt".  This determines whether the Wald statistic
 \item{legend}{
 Logical, default=TRUE.  If TRUE and if plotit=TRUE then a legend is
 automatically provided.  
+}
+\item{ylim}{
+The extremes of the range of the y-axis to pass to the plot function.
 }
 \item{\dots }{
 Allows for graphical parameters to be passed to the plot function (only
@@ -66,6 +69,5 @@ key(corner=c(0,1), lines=list(lwd=2, col=1:4, lty=1:4),
     text=list(c('BMI-Dia','BMI-Sys','Dia-Sys','BMI-Dia-Sys'), col=1:4))
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

@@ -42,7 +42,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cctype>
 #include <iomanip>
 #include <iostream>
-using namespace std;
 
 Least::Least(TraitMarkerCov_par *tmc, ShareRelation *sa, int rs,
 	     FortData *fortArray, int dataSize) :
@@ -120,8 +119,8 @@ void Least::getresponse(){
   /* contribute N, n[i], y and ybar to the class*/
   int i, j, k, yu1;
 
-  outfp << endl << endl << " **************************************************";
-  outfp << endl << "Total number of familys: " << familyCount << ' ';
+  outfp << std::endl << std::endl << " **************************************************";
+  outfp << std::endl << "Total number of familys: " << familyCount << ' ';
 
   y = (double ***)malloc(itraits * sizeof(double **));
   a = (double ***)malloc(familyCount * sizeof(double **));
@@ -153,10 +152,10 @@ void Least::getresponse(){
       if (missing_flag[i][j] != 1) m++;
     }
   }
-  outfp << endl << "Total number of individuals: " << m << ' ' << endl;
+  outfp << std::endl << "Total number of individuals: " << m << ' ' << std::endl;
   for(k=0; k<itraits; k++) {
     ybar[k] = ybar[k]/m;
-    outfp << endl << "Mean of trait " << k+1 << ": " << ybar[k] << endl;
+    outfp << std::endl << "Mean of trait " << k+1 << ": " << ybar[k] << std::endl;
   }
 }
 
@@ -332,19 +331,19 @@ void Least::least_main(){
         
   for(l=0; l < itraits; l++) {
     for(h=l; h < itraits; h++) {
-      outfp << endl << "The polygene s" << l+1 << h+1 << " = "
-	    << setprecision(3) << var_G[l][h] << endl;
-      outfp << endl << "The major gene m" << l+1 << h+1 << " = "
-	    << setprecision(3) << var_g[l][h] << endl;
+      outfp << std::endl << "The polygene s" << l+1 << h+1 << " = "
+	    << setprecision(3) << var_G[l][h] << std::endl;
+      outfp << std::endl << "The major gene m" << l+1 << h+1 << " = "
+	    << setprecision(3) << var_g[l][h] << std::endl;
       if(l == h) {
-	outfp << endl << "The environment t" << l+1 << h+1 << " = "
-	      << setprecision(3) << var_e[l] << endl;
+	outfp << std::endl << "The environment t" << l+1 << h+1 << " = "
+	      << setprecision(3) << var_e[l] << std::endl;
       }
     }
   }
   
-  outfp << endl << "The CPU time: " << time_secs << " seconds." << endl;
-  outfp << endl << "The real time: " << (t2-t1) << " seconds." << endl;
+  outfp << std::endl << "The CPU time: " << time_secs << " seconds." << std::endl;
+  outfp << std::endl << "The real time: " << (t2-t1) << " seconds." << std::endl;
   outfp.close();
 }
 

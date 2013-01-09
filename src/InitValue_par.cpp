@@ -22,7 +22,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <cctype>
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 /*****************************
 Class name: InitValue_par
@@ -199,49 +198,49 @@ void InitValue_par::GetInitValues(double *initialValues, char **precisions)
   init_mu_flag = convertPrecision(precisions[0]);
   for(int i=0; i<itraits; i++) {
     init_x_mu[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_mu[" << i << "]  = " << init_x_mu[i] << endl;
+    //    cout << "init_x_mu[" << i << "]  = " << init_x_mu[i] << std::endl;
   }
 
   init_s_flag = convertPrecision(precisions[1]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_S[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_S[" << i << "]  = " << init_x_S[i] << endl;
+    //    cout << "init_x_S[" << i << "]  = " << init_x_S[i] << std::endl;
   }
 
   init_m1_flag = convertPrecision(precisions[2]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_M1[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_M1[" << i << "]  = " << init_x_M1[i] << endl;
+    //    cout << "init_x_M1[" << i << "]  = " << init_x_M1[i] << std::endl;
   }
 
   init_m2_flag = convertPrecision(precisions[3]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_M2[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_M2[" << i << "]  = " << init_x_M2[i] << endl;
+    //    cout << "init_x_M2[" << i << "]  = " << init_x_M2[i] << std::endl;
   }
 
   init_t_flag = convertPrecision(precisions[4]);
   for(int i=0; i<env_vcnum; i++) {
     init_x_T[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_T[" << i << "]  = " << init_x_T[i] << endl;
+    //    cout << "init_x_T[" << i << "]  = " << init_x_T[i] << std::endl;
   }
 
   init_c_flag = convertPrecision(precisions[5]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_c[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_c[" << i << "]  = " << init_x_c[i] << endl;
+    //    cout << "init_x_c[" << i << "]  = " << init_x_c[i] << std::endl;
   }
 
   init_p_flag = convertPrecision(precisions[6]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_p[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_p[" << i << "]  = " << init_x_p[i] << endl;
+    //    cout << "init_x_p[" << i << "]  = " << init_x_p[i] << std::endl;
   }
 
   init_q_flag = convertPrecision(precisions[7]);
   for(int i=0; i<iinitvcnum; i++) {
     init_x_q[i] = initialValues[valuesIndex++];
-    //    cout << "init_x_q[" << i << "]  = " << init_x_q[i] << endl;
+    //    cout << "init_x_q[" << i << "]  = " << init_x_q[i] << std::endl;
   }
 }
 
