@@ -59,7 +59,6 @@ Update: (Date, Modified By, Modification Description)
 #include <fstream>
 #include <iostream>
 #include "verS.h"
-using namespace std;
 
 extern "C" {
 
@@ -79,7 +78,7 @@ void loadEffects(char **lociNames,
 		 Sint *lociCount) {
 
   // Open for reading "summary.log" and test for failure
-  ifstream summaryLog("summary.log");
+  std::ifstream summaryLog("summary.log");
   if(summaryLog.fail()) {
     PROBLEM "The file summary.log could not be opened for reading.\nloadEffects.cpp key 33\n"
       RECOVER(NULL_ENTRY);

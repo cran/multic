@@ -16,7 +16,6 @@ Other: This program is designed to be run from multic.s before each run of the
 #include <fstream>
 #include <cstdlib>
 #include "verS.h"
-using namespace std;
 
 extern "C" {
 
@@ -24,13 +23,13 @@ void extractLoci() {
   const int LINE_LENGTH = 256;
   char line[LINE_LENGTH];
 
-  ifstream tempmloci("tempmloci.out");
+  std::ifstream tempmloci("tempmloci.out");
   if(tempmloci.fail()) {
     PROBLEM "The file tempmloci.out cannot be opened for reading.\nextractLoci.cpp key 27\n"
       RECOVER(NULL_ENTRY);
   }
 
-  ofstream loci("loci.out");
+  std::ofstream loci("loci.out");
   if(loci.fail()) {
     PROBLEM "The file loci.out cannot be opened for reading.\nextractLoci.cpp key 35\n"
       RECOVER(NULL_ENTRY);
@@ -46,23 +45,23 @@ void extractLoci() {
     return;
   } 
 
-  loci << line << endl;
+  loci << line << std::endl;
 
   // Stop copying when we find '#' or the end of file.
   tempmloci.getline(line, LINE_LENGTH);
   while(tempmloci.good() && line[0] != '#') {
-    loci << line << endl;
+    loci << line << std::endl;
     tempmloci.getline(line, LINE_LENGTH);
   }
 
   loci.close();
 
   // Now copy the rest of the file to a temp file.
-  ofstream deleteThisFile("deleteThisFile");
+  std::ofstream deleteThisFile("deleteThisFile");
 
   while(tempmloci.good()) {
     // line still holds the line of text beginning with '#'
-    deleteThisFile << line << endl;
+    deleteThisFile << line << std::endl;
     tempmloci.getline(line, LINE_LENGTH);  
   }
 

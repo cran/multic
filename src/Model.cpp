@@ -23,12 +23,11 @@ Updates: (Date, Modified By, Modification Description)
 #include "Model.h"
 #include "Lib.h"
 #include "Calculate.h"
-using namespace std;
 
 MajorGene1::MajorGene1(Estimator *est){
   char restOfLine[BUF];
   estimator = est;
-  fp_loci = new ifstream(loci_file);
+  fp_loci = new std::ifstream(loci_file);
   if(fp_loci->fail()) {
     PROBLEM "The file %s could not be opened for reading.\nModel.cpp key 15\n",
       loci_file RECOVER(NULL_ENTRY);
@@ -77,7 +76,7 @@ char *MajorGene1::getname(){
 MajorGene2::MajorGene2(Estimator *est){
   char restOfLine[BUF];
   estimator = est;
-  fp_loci = new ifstream(loci_file);
+  fp_loci = new std::ifstream(loci_file);
   if(fp_loci->fail()) {
     PROBLEM "The file %s could not be opened for reading.\nModel.cpp key 61\n",
       loci_file RECOVER(NULL_ENTRY);

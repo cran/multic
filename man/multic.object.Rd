@@ -330,4 +330,4 @@ a list of useful data like \code{start.time},
 \keyword{classes}
 \keyword{methods}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

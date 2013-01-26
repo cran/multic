@@ -9,7 +9,7 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
+
 
 int *getVarianceIndices(Sint traitCountValue);
 int *getCovarianceIndices(Sint traitCountValue);

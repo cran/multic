@@ -76,6 +76,5 @@ sw2mloci("sw18")
 sw2mloci(".", "sw18/c18.map", output.directory = "multicInput")
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 37351.
+% Converted by Sd2Rd version 52193.

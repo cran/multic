@@ -141,9 +141,9 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  *--PRINT INITIAL MESSAGES AND CHECK INPUT
  */
   if(Exp.iout == NULL) {
-    (void)printf(F9000);
-    (void)printf(F9100);
-    (void)printf(F9200,Exp.iout);
+    (void)Rprintf(F9000);
+    (void)Rprintf(F9100);
+    (void)Rprintf(F9200,Exp.iout);
   } else {
     (void)fprintf(Exp.iout,F9000);
     (void)fprintf(Exp.iout,F9100);
@@ -153,7 +153,7 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
 
   if(Exp.idet == NULL) {
     if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9400,Exp.idet);
-    else (void)printf(F9400,Exp.idet);
+    else (void)Rprintf(F9400,Exp.idet);
   }
   else if(Exp.idet != Exp.iout) {
     (void)fprintf(Exp.idet,F9000);

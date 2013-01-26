@@ -15,7 +15,6 @@
 \alias{clean}
 \alias{collapseMibd}
 \alias{combine.null.and.alt.initial.values}
-\alias{copy}
 \alias{copy.files.to.tmp.space}
 \alias{create.multic.object}
 \alias{expand.locus}
@@ -85,6 +84,7 @@
 \alias{normalize.mibd}
 \alias{parse.trait.names}
 \alias{pchisq.mix}
+\alias{plot.family.lods}
 \alias{polygene}
 \alias{print.summary.multic}
 \alias{read.pedindex.out}
@@ -94,7 +94,7 @@
 \alias{residuals.multic}
 \alias{run.alternative.multic}
 \alias{sortIbdCols}
-\alias{summary.multic}
+\alias{t.rank}
 \alias{trim}
 \alias{upp.tri.as.vector}
 \alias{using.R}
@@ -110,5 +110,4 @@ This function was designed and implemented for internal use.  It
 is not expected to be used by the user and thus, no significant
 documentation exists.
 }
-\keyword{}
-% Converted by Sd2Rd version 37351.
+% Converted by Sd2Rd version 52193.

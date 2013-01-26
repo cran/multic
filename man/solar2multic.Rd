@@ -103,6 +103,5 @@ solar2multic("solarOutput/phi2",
              "mibds/chrm10"))
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

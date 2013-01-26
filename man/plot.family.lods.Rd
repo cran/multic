@@ -1,5 +1,5 @@
-\name{plot.family.lods}
-\alias{plot.family.lods}
+\name{plotFamilyLods}
+\alias{plotFamilyLods}
 \title{
   Plot family contribution to peak LOD
 }
@@ -8,7 +8,7 @@ Plot the top N families that contribute to the peak LOD score as obtained
 from a multic object
 }
 \usage{
-plot.family.lods(x, npeakfams=5, title=NULL, title.cex=0.75, legend=T, legend.loc=c("left", "middle", "right", "extra"), type=c("top", "total", "proportion", "all"), ...)
+plotFamilyLods(x, npeakfams=5, title=NULL, title.cex=0.75, legend=T, legend.loc=c("left", "middle", "right", "extra"), type=c("top", "total", "proportion", "all"), ...)
 }
 \arguments{
 \item{x}{
@@ -66,9 +66,8 @@ mult10 <- multic(sys.avg ~ sex + agexam + agexam^2, data=d10,
                  mloci='multicInput/mloci.out.gz', share='multicInput/share.out.gz',
                  calc.fam.log.liks=T)
 
-plot.family.lods(mult10, npeakfams=3, plot="total")
+plotFamilyLods(mult10, npeakfams=3, plot="total")
 }
 }
-\keyword{}
 % docclass is function
-% Converted by Sd2Rd version 1.21.
+% Converted by Sd2Rd version 52193.

@@ -9,9 +9,11 @@
 #include "Model.h"
 #include "multic.h"
 #include <cstdlib>
-#define singular 1.0e-10
+#include "Rostream.h"
+#include "Rstreambuf.h"
 
-using namespace std;
+using namespace Rcpp;
+#define singular 1.0e-10
 
 Robust_Variance::Robust_Variance(){
   ybar = 0;
@@ -28,7 +30,7 @@ void Robust_Variance::main_fun(){
 }
 
 
-void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
+void Robust_Variance::buildModel(Composite *composite, std::ofstream *outfp,
 				 TraitMarkerCov_par *tmc,
 				 FortData *fortArray,
 				 int dataSize){
@@ -65,7 +67,7 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
       y[c1][c2] = 0.0;
 
   getybar(&readfam);
-  //cout<<"ybar="<<ybar<<endl;
+  //cout<<"ybar="<<ybar<<std::endl;
 
   int comp_count = composite->getElementCount();
 
@@ -84,7 +86,7 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
 
   for(int i=0;i<nfam;i++){
     int n = N[i];
-    //    cout<<"N["<<i<<"]="<<N[i]<<endl;
+    //    cout<<"N["<<i<<"]="<<N[i]<<std::endl;
 
     readfam.getdata(n);
 
@@ -128,8 +130,8 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
     double return_val = Lib::InverseOfMatrix(W_inv,dim,W);
 
     if(return_val==BAD){
-      cout << "Singular matrix in Robust Variance calculation" << endl;	
-      // << "Robust_Varience.cpp line 185" << endl;
+      Rcout << "Singular matrix in Robust Variance calculation" << std::endl;	
+      // << "Robust_Varience.cpp line 185" << std::endl;
       // This is not necessarily an error.  It appears to not be a major
       // problem to cause multic to exit(1).  Eric Lunde, 2005-09-07
       return;
@@ -164,9 +166,9 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
     }
 
     /*
-      cout<<"orignal Y vector"<<endl;   
+      cout<<"orignal Y vector"<<std::endl;   
       for(c1=0;c1<dim;c1++)
-      cout<<Y[c1]<<endl;
+      cout<<Y[c1]<<std::endl;
     */
 
     double* Y_hat = Lib::dvector(0,dim-1);
@@ -174,42 +176,42 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
 
     composite->getbeta_hat(beta_hat,comp_count);
 
-    //cout<<"Y hat=DB=E(Y) vector"<<endl;
+    //cout<<"Y hat=DB=E(Y) vector"<<std::endl;
 
     for(c1=0;c1<dim;c1++){
       Y_hat[c1] = 0.0;
       for(int c2=0;c2<comp_count;c2++)
 	Y_hat[c1] += X[c1][c2]*beta_hat[c2];
-      //cout<<Y_hat[c1]<<endl;
+      //cout<<Y_hat[c1]<<std::endl;
     }
 
     //now, Y = Y - XB (E)
-    //cout<<"Y=Y-E(Y)"<<endl;
+    //cout<<"Y=Y-E(Y)"<<std::endl;
     for(c1=0;c1<dim;c1++){
       Y[c1] = Y[c1] - Y_hat[c1];
       //cout<<Y[c1]<<"  ";
     }
-    //cout<<endl;
+    //cout<<std::endl;
 
     //newY = X'[Y-E(Y)]
-    //cout<<"D'[Y-E(Y)]"<<endl;
+    //cout<<"D'[Y-E(Y)]"<<std::endl;
     double* newY = Lib::dvector(0,comp_count-1);
     for(c1=0;c1<comp_count;c1++){
       newY[c1] = 0.0;
       for(c2=0;c2<dim;c2++)
 	newY[c1] += X1W_inv[c1][c2]*Y[c2];
-      //cout<<newY[c1]<<endl;
+      //cout<<newY[c1]<<std::endl;
     }
                 
     //get newY*newY'
     //           -1	                  -1
-    //cout<<"D'(W) [Y-E(Y)][Y-E(Y)]'(W) D"<<endl;
+    //cout<<"D'(W) [Y-E(Y)][Y-E(Y)]'(W) D"<<std::endl;
     for(c1=0;c1<comp_count;c1++){
       for(c2=0;c2<comp_count;c2++){
 	midd[c1][c2] += newY[c1]*newY[c2];
 	//cout<<newY[c1]*newY[c2]<<"  ";
       }
-      //cout<<endl;
+      //cout<<std::endl;
     }
 
     //add(result,X,dim,comp_count,V,dim,dim,Y,dim);
@@ -257,8 +259,8 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
   double return_val = Lib::InverseOfMatrix(inv,nomissingcount,D1D_new);
 
   if(return_val==BAD){
-    cout << "Singular matrix in Robust Variance calculation" << endl;
-    // << "Robust_Varience.cpp line 263" << endl;
+    Rcout << "Singular matrix in Robust Variance calculation" << std::endl;
+    // << "Robust_Varience.cpp line 263" << std::endl;
     // This is not necessarily an error.  It appears to not be a major
     // problem to cause multic to exit(1).  Eric Lunde, 2005-09-07
     return;
@@ -269,38 +271,38 @@ void Robust_Variance::buildModel(Composite *composite, ofstream *outfp,
   Lib::Multi_Matrices(temp2,nomissingcount,inv,midd_new);
   Lib::Multi_Matrices(result,nomissingcount,temp2,inv);
 
-  *outfp << endl << "Variance Covariance Matrix:" << endl;
+  *outfp << std::endl << "Variance Covariance Matrix:" << std::endl;
   for(c1=0;c1<comp_count;c1++){
     if(nomissing[c1]==0){
       Model* temp = composite->getElementAt(c1);
       *outfp << setw(15) << temp->getname() << "  ";
     }
   }
-  *outfp << endl;
+  *outfp << std::endl;
 
-  ofstream varCovar("varCovar.log", ios::app);
+  std::ofstream varCovar("varCovar.log", ios::app);
   if(varCovar.fail()) {
     PROBLEM "The file varCovar.log could not be opened for appending.\nRobust_Variance.cpp key 261\n"
       RECOVER(NULL_ENTRY);
   }
 
-  //cout<<"result"<<endl;
+  //cout<<"result"<<std::endl;
   for(c1=0;c1<nomissingcount;c1++){
     for(int c2=0;c2<nomissingcount;c2++){
       //cout<<result[c1][c2]<<"  ";
       *outfp << setw(15) << result[c1][c2] << "  ";
       /// add file pint statements here - eric lunde 10-22-03
-      varCovar << result[c1][c2] << endl;
+      varCovar << result[c1][c2] << std::endl;
     }
-    *outfp << endl;
-    //cout<<endl;
+    *outfp << std::endl;
+    //cout<<std::endl;
   }
 
   varCovar.close();
   // Width 0 and precision 6 are the default values
   outfp->width(0);
   outfp->precision(6);
-  *outfp << endl;
+  *outfp << std::endl;
 
   //  fp_para.close();
   //  fp_data.close();
@@ -333,21 +335,21 @@ void Robust_Variance::getY(ShrinkData *sd, double* Y, int n){
     }
   }
 
-  cout<<"old_y"<<endl;
+  Rcout<<"old_y"<<std::endl;
   for(j=0;j<count;j++)
-    cout<<old_y[j]<<endl;
+    Rcout<<old_y[j]<<std::endl;
 
   double** s;
   s = Lib::dmatrix(0,count-1,0,count-1);
 
   /*
-    cout<<"S matrix"<<endl;
+    cout<<"S matrix"<<std::endl;
     for(c1=0;c1<count;c1++){
     for(c2=0;c2<count;c2++){
     s[c1][c2] = old_y[c1]*old_y[c2];
     cout<<s[c1][c2]<<"  ";
     }
-    cout<<endl;
+    cout<<std::endl;
     }
   */
 
@@ -367,7 +369,7 @@ void Robust_Variance::getybar(ReadFamilyData *readfam) {
   int count = 0;
   int ttcount = 0;
   int index = 0;
-  ifstream data(data_file);
+  std::ifstream data(data_file);
   //get ride of header
   if(header == 1){
     int temp;
@@ -386,23 +388,23 @@ void Robust_Variance::getybar(ReadFamilyData *readfam) {
       if (fam.person[j].missing_traitflag != 1) {
 	ybar += fam.person[j].trait[0];
 	y[i][index] = fam.person[j].trait[0];
-	//cout<<y[i][index]<<endl;
+	//cout<<y[i][index]<<std::endl;
 	missing_flag[i]++;
 	count++;
 	index++;
       }
     }
   }
-  //cout<<"ttcount="<<ttcount<<endl;
-  //cout<<"count="<<count<<endl;
+  //cout<<"ttcount="<<ttcount<<std::endl;
+  //cout<<"count="<<count<<std::endl;
   ybar = ybar/count;
-  //cout<<"y"<<endl;
+  //cout<<"y"<<std::endl;
   for (i=0; i<nfam; i++){
     for(int j=0;j<N[i];j++){
       y[i][j] -= ybar;
       //cout<<y[i][j]<<"  ";
     }
-    //cout<<endl;
+    //cout<<std::endl;
   }
   data.close();
 }

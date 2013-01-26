@@ -6,7 +6,10 @@
 #include <Rinternals.h>
 #include <Rdefines.h>
 #endif
-using namespace std;
+#include "Rostream.h"
+#include "Rstreambuf.h"
+
+using namespace Rcpp;
 
 extern "C" {
 
@@ -47,9 +50,9 @@ s_object *getFamilySizes(s_object *famids, s_object *ids) {
   Sint idsLength = LENGTH(ids);
 
   if(famidsLength != idsLength) {
-    cerr << "The length of famids (" << famidsLength << ") does not match "
-	 << "the length of ids (" << idsLength << ")." << endl
-	 << "getFamilySizes.cpp key 41" << endl;
+    Rcerr << "The length of famids (" << famidsLength << ") does not match "
+	  << "the length of ids (" << idsLength << ")." << std::endl
+	  << "getFamilySizes.cpp key 41" << std::endl;
   }
 
   // Create the storage space for the famid sizes.  The length of familySizes

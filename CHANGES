@@ -1,9 +1,42 @@
 CHANGES: Log of significant changes between revisions
 
 #############################################################################
+# multic 0.3.8
+#############################################################################
+  - Splus is no longer supported.
+
+#############################################################################
+# multic 0.3.7
+#############################################################################
+  - Support for NAMESPACE.
+  - C++ code no longer writes to the console.
+  - Splus no longer fully supported.
+  - Because the plot.family.lods and t.rank functions were not S3 methods, 
+    they have been deprecated and replaced with plotFamilyLods and 
+    tRank respectively.
+
+#############################################################################
+# multic 0.3.5
+#############################################################################
+  - Now requires kinship2 package rather than archived kinship package.
+
+#############################################################################
+# multic 0.3.4
+#############################################################################
+  - Fixed multicString.h to match multicString.cpp - was causing problems
+    for Solaris compilers.
+
+#############################################################################
+# multic 0.3.3
+#############################################################################
+  - Added merlin2mloci function.
+
+#############################################################################
 # multic 0.3.2
 #############################################################################
-  - To adhere to changes in R 2.6.0
+  - To adhere to changes in R 2.6.0 regarding the return type of
+    CHARACTER_VALUE function.  The return type is now 'const char*' rather
+    than char*.
 
 #############################################################################
 # multic 0.3.1

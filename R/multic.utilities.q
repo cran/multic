@@ -3,26 +3,6 @@
 
 ## This file also brings together the general purpose and Unix-like commands
 
-multic.mkdir <- function(dir) {
-  result <- if(using.R()) {
-    dir.create(dir)
-  } else {
-    mkdir(dir)
-  }
-
-  return(result)
-}
-
-multic.unlink <- function(file, recursive = FALSE) {
-  if(using.R()) {
-    unlink(file, recursive = recursive)
-  } else {
-    rmdir(file, recursive = recursive)
-  }
-
-  invisible()
-}
-
 remove.file <- function(file.name) {
   if(file.exists(file.name)) {
     multic.system(paste('rm', file.name))
@@ -142,14 +122,9 @@ get.extension <- function(file) {
 }
 
 trim <- function(str) {
-  if(using.R()) {
-    result <- sub("[ \t\n]*$", "", str)
-    result <- sub("^[ \t\n]*", "", result)
-  }else {
-    result <- str
-    substring(result, regMatchPos(result, "^[ \t\n]*")) <- ""
-    substring(result, regMatchPos(result, "[ \t\n]*$")) <- ""
-  }
+  result <- sub("[ \t\n]*$", "", str)
+  result <- sub("^[ \t\n]*", "", result)
+
   return (result)
 }
 
@@ -160,15 +135,10 @@ recover.multic <- function() {
 ## Shouldn't need as of Splus 8, but we'll keep it around for now.
 multic.strsplit <- function(str, sep = " ") {
   result <- NULL
-  if(using.R() || version$major >= 8) {
-    if(!missing(sep)){
-      result <- unlist(strsplit(str, sep, fixed = TRUE))
-    }
-  } else {
-    if(!missing(sep)) {
-      result <- splitString(str, sep = sep)
-    }
+  if(!missing(sep)){
+    result <- unlist(strsplit(str, sep, fixed = TRUE))
   }
+
   result <- result[result != ""]
   
   return (result)
@@ -180,58 +150,28 @@ multic.strings.split <- function(strings, sep = " ")  {
 }
 
 multic.system <- function(command) {
-  result <- NULL
-  if(using.R()) {
-    result <- system(command, intern = TRUE)
-  } else {
-    result <- unix(command)
-  }
+  result <- system(command, intern = TRUE)
   return (result)
 }
 
 multic.rownames <- function(x, do.NULL = TRUE, prefix = "row") {
   result <- NULL
-  if(using.R()) {
-    result <- rownames(x, do.NULL, prefix)
-  } else {
-    if(is.data.frame(x)) {
-      result <- row.names(x)
-    } else if(is.matrix(x)) {
-      result <- dimnames(x)[[1]]
-    }
-  }
+  result <- rownames(x, do.NULL, prefix)
+
   return (result)
 }
 
 multic.colnames <- function(x, do.NULL = TRUE, prefix = "col") {
-  result <- NULL
-  if(using.R()) {
-    result <- colnames(x, do.NULL, prefix)
-  } else {
-    if(is.data.frame(x)) {
-      result <- names(x)
-    } else if(is.matrix(x)) {
-      result <- dimnames(x)[[2]]
-    }
-  }
+  result <- colnames(x, do.NULL, prefix)
   return (result)
 }
 
 multic.is.dir <- function(dir) {
-  result <- NULL
-  if(using.R()) {
-    result <- file.info(dir)[,2]
-    if(is.na(result)) {
-      result <- FALSE
-    }
-  } else {
-    result <- is.dir(dir)
+  result <- file.info(dir)[,2]
+  if(is.na(result)) {
+    result <- FALSE
   }
   return (result)
-}
-
-using.R <- function() {
-  return (exists("is.R") && is.function(is.R) && is.R())
 }
 
 multic.kurtosis <- function (x, na.rm = FALSE) {
@@ -242,15 +182,10 @@ multic.kurtosis <- function (x, na.rm = FALSE) {
 }
 
 multic.skewness <- function (x, na.rm = FALSE) {  
-  std.dev <- NULL
-  if(using.R()) {
-    std.dev <- sd
-  } else {
-    std.dev <- stdev
-  }
+  std.dev <- sd
+
   if (na.rm) 
     x <- x[!is.na(x)]
   result <- sum((x - mean(x))^3)/(length(x) * std.dev(x)^3)
   return (result)
 }
-

@@ -34,7 +34,6 @@ Updates: (Date, Modified By, Modification Description)
 #include <fstream>
 #include <iostream>
 #include "verS.h"
-using namespace std;
 
 extern "C" {
 
@@ -45,7 +44,7 @@ void loadVarSandwich(double *varCovarMatrix,
 		     Sint *isPolyFixed,
 		     Sint *isMg1Fixed) {
   // Open "varCovar.log" and test for failure
-  ifstream varCovar("varCovar.log");
+  std::ifstream varCovar("varCovar.log");
   if(varCovar.fail()) {
     PROBLEM "The file varCovar.log could not be opened for reading.\nloadVarSandwich.cpp key 53\n"
       RECOVER(NULL_ENTRY);

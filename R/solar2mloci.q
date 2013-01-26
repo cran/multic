@@ -153,11 +153,9 @@ solar2mloci <- function(directory, phi2, pedindex.out, pedindex.cde,
       data.frame(matrix(multic.strsplit(ibd.names, sep = "."),
                         ncol = 2, byrow = TRUE))
     names(ibd.names) <- c("ibd", "marker")
-    if(using.R()) {
-      chrm.number <- scan(ibd.dist, n = 1, quiet = TRUE)
-    } else {
-      chrm.number <- scan(ibd.dist, n = 1)
-    }
+
+    chrm.number <- scan(ibd.dist, n = 1, quiet = TRUE)
+
     marker.map <- read.table(ibd.dist, skip = 1, row.names = NULL)
     names(marker.map) <- c("marker", "cM")
 
