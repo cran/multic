@@ -8,7 +8,9 @@ Plot the top N families that contribute to the peak LOD score as obtained
 from a multic object
 }
 \usage{
-plotFamilyLods(x, npeakfams=5, title=NULL, title.cex=0.75, legend=T, legend.loc=c("left", "middle", "right", "extra"), type=c("top", "total", "proportion", "all"), ...)
+plotFamilyLods(x, npeakfams=5, title=NULL, title.cex=0.75, legend=T,
+              legend.loc=c("left", "middle", "right", "extra"),
+               type=c("top", "total", "proportion", "all"), ...)
 }
 \arguments{
 \item{x}{

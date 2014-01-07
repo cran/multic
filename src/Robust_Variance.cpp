@@ -37,14 +37,14 @@ void Robust_Variance::buildModel(Composite *composite, std::ofstream *outfp,
   int c1,c2;
 /*
   fp_para.open(multic_para_file);
-  if (fp_para == NULL) {
+  if (fp_para.fail()) {
   PROBLEM "The file %s could not be opened for reading.\nRobust_Variance.cpp key 28\n",
   multic_para_file RECOVER(NULL_ENTRY);
   }
 
 
   fp_data.open(data_file);
-  if (fp_data == NULL) {
+  if (fp_data.fail()) {
   PROBLEM "The file %s" could not be opened for reading.\nRobust_Variance.cpp key 36\n",
   data_file RECOVER(NULL_ENTRY);
   }

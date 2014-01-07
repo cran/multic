@@ -51,7 +51,7 @@ extern int ascert_flag;
 
 Likelihoodfun::Likelihoodfun() {
   fp_lookuplog.open(lookuplog_file, ios::app);
-  if(fp_lookuplog == NULL) {
+  if(fp_lookuplog.fail()) {
     PROBLEM "The file %s could not be opened for reading.\nLikelihoodfun.cpp key 44\n",
       lookuplog_file RECOVER(NULL_ENTRY);
   }

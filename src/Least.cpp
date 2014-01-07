@@ -73,7 +73,7 @@ Least::Least(TraitMarkerCov_par *tmc, ShareRelation *sa, int rs,
       RECOVER(NULL_ENTRY);
   }
 
-  if(pt_loci == NULL) {
+  if(pt_loci.fail()) {
     PROBLEM "The file %s could not be opened for reading.\nLeast.cpp key 40\n",
       loci_file RECOVER(NULL_ENTRY);
   }
