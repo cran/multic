@@ -2214,14 +2214,16 @@ make.kinship.file <- function(famid, id, dadid, momid, share.out,
     id.pairs <- make.block.id.pair(uuids, as.integer(family.sizes))
   }
   
-  if(! require(kinship2, quietly = TRUE)) {
+  if(requireNamespace("kinship2", quietly = TRUE)) {
+    cat("Using kinship2 to generate phi values...\n")
+    bds <- kinship2::makekinship(famid, uuids,
+                               paste(famid, dadid, sep = "-"),
+                               paste(famid, momid, sep = "-"))
+  } else {
     stop("kinship2 could not be found, multic.q key 338")
   }
 
-  cat("Using kinship2 to generate phi values...\n")
-  bds <- makekinship(famid, uuids,
-                     paste(famid, dadid, sep = "-"),
-                     paste(famid, momid, sep = "-"))
+
   
   ## Since bds may not be in the necessary order (it is sorted by
   ## character strings not integers, I need to reorder the matrix to get

@@ -9,8 +9,8 @@ mloci.out needed my multic, altering the centimorgan values if a map
 argument is provided.
 }
 \usage{
-sw2mloci(ibd.directory, map="", output.directory=".", famid = NULL, id = NULL,
-         dadid = NULL, momid = NULL, directory = NULL)
+sw2mloci(ibd.directory, map="", output.directory=".",
+         famid=NULL, id=NULL, dadid=NULL, momid=NULL, directory=NULL)
 }
 \arguments{
 \item{ibd.directory }{
@@ -74,7 +74,7 @@ sw2mloci("../otherInput/sw18", "../otherInput/sw18/c18.map")
 
 sw2mloci("sw18")
 
-sw2mloci(".", "sw18/c18.map", output.directory = "multicInput")
+sw2mloci(".", "sw18/c18.map", output.directory="multicInput")
 }
 }
 % docclass is function

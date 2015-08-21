@@ -145,10 +145,10 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
     (void)Rprintf(F9100);
     (void)Rprintf(F9200,Exp.iout);
   } else {
-    (void)fprintf(Exp.iout,F9000);
-    (void)fprintf(Exp.iout,F9100);
+    (void)fprintf(Exp.iout,"%s",F9000);
+    (void)fprintf(Exp.iout,"%s",F9100);
     copyr(Exp.iout);
-    (void)fprintf(Exp.iout,F9300);
+    (void)fprintf(Exp.iout,"%s",F9300);
   }
 
   if(Exp.idet == NULL) {
@@ -156,10 +156,10 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
     else (void)Rprintf(F9400,Exp.idet);
   }
   else if(Exp.idet != Exp.iout) {
-    (void)fprintf(Exp.idet,F9000);
-    (void)fprintf(Exp.idet,F9100);
+    (void)fprintf(Exp.idet,"%s",F9000);
+    (void)fprintf(Exp.idet,"%s",F9100);
     copyr(Exp.idet);
-    (void)fprintf(Exp.idet,F9300);
+    (void)fprintf(Exp.idet,"%s",F9300);
   }
 
   if(Exp.method < 1 || Exp.method > 6) {
@@ -206,14 +206,14 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
 
   if(Xne > 0) goto S50;
 
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9800);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9800);
   *lfl = 13;
   goto S70;
 
  S50:
   if(Xnd < Xne) goto S60;
 
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9900);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9900);
   *lfl = 13;
   goto S70;
    
@@ -223,8 +223,8 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  S70:
   Xigfl = 2;
   if(Exp.iout == NULL) return;
-  (void)fprintf(Exp.iout,F10000);
-  (void)fprintf(Exp.iout,F9000);
+  (void)fprintf(Exp.iout,"%s",F10000);
+  (void)fprintf(Exp.iout,"%s",F9000);
   return;
 
  S80:
@@ -303,9 +303,9 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
    */
   Xigfl = 2;
   if(Exp.iout == NULL) return;
-  (void)fprintf(Exp.iout,F10300);
+  (void)fprintf(Exp.iout,"%s",F10300);
   lbv(theta,f,&K1);
-  (void)fprintf(Exp.iout,F9000);
+  (void)fprintf(Exp.iout,"%s",F9000);
   return;
 
  S100:
@@ -348,9 +348,9 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
    *--PRINT METHOD IDENTIFICATION AND INITIAL VALUES
    */
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F10400);
+    (void)fprintf(Exp.idet,"%s",F10400);
   if(Exp.iout != NULL) {
-    (void)fprintf(Exp.iout,F10400);
+    (void)fprintf(Exp.iout,"%s",F10400);
     lbd(theta,f);
   }
 
@@ -398,7 +398,7 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
   if(Xnsurf2 <= 1) goto S170;
 
   Xnsurf2 = 3;
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F10600);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F10600);
   goto S180;
 
  S170:
@@ -435,10 +435,10 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
    */
 
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F10700);
+    (void)fprintf(Exp.idet,"%s",F10700);
 
   if(Exp.iout != NULL) {
-    (void)fprintf(Exp.iout,F10700);
+    (void)fprintf(Exp.iout,"%s",F10700);
     lbd(theta,f);
   }
    
@@ -503,9 +503,9 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
    *--PRINT METHOD IDENTIFICATION AND INITIAL VALUES
    */
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F10800);
+    (void)fprintf(Exp.idet,"%s",F10800);
   if(Exp.iout != NULL) {
-    (void)fprintf(Exp.iout,F10800);
+    (void)fprintf(Exp.iout,"%s",F10800);
     lbv(theta,f,&K2);
   }
 
@@ -620,9 +620,9 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  *--PRINT METHOD IDENTIFICATION AND INITIAL VALUES
  */
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F10900);
+    (void)fprintf(Exp.idet,"%s",F10900);
   if(Exp.iout != NULL) {
-    (void)fprintf(Exp.iout,F10900);
+    (void)fprintf(Exp.iout,"%s",F10900);
     lbv(theta,f,&K2);
   }
 
@@ -726,8 +726,8 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  *--PRINT METHOD IDENTIFICATION
  */
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F11000);
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F11000);
+    (void)fprintf(Exp.idet,"%s",F11000);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F11000);
 
   /*
  *--SET SWITCH FOR INITIAL B:  DON'T COMPUTE HESSIAN
@@ -835,7 +835,7 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
   iupdt = 0;
   if(Xidif == 2) goto S580;
 
-  if(Exp.idet != NULL) (void)fprintf(Exp.idet,F11300);
+  if(Exp.idet != NULL) (void)fprintf(Exp.idet,"%s",F11300);
   Xidif = 2;
   goto S580;
 
@@ -904,7 +904,7 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  *--SWITCH TO CENTRAL DIFFERENCE COMPUTATION OF GRADIENT
  *--AND RETRY THIS ITERATION
  */
-  if(Exp.idet != NULL) (void)fprintf(Exp.idet,F11300);
+  if(Exp.idet != NULL) (void)fprintf(Exp.idet,"%s",F11300);
   Xidif = 2;
   goto S490;
 
@@ -924,8 +924,8 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
  *--PRINT METHOD IDENTIFICATION
  */
   if(Exp.idet != NULL && Exp.idet != Exp.iout)
-    (void)fprintf(Exp.idet,F11400);
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F11400);
+    (void)fprintf(Exp.idet,"%s",F11400);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F11400);
 
   /*
  *--SET SWITCH TO COMPUTE INITIAL HESSIAN
@@ -943,7 +943,7 @@ ED TO CORRESPOND TO FINAL\n   ESTIMATES\n";
    *
    *--OBTAIN VARIANCE-COVARIANCE MATRIX FOR FINAL ESTIMATES
    */
-  if(Exp.idet != NULL) (void)fprintf(Exp.idet,F11500);
+  if(Exp.idet != NULL) (void)fprintf(Exp.idet,"%s",F11500);
   if(Exp.ixvc >= 2) ih = 1;
   if(ih > Exp.ihit) {
     for(i=1; i<=Exp.nt; i++) Xstp[i - 1] = Exp.epsd;
@@ -1251,7 +1251,7 @@ ND IN SAME DIRECTION.\n   NEW FUNCTION VALUE%#18.10E\n---------------\
       if(Exp.idet == NULL) goto S50;
 
       (void)fprintf(Exp.idet,F9200,i,thi,si);
-      (void)fprintf(Exp.idet,F9300);
+      (void)fprintf(Exp.idet,"%s",F9300);
       goto S50;
 
     S180:
@@ -1274,7 +1274,7 @@ ND IN SAME DIRECTION.\n   NEW FUNCTION VALUE%#18.10E\n---------------\
       if(Exp.idet == NULL) goto S70;
 
       (void)fprintf(Exp.idet,F9200,i,thi,si);
-      (void)fprintf(Exp.idet,F9400);
+      (void)fprintf(Exp.idet,"%s",F9400);
       goto S70;
 
     S200:
@@ -1658,7 +1658,7 @@ ARCH\n";
  *--IF ANY IMPROVEMENT HAS OCCURRED, CONSIDER THIS ANOTHER ITERATION
  */
   if(*f <= fs) {
-    if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9000);
+    if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9000);
     *ifl = 1;
     return;
 
@@ -1672,9 +1672,9 @@ ARCH\n";
  *--PRINT ITERATION DETAILS IF DESIRED
  */
   if(Exp.iout != NULL && Exp.iout != Exp.idet)
-    (void)fprintf(Exp.iout,F9100);
+    (void)fprintf(Exp.iout,"%s",F9100);
   if(Exp.idet != NULL) {
-    (void)fprintf(Exp.idet,F9200);
+    (void)fprintf(Exp.idet,"%s",F9200);
     litd(theta,f,nfe);
   }
 
@@ -1831,7 +1831,7 @@ EARCH\n";
    *--HAVE TRIED EVERY DIRECTION OF CHANGE; ANY IMPROVEMENT?
  */
   if(*f <= fs) {
-    if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9000);
+    if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9000);
     *ifl = 1;
     return;
 
@@ -1872,9 +1872,9 @@ EARCH\n";
    *--PRINT ITERATION DETAILS IF DESIRED
    */
   if(Exp.iout != NULL && Exp.iout != Exp.idet)
-    (void)fprintf(Exp.iout,F9100);
+    (void)fprintf(Exp.iout,"%s",F9100);
   if(Exp.idet != NULL) {
-    (void)fprintf(Exp.idet,F9200);
+    (void)fprintf(Exp.idet,"%s",F9200);
     litd(theta,f,nfe);
   }
 
@@ -2209,7 +2209,7 @@ L ESTIMATES\n";
    *--COMPUTE MATRIX OF SECOND PARTIAL DERIVATIVES FOR INITIAL ESTIMATES
    *--OF PARAMETERS
    */
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9000);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9000);
   deriv2(theta,f,nfe,&Exp.ihit,&lex);
   if(lex > 1) goto S20;
 
@@ -2227,7 +2227,7 @@ L ESTIMATES\n";
     bl = b[l - 1][l - 1];
     if(bl > 0.e0) goto S10;
 
-    if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9100);
+    if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9100);
     goto S20;
 
   S10:
@@ -2249,14 +2249,14 @@ L ESTIMATES\n";
   /*
    *--USE IDENTITY MATRIX
    */
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9200);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9200);
   for(l1=0; l1<Xnv; l1++) {
     for(l2=1; l2<=l1; l2++) Xult[l2 - 1][l1] = 0.e0;
     Xult[l1][l1] = Xdiag[l1] = 1.e0;
   }
 
  S30:
-  if(Exp.iout != NULL) (void)fprintf(Exp.iout,F9300);
+  if(Exp.iout != NULL) (void)fprintf(Exp.iout,"%s",F9300);
   return;
     
 }
@@ -2946,7 +2946,7 @@ PARAMETERS\n";
   /*
    *--CAN'T GO ANY FARTHER, SO STOP AT THETA-1
    */
-  if(Exp.idet != NULL) (void)fprintf(Exp.idet,F9100);
+  if(Exp.idet != NULL) (void)fprintf(Exp.idet,"%s",F9100);
   Xtstep = tt;
   *f = ft;
   for(i=0; i<Exp.nt; i++) theta[i] = tht[i];
@@ -3822,7 +3822,7 @@ O A BOUND\n\n";
  */
   if(Exp.idet != NULL) {
 
-    (void)fprintf(Exp.idet,F9100);
+    (void)fprintf(Exp.idet,"%s",F9100);
     T1 = MAXFUN_NPV;
     mout(&Xv[0][0],&T1,&Xnv,&Xnv,Exp.idet);
 
@@ -3835,10 +3835,10 @@ O A BOUND\n\n";
     for(l1=0; l1<Xnv; l1++) {
       for(l2=0; l2<Xnv; l2++) hn[l2][l1] = -hn[l2][l1];
     }
-    (void)fprintf(Exp.idet,F9200);
+    (void)fprintf(Exp.idet,"%s",F9200);
     T1 = MAXFUN_NPV;
     mout(&hn[0][0],&T1,&Xnv,&Xnv,Exp.idet);
-    (void)fprintf(Exp.idet,F9300);
+    (void)fprintf(Exp.idet,"%s",F9300);
   }
 
   /*
@@ -4228,11 +4228,11 @@ RRORS IN COMPUTATION OF 2ND\n   PARTIAL DERIVATIVES\n";
    *--PRINT OUT VARIANCE-COVARIANCE MATRIX AND RELATED INFORMATION
    */
   if(Exp.iout != NULL) {
-    (void)fprintf(Exp.iout,F9100);
+    (void)fprintf(Exp.iout,"%s",F9100);
     T2 = MAXFUN_NP;
     mout(&Xav[0][0],&T2,&Xne,&Xne,Exp.iout);
     (void)fprintf(Exp.iout,F9200,Xivage);
-    if(Xivfl > 0) (void)fprintf(Exp.iout,F9300);
+    if(Xivfl > 0) (void)fprintf(Exp.iout,"%s",F9300);
   }
 
   /*
@@ -4455,8 +4455,8 @@ O EXPLICIT OR IMPLIED BOUNDARY\n";
    *--INDICATE TYPE OF APPROXIMATION USED FOR SECOND DERIVATIVES
    */
   if(Exp.idet != NULL) {
-    if(*ih > 0) (void)fprintf(Exp.idet,F9000);
-    else (void)fprintf(Exp.idet,F9100);
+    if(*ih > 0) (void)fprintf(Exp.idet,"%s",F9000);
+    else (void)fprintf(Exp.idet,"%s",F9100);
   }
     
   /*
@@ -4877,7 +4877,7 @@ O EXPLICIT OR IMPLIED BOUNDARY\n";
  */
   if(Exp.idet == NULL) return;
 
-  (void)fprintf(Exp.idet,F9200);
+  (void)fprintf(Exp.idet,"%s",F9200);
   T1 = MAXFUN_NPV;
   mout(&Xh[0][0],&T1,&Xnv,&Xnv,Exp.idet);
 
@@ -4886,7 +4886,7 @@ O EXPLICIT OR IMPLIED BOUNDARY\n";
   /*
  *--PRINT WARNINGS ABOUT 2ND PARTIAL DERIVATIVES
  */
-  (void)fprintf(Exp.idet,F9300);
+  (void)fprintf(Exp.idet,"%s",F9300);
   for(l=1; l<=Xnv; l++) {
     for(ll=1; ll<=l; ll++) {
       if(lrh[ll - 1][l - 1] > 0)
@@ -5369,11 +5369,11 @@ void Maxfun_source::mout(double *a,int *mra,int *m,int *n,FILE *ipr) {
   for(i=0; i<*m; i++) {
     for(j=ji - 1; j<jf; j++)
       (void)fprintf(ipr,F9010,*(a + i + j * *mra));
-    (void)fprintf(ipr,F9020);
+    (void)fprintf(ipr,"%s",F9020);
   }
   if(jf >= *n) return;
 
-  (void)fprintf(ipr,F9100);
+  (void)fprintf(ipr,"%s",F9100);
   ji += N_FULL_ROW;
   jf += N_FULL_ROW;
   if(jf > *n) goto S20;
@@ -5421,7 +5421,7 @@ CT\n";
    * Executable Statements
    */
 
-  (void)fprintf(Exp.iout,F9000);
+  (void)fprintf(Exp.iout,"%s",F9000);
   for(i=1; i<=Exp.nt; i++) {
     isti = Exp.istin[i - 1];
     (void)fprintf(Exp.iout,F9100,i,Exp.label[i - 1],
@@ -5429,7 +5429,7 @@ CT\n";
 		  Exp.thu[i - 1],Exp.stpin[i - 1]);
   }
   if(Exp.lprt > 0) (void)fprintf(Exp.iout,F9200,*f);
-  (void)fprintf(Exp.iout,F9300);
+  (void)fprintf(Exp.iout,"%s",F9300);
   return;
     
 }
@@ -5470,7 +5470,7 @@ ND\n";
    * Executable Statements
    */
 
-  (void)fprintf(Exp.iout,F9000);
+  (void)fprintf(Exp.iout,"%s",F9000);
   for(i=1; i<=Exp.nt; i++) {
     isti = Exp.istin[i - 1];
     (void)fprintf(Exp.iout,F9100,i,Exp.label[i - 1],
@@ -5478,7 +5478,7 @@ ND\n";
 		  Exp.thu[i - 1]);
   }
   if(*lin > 0 && Exp.lprt > 0) (void)fprintf(Exp.iout,F9200,*f);
-  (void)fprintf(Exp.iout,F9300);
+  (void)fprintf(Exp.iout,"%s",F9300);
   return;
     
 }
@@ -5632,7 +5632,7 @@ D \"VARIANCE\"\n";
    * Executable Statements
    */
 
-  (void)fprintf(Exp.iout,F9000);
+  (void)fprintf(Exp.iout,"%s",F9000);
 
   l = 0;
   for(i=1; i<=Exp.nt; i++) {
@@ -5658,10 +5658,10 @@ D \"VARIANCE\"\n";
   if(Exp.lprt > 0) (void)fprintf(Exp.iout,F9400,*f);
   (void)fprintf(Exp.iout,F9500,*nfe);
 
-  if(Ximpbnd > 0) (void)fprintf(Exp.iout,F9600);
+  if(Ximpbnd > 0) (void)fprintf(Exp.iout,"%s",F9600);
 
-  if(Xivfl == 2) (void)fprintf(Exp.iout,F9700);
-  (void)fprintf(Exp.iout,F9800);
+  if(Xivfl == 2) (void)fprintf(Exp.iout,"%s",F9700);
+  (void)fprintf(Exp.iout,"%s",F9800);
   return;
 
 }
@@ -5691,7 +5691,7 @@ void Maxfun_source::copyr(FILE *pout) {
    * Executable Statements
    */
 
-  (void)fprintf(pout,F9000);
+  (void)fprintf(pout,"%s",F9000);
   return;
     
 }

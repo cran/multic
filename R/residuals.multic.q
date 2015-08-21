@@ -6,10 +6,10 @@ residuals.multic <- function(object,
   ## could also add an option, collapse residuals using 'mean' or other
   ## function
 
-  if( length(find("gchol")) == 0 ) {
-    stop("\nThe kinship2 function \"gchol\" is not available.\n",
-         "You must have the kinship2 package installed.",
-         "\n(Splus 7 includes it.\n")
+#  if( length(find("gchol")) == 0 ) {
+  if (! requireNamespace("bdsmatrix", quietly=TRUE)) {
+    stop("\nThe bdsmatrix function \"gchol\" is not available.\n",
+         "You must have the bdsmatrix package installed.\n")
   }
   
   if(is.character(object$residuals)) {
@@ -57,7 +57,7 @@ residuals.multic <- function(object,
                         end <- (i-1)*n.ped + n.ped
                         res <- y[[j]][beg:end]
                         vmat <- x[[j]][beg:end,beg:end, drop = FALSE]
-                        gcholmat <- kinship2::gchol(vmat)
+                        gcholmat <- bdsmatrix::gchol(vmat)
                         stdres <- solve(gcholmat,res, full=FALSE)
                         results[,i] <- stdres 
                       }
@@ -104,7 +104,7 @@ residuals.multic <- function(object,
                         end <- (i-1)*n.ped + n.ped
                         res <- y[[j]][beg:end]
                         vmat <- x[[j]][beg:end,beg:end, drop = FALSE]
-                        gcholmat <- kinship2::gchol(vmat)
+                        gcholmat <- bdsmatrix::gchol(vmat)
                         stdres <- solve(gcholmat,res, full = FALSE)
                         results[,i] <- stdres 
                       }
@@ -132,7 +132,7 @@ residuals.multic <- function(object,
                         end <- (i-1)*n.ped + n.ped
                         res <- R[[j]][beg:end]
                         vmat <- V[[j]][beg:end,beg:end, drop = FALSE]
-                        gcholmat <- kinship2::gchol(vmat)
+                        gcholmat <- bdsmatrix::gchol(vmat)
                         Q <- t(res)%*%solve(gcholmat)%*%res
                         ans <- sqrt(2*Q) - sqrt(2*n.ped - 1)
                         results[,i] <- ans
@@ -161,7 +161,7 @@ residuals.multic <- function(object,
                         end <- (i-1)*n.ped + n.ped
                         res <- R[[j]][beg:end]
                         vmat <- V[[j]][beg:end,beg:end, drop = FALSE]
-                        gcholmat <- kinship2::gchol(vmat)
+                        gcholmat <- bdsmatrix::gchol(vmat)
                         Q <- t(res)%*%solve(gcholmat)%*%res
                         ans <- sqrt(2*Q) - sqrt(2*n.ped - 1)
                         ans <- ((Q/n.ped)^(1/3) - 1 + 2/(9*n.ped)) * sqrt(9*(n.ped/2))

@@ -1,6 +1,24 @@
 CHANGES: Log of significant changes between revisions
 
 #############################################################################
+# multic 0.4.1
+#############################################################################
+  - p-values are no longer rounded. Previously, they were rounded to 4
+    decimal places and reported as 0 if they were less than 0.0005.
+
+#############################################################################
+# multic 0.3.9
+#############################################################################
+  - Now suggests the package bdsmatrix so that gchol function can be
+    accessed. (Previously in kinship package.)
+  - Fixed bug in the generation of technical report.
+  - Updated potentially unsafe calls to C++ fprintf function.
+  - In order not be confused for S3 methods, functions plot.family.lods and
+    t.rank have been renamed to tRank and plotFamilyLods respectively. The
+    original names are still aliases, but they are not exported from the
+    NAMESPACE.
+
+#############################################################################
 # multic 0.3.8
 #############################################################################
   - Splus is no longer supported.

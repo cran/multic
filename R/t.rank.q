@@ -5,7 +5,7 @@
 ## multic(t.rank(trig) ~ age + bmi, ...)
 ##
 ## t.rank was originally written by John Paul Bida
-## $Id: t.rank.q,v 1.1 2006/03/15 20:25:52 lunde Exp $
+## $Id: t.rank.q,v 1.2 2014/03/14 17:59:44 m015733 Exp $
 tRank <- function(x) {
   t1 <- x
   t2 <- x[!is.na(x)]

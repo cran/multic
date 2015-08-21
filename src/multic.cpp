@@ -1,6 +1,6 @@
 /******************************************************************************
 File: multic.cpp
-$Id: multic.cpp,v 1.22 2013/01/22 22:57:20 m015733 Exp $
+$Id: multic.cpp,v 1.23 2014/03/14 18:32:37 m015733 Exp $
 Description: This file defines the void function multic.  In the vast majority
              of cases, multic will be called from an Splus routine.  multic is
              a program that performs linkage analysis.  It uses variance

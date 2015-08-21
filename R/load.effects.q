@@ -372,7 +372,10 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   ## one-tenthousandth place.  Eric Lunde 2005-06-06
   lod.score <- -2 * (log.likelihood[1] - log.likelihood) / 4.6
   lod.score[1] <- NA
-  p.value <- round(pchisq.mix(lod.score, trait.count = trait.count), 4)
+
+  ## Mariza no longer wants the p-values rounded. Pat Votruba 2015-08-05
+  #p.value <- round(pchisq.mix(lod.score, trait.count = trait.count), 4)
+  p.value <- pchisq.mix(lod.score, trait.count = trait.count)
   
   log.liks <- data.frame(log.likelihood, distance, log.lik.status,
                          lod.score = round(lod.score, digits = 4), p.value,

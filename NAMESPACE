@@ -1,14 +1,13 @@
 useDynLib(multic)
 
 export(addGE, expand.data, expand.multic, multic.control,
-       multic, phi2share, plotFamilyLods, solar2mloci,
-       solar2multic, subsets, sw2mloci, tRank)
-
-## These methods are assigned to plotFamilyLods and tRank respectively.
-## R CMD check doesn't like these names because the functions aren't actually S3.
-## They're added to non.user.level.objects for backward compatibility.
-export(plot.family.lods, t.rank)
+       multic, phi2share, plotFamilyLods, polygene, solar2mloci,
+       solar2multic, subsets, sw2mloci, tRank, make.kinship.file)
 
 S3method(plot, multic)
 S3method(print, multic)
 S3method(summary, multic)
+
+importFrom("graphics", "abline", "lines", "matplot", "par", "plot")
+importFrom("stats", "coefficients", "cor", "lm", "model.extract", "model.matrix", "na.omit", "na.pass", "pchisq", "pnorm", "pt", "qnorm", "residuals", "sd", "terms", "var")
+importFrom("utils", "read.fwf", "read.table", "write.table")

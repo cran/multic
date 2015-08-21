@@ -25,6 +25,9 @@ phen.file.name <- "solarOutput/simulated.phen"
 phen.file <- read.table(phen.file.name, header = TRUE, sep = ",")
 ped.phen <- merge(ped.file, phen.file)
 
+## Make sure data is sorted numerically. Merge sorts lexographically.
+ped.phen <- ped.phen[order(ped.phen$famid, ped.phen$id), ]
+
 ## Call multic with a univariate model and no covariates
 trait1 <-
   multic(trait1 ~ 1,
