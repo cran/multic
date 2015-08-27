@@ -146,12 +146,14 @@ load.effects <- function(fixed.effects.count, random.effects.count,
                                 dimnames(fixed.effects)[[3]]))
   temp.fixed.effects[, 1:2, ] <- fixed.effects
   fixed.effects <- temp.fixed.effects
-  
-  fixed.effects[, "t.value", ] <-
-    round(fixed.effects[, 1, ] / fixed.effects[, 2, ], 4)
-  fixed.effects[, "p.value", ] <-
-    round(2 * (1 - pt(abs(fixed.effects[, 3, ]),
-                      individual.count - (1 + covariate.count))), 4)
+
+  ## Don't round p and t values per Mariza request August 2015
+  fixed.effects[, "t.value", ] <- fixed.effects[, 1, ] / fixed.effects[, 2, ]
+#    round(fixed.effects[, 1, ] / fixed.effects[, 2, ], 4)
+  fixed.effects[, "p.value", ] <- 2 * (1 - pt(abs(fixed.effects[, 3, ]),
+                      individual.count - (1 + covariate.count)))
+#    round(2 * (1 - pt(abs(fixed.effects[, 3, ]),
+#                      individual.count - (1 + covariate.count))), 4)
   
   ## Prepare the polygenic data
   polygenic <- effects$polygenic
@@ -181,10 +183,15 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   polygenic[, 3, ] <- (polygenic[, 1, ] / polygenic[, 2, ]) ^ 2
   
   ## Calculate the Wald score's p-value
-  polygenic[, 4, ] <- round(pchisq.mix(polygenic[, 3, ],
-                                       trait.count = trait.count,
-                                       lod = F),
-                            4)
+  ## Don't round p-values per Mariza's request, August 2015
+  polygenic[, 4, ] <- pchisq.mix(polygenic[, 3, ],
+                                 trait.count = trait.count,
+                                 lod = F)
+
+#  polygenic[, 4, ] <- round(pchisq.mix(polygenic[, 3, ],
+#                                       trait.count = trait.count,
+#                                       lod = F),
+#                            4)
   
   ## Prepare the major.gene1 data
   major.gene1 <- effects$major.gene1
@@ -214,10 +221,14 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   major.gene1[, 3, ] <- (major.gene1[, 1, ] / major.gene1[, 2, ]) ^ 2
   
   ## Calculate the Wald score's p-value
-  major.gene1[, 4, ] <- round(pchisq.mix(major.gene1[, 3, ],
-                                         trait.count = trait.count,
-                                         lod = F),
-                              4)
+  major.gene1[, 4, ] <- pchisq.mix(major.gene1[, 3, ],
+                                   trait.count = trait.count,
+                                   lod = F)
+ 
+#  major.gene1[, 4, ] <- round(pchisq.mix(major.gene1[, 3, ],
+#                                         trait.count = trait.count,
+#                                         lod = F),
+#                              4)
   
   ## Prepare the environmental data
   environmental <- effects$environmental
@@ -248,10 +259,14 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   environmental[, 3, ] <- (environmental[, 1, ] / environmental[, 2, ]) ^ 2
   
   ## Calculate the Wald score's p-value
-  environmental[, 4, ] <- round(pchisq.mix(environmental[, 3, ],
-                                           trait.count = trait.count,
-                                           lod = F),
-                                4)
+  environmental[, 4, ] <- pchisq.mix(environmental[, 3, ],
+                                     trait.count = trait.count,
+                                     lod = F)
+ 
+#  environmental[, 4, ] <- round(pchisq.mix(environmental[, 3, ],
+#                                           trait.count = trait.count,
+#                                           lod = F),
+#                                4)
   
   ## Prepare the sibling.sibling data
   sibling.sibling <- effects$sibling.sibling
@@ -282,11 +297,15 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   sibling.sibling[, 3, ] <- (sibling.sibling[, 1, ]
                              / sibling.sibling[, 2, ]) ^ 2
   
-  ## Calculate the Wald score's p-value
-  sibling.sibling[, 4, ] <- round(pchisq.mix(sibling.sibling[, 3, ],
-                                             trait.count = trait.count,
-                                             lod = F),
-                                  4)
+  ## Calculate the Wald score's p-valu
+  sibling.sibling[, 4, ] <- pchisq.mix(sibling.sibling[, 3, ],
+                                       trait.count = trait.count,
+                                       lod = F)
+
+#  sibling.sibling[, 4, ] <- round(pchisq.mix(sibling.sibling[, 3, ],
+#                                             trait.count = trait.count,
+#                                             lod = F),
+#                                  4)  
 
   ## Prepare the parent.parent data
   parent.parent <- effects$parent.parent
@@ -317,10 +336,14 @@ load.effects <- function(fixed.effects.count, random.effects.count,
   parent.parent[, 3, ] <- (parent.parent[, 1, ] / parent.parent[, 2, ]) ^ 2
   
   ## Calculate the Wald score's p-value
-  parent.parent[, 4, ] <- round(pchisq.mix(parent.parent[, 3, ],
-                                           trait.count = trait.count,
-                                           lod = F),
-                                4)
+  parent.parent[, 4, ] <- pchisq.mix(parent.parent[, 3, ],
+                                     trait.count = trait.count,
+                                     lod = F)
+
+#  parent.parent[, 4, ] <- round(pchisq.mix(parent.parent[, 3, ],
+#                                           trait.count = trait.count,
+#                                           lod = F),
+#                                4)  
   
   ## Prepare the parent.offspring data
   parent.offspring <- effects$parent.offspring
@@ -352,10 +375,14 @@ load.effects <- function(fixed.effects.count, random.effects.count,
                               / parent.offspring[, 2, ]) ^ 2
   
   ## Calculate the Wald score's p-value
-  parent.offspring[, 4, ] <- round(pchisq.mix(parent.offspring[, 3, ],
+  parent.offspring[, 4, ] <- pchisq.mix(parent.offspring[, 3, ],
                                               trait.count = trait.count,
-                                              lod = F),
-                                   4)
+                                              lod = F)
+                             
+#  parent.offspring[, 4, ] <- round(pchisq.mix(parent.offspring[, 3, ],
+#                                              trait.count = trait.count,
+#                                              lod = F),
+#                                   4)  
 
   if(run.alternative.hyps) {
     distance <- unlist(sapply(loci.names, get.dist))

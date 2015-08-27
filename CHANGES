@@ -1,6 +1,11 @@
 CHANGES: Log of significant changes between revisions
 
 #############################################################################
+# multic 0.4.3
+#############################################################################
+  - All p-values are no longer rounded including Wald score p-values.
+
+#############################################################################
 # multic 0.4.1
 #############################################################################
   - p-values are no longer rounded. Previously, they were rounded to 4

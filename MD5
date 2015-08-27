@@ -1,5 +1,5 @@
-1ff1dd8789ab560fadce6c5ab7456a2a *CHANGES
-37386c8706912f8cebf6404c043c85d4 *DESCRIPTION
+8e368572e6a41632358f69e40e6055c0 *CHANGES
+d8f3fc37c4763217d9910b7c2a69d1d6 *DESCRIPTION
 7c078dcf75e5b791f8010f725410b96b *LICENSE
 61a8ed2003def6a399dd25e068e2665d *NAMESPACE
 57919887e4beaa20501a631b04286c46 *R/add.heritability.q
@@ -11,7 +11,7 @@ cd36447989ef322a24c80cd1446c1c3c *R/gene.eff.q
 fae9f28959b98873420358099d5c5b2b *R/get.max.lod.and.locus.q
 34efbf3a781dd2e031e04a5487f682d7 *R/get.top.n.families.q
 df0f2511b524bab7ea95ea622ea70fc8 *R/herit.se.q
-286ab07c149b2fb2e99c0365f5cd48f3 *R/load.effects.q
+3d69526dccabf1b293779b6456e76aea *R/load.effects.q
 ed4fbc146e23f0ee574c87b155f39d15 *R/load.inv.exp.sec.der.fixed.q
 55641759d76775bfce6eeb6127c1d17d *R/load.inv.exp.sec.der.random.q
 13ba0ece70f164d05177fde415432683 *R/load.residuals.q
