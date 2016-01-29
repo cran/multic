@@ -91,7 +91,7 @@ Updates: (Date, Modified By, Modification Description)
 ******************************************************************************/
 #include <sys/times.h>
 #include <ctime>
-#include <limits.h>
+#include <climits>
 #include <iostream>
 #include <cstdio>
 #include <fstream>

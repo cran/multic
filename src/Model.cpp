@@ -19,7 +19,11 @@ Updates: (Date, Modified By, Modification Description)
 #include <fstream>
 #include <cstdlib>
 #include <cstring>
-#include <S.h>
+#ifdef USING_R
+# include <R.h>
+#else
+# include <S.h>
+#endif
 #include "Model.h"
 #include "Lib.h"
 #include "Calculate.h"

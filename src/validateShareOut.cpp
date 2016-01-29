@@ -21,20 +21,20 @@ void validateShareOut(Sint *familySizes, Sint *familiesCount, char **id,
   // Perform some bounds checking before using familySizes, familiesCount,
   // id, and idsCount
   if( *familiesCount < 1 ) {
-    PROBLEM "familiesCount was passed a value of '%ld'.\nThis value must be positive.\nvalidateShareOut.cpp key 14\n",
-      *familiesCount RECOVER(NULL_ENTRY);
+    PROBLEM "familiesCount was passed a value of '%d'.\nThis value must be positive.\nvalidateShareOut.cpp key 14\n",
+      (int)*familiesCount RECOVER(NULL_ENTRY);
   }
 
   for(Sint l = 0; l < *familiesCount; l++) {
     if(familySizes[l] < 1) {
-      PROBLEM "familySizes[%ld] was passed a value of '%ld'.\nThis value must be positive.\nvalidateShareOut.cpp key 23\n",
-	l, familySizes[l] RECOVER(NULL_ENTRY);
+      PROBLEM "familySizes[%d] was passed a value of '%d'.\nThis value must be positive.\nvalidateShareOut.cpp key 23\n",
+	(int)l, (int)familySizes[l] RECOVER(NULL_ENTRY);
     }
   }
 
   if( *idsCount < 1 ) {
-    PROBLEM "idsCount was passed a value of '%ld'.\nThis value must be positive.\nvalidateShareOut.cpp key 30\n",
-      *idsCount RECOVER(NULL_ENTRY);
+    PROBLEM "idsCount was passed a value of '%d'.\nThis value must be positive.\nvalidateShareOut.cpp key 30\n",
+      (int)*idsCount RECOVER(NULL_ENTRY);
   }
 
   /* Commented out on 11/9/2004 by Eric Lunde because id changed from type

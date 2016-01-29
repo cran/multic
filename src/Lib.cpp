@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include "Lib.h"
-#include <stdlib.h>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 #include "Rostream.h"
 #include "Rstreambuf.h"
 

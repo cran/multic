@@ -1,5 +1,5 @@
 //#include <sys/times.h>
-#include <limits.h>
+#include <climits>
 #include <iostream>
 #include <iomanip>
 #include <fstream>

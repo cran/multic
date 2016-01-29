@@ -67,11 +67,12 @@
 ********************************************************************
 ********************************************************************/
 /* Library */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+using std::FILE;
+#include <cstdlib>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <string.h>
+#include <cstring>
 #include <iostream>
 #include <Rinterface.h>
 #include "verS.h"

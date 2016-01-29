@@ -11,8 +11,6 @@
  */
 #define S_NEWREDEF_H
 
-#include <S.h>
-
 /*
 ** The next part is to make it easier to have common code with Splus and R, where
 ** "integers" are int.  In S they are Sint.  In R they are int.
@@ -20,8 +18,10 @@
 */
 #ifdef USING_R
 #include <R.h>
-typedef int Sint;
+//typedef int Sint; in R.h
+#define Salloc(n,t) (t*)S_alloc(n, sizeof(t))
 #else
+#include <S.h>
 typedef long Sint;
 #endif
 #endif

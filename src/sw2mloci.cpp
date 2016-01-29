@@ -23,7 +23,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <S.h>
+#ifdef USING_R
+# include <R.h>
+#else
+# include <S.h>
+#endif
 #include "multicString.h"
 #include "Rostream.h"
 #include "Rstreambuf.h"

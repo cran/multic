@@ -93,8 +93,8 @@ int *getVarianceIndices(Sint traitCountValue) {
 
   // Do a little error checking during development.
   if(indexIncrease != 1) {
-    PROBLEM "indexIncrease = %ld\nError occurred calculating variance indices.\ncalculateCorrelations.cpp key 84\n",
-      indexIncrease RECOVER(NULL_ENTRY);
+    PROBLEM "indexIncrease = %d\nError occurred calculating variance indices.\ncalculateCorrelations.cpp key 84\n",
+      (int)indexIncrease RECOVER(NULL_ENTRY);
   }
 
   return varianceIndices;
